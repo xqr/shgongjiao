@@ -1,0 +1,152 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ededf0"
+    tools:context="com.yhtye.shanghaishishigongjiaochaxun.ResultActivity" >
+
+    <RelativeLayout 
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"
+        android:background="@drawable/content_bg">
+        
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/gongjiaoback" 
+            android:onClick="backPrePageClick"/>
+
+        <TextView style="@style/result_text"
+            android:id="@+id/linename"
+            android:layout_width="fill_parent"
+            android:layout_height="42dp"
+            android:layout_alignParentTop="true"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:gravity="center" 
+            android:layout_toEndOf="@+id/imageView1"
+            android:layout_toRightOf="@+id/imageView1"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/lineinfo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#00aaff"
+        android:paddingLeft="10dp" 
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/qidian"
+            style="@style/result_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:layout_alignParentTop="true"/>
+
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/result_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/qidian"
+            android:text="  >  " />
+
+        <TextView
+            android:id="@+id/zhongdian"
+            style="@style/result_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView1"/>
+
+        <LinearLayout android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/qidian">
+            
+        <TextView style="@style/result_text"
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#43bd49"
+            android:text=" 首 " />
+
+        <TextView style="@style/result_text"
+            android:id="@+id/startime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:text="首发时间" />
+
+        <TextView style="@style/result_text"
+            android:id="@+id/stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#d34545"
+            android:text=" 末 " />
+
+        <TextView style="@style/result_text"
+            android:id="@+id/stoptime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:layout_weight="1"
+            android:text="末班时间" />
+</LinearLayout>
+
+        <ImageView
+            android:id="@+id/switch_icon"
+            android:layout_width="26dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/switch_icon" 
+            android:onClick="switchDirectionClick" />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"
+        android:background="#fcf7e6"
+        android:paddingLeft="10dp" >
+        
+        <ImageView
+            android:id="@+id/tishi"
+            android:layout_width="12dp"
+            android:layout_height="22dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/tishi" />
+        
+        <TextView android:id="@+id/tips"
+            android:layout_width="fill_parent"
+            android:layout_height="28dp"
+            android:textSize="12sp"
+            android:textColor="#000000"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_toRightOf="@+id/tishi"
+            android:gravity="center_vertical"
+            android:text="@string/station_tip"/>
+    </RelativeLayout>
+    
+    <ListView android:id="@+id/list_cards"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        style="@drawable/content_bg"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
+    </ListView>
+    
+</LinearLayout>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#ededf0"
+    android:orientation="vertical" >
+  
+    <RelativeLayout  
+        android:id="@+id/lr_station"  
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content" >  
+        
+        <TextView  
+            android:id="@+id/tv_station_name" 
+            android:layout_width="fill_parent"  
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="#FFFFFF"
+            android:padding="10dp"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+        
+        <ImageView
+            android:id="@+id/iv_xiala_ico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/xiala" />
+        
+        <ImageView
+            android:id="@+id/iv_xiatop_ico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/xiatop" />
+         
+    </RelativeLayout>  
+  
+    <RelativeLayout  
+        android:id="@+id/ll_cards"  
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"  
+        android:orientation="vertical" >  
+  
+        <TextView  
+                android:id="@+id/tv_card_name"  
+                android:background="#fcf7e6"
+                android:text="@string/no_cars"  
+                android:layout_width="fill_parent"  
+                android:layout_height="wrap_content" 
+                android:padding="5dp"
+                android:textSize="13sp"  
+                android:textColor="#000000"/>
+</RelativeLayout>  
+  
+</LinearLayout>  

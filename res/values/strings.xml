@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">上海实时公交</string>
+    <string name="button_send">查询</string>
+    <string name="default_line">请输入完整的线路名称，如"933路"、"46路区间"</string>
+    <string name="rule">1、请输入完整的线路名称，如“933路”、“46路区间“\n2、上海实时公交查询提供的信息可为用户出行提供参考，因信息更新等原因可能导致与实际不符，敬请谅解。\n3、由于公交线路还在不断更新补充中，部分线路尚未纳入查询系统，敬请谅解。</string>
+    <string name= "network_tip">网络状态被关闭</string>
+    <string name= "station_tip">请注意选择您乘车的方向，不要选错哦</string>
+    <string name="no_line">暂无该线路信息</string>
+    <string name="no_cars">等待发车</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_result">ResultActivity</string>
+
+</resources>
