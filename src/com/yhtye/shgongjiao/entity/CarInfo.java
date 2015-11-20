@@ -2,7 +2,7 @@ package com.yhtye.shgongjiao.entity;
 
 public class CarInfo {
     private String terminal;
-    private String stopdis;
+    private int stopdis;
     private int distance;
     private String time;
     
@@ -12,10 +12,10 @@ public class CarInfo {
     public void setTerminal(String terminal) {
         this.terminal = terminal;
     }
-    public String getStopdis() {
+    public int getStopdis() {
         return stopdis;
     }
-    public void setStopdis(String stopdis) {
+    public void setStopdis(int stopdis) {
         this.stopdis = stopdis;
     }
     public int getDistance() {
