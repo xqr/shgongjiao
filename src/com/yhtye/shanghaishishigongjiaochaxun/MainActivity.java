@@ -7,6 +7,7 @@ import com.yhtye.shgongjiao.tools.RegularUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -37,7 +38,7 @@ public class MainActivity extends Activity {
             return;
         }
         String lineName = numberoneEditText.getText().toString();
-        if (lineName == null || lineName == "") {
+        if (TextUtils.isEmpty(lineName)) {
             Toast.makeText(MainActivity.this, "请输入要查询的公交路线", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -47,7 +48,6 @@ public class MainActivity extends Activity {
         }
         
         // 切换Activity
-//        Intent intent=new Intent(); 
         intent.setClass(MainActivity.this, ResultActivity.class);  
         intent.putExtra("lineName", lineName);
         startActivity(intent);

@@ -32,7 +32,7 @@
         android:text="@string/button_send"
         android:id="@+id/hellobutton"
         android:textColor="#ffffff"
-        android:background="#3ea3fe"
+        android:background="@drawable/button_chaxun"
         android:textSize="20sp"
         android:layout_marginTop="5dip"
         android:paddingLeft="15dip"
