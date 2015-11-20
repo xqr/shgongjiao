@@ -91,7 +91,7 @@ public class FlexLinearLayout extends LinearLayout {
                             }
                         } else {
                             needTime =  totalTime / 60;
-                            if (totalTime % 60 > 30) {
+                            if (totalTime % 60 != 0) {
                                 needTime = needTime + 1;
                             }
                         }
