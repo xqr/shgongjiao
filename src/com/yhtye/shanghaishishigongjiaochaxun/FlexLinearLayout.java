@@ -7,6 +7,7 @@ import com.yhtye.shgongjiao.tools.RegularUtil;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,17 +75,25 @@ public class FlexLinearLayout extends LinearLayout {
         if (isCurrentItem && cars != null && !cars.isEmpty()) {
             String text = "";
             for(CarInfo car : cars) {
-                if (!text.isEmpty()) {
+                if (!TextUtils.isEmpty(text)) {
                     text = text + "\n";
                 }
                 String time = car.getTime();
                 if (RegularUtil.isNumeric(time)) {
                     try {
                         int totalTime = Integer.parseInt(time);
-                        int needTime =  totalTime / 60;
-                        if (needTime == 0) {
-                            text = text + String.format("%s即将到站", car.getTerminal());
-                            continue;
+                        int needTime = 1;
+                        if (totalTime < 60) {
+                            // 小于1分钟
+                            if (car.getStopdis() <= 0 || totalTime < 30) {
+                                text = text + String.format("%s即将到站", car.getTerminal());
+                                continue;
+                            }
+                        } else {
+                            needTime =  totalTime / 60;
+                            if (totalTime % 60 != 0) {
+                                needTime = needTime + 1;
+                            }
                         }
                         time = needTime + "分钟";
                     } catch (Exception e) {
