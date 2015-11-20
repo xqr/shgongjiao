@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -81,7 +82,7 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         
         @Override
         public void run() {
-            if (nowLineName == null || nowLineName == "") {
+            if (TextUtils.isEmpty(nowLineName)) {
                 return;
             }
             LineInfo newlineInfo = lineService.getLineInfo(nowLineName, 2);

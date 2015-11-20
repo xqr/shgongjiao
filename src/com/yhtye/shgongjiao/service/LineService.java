@@ -6,6 +6,9 @@ import java.util.List;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import com.yhtye.shgongjiao.entity.CarInfo;
 import com.yhtye.shgongjiao.entity.LineInfo;
 import com.yhtye.shgongjiao.entity.LineStationInfo;
@@ -20,7 +23,7 @@ public class LineService {
         
         try {
             String content = HttpClientUtils.getResponse(url);
-            if (content == null || content.isEmpty()) {
+            if (TextUtils.isEmpty(content)) {
                 return null;
             }
             // 非法字符过滤
@@ -31,6 +34,7 @@ public class LineService {
             if (retryTimes > 0) {
                 return getLineInfo(lineName, --retryTimes);
             }
+            Log.e("com.yhtye.shgongjiao.service.LineService", "getLineInfo()", e);
         }
         return null;
     }
@@ -39,7 +43,7 @@ public class LineService {
         String url = String.format("%s/HandlerTwo.ashx?name=%s&lineid=%s", apiUrl, lineName, lineId);
         
         String content = HttpClientUtils.getResponse(url);
-        if (content == null || content.isEmpty()) {
+        if (TextUtils.isEmpty(content)) {
             return null;
         }
         
@@ -65,7 +69,7 @@ public class LineService {
                 return lineStation;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("com.yhtye.shgongjiao.service.LineService", "getLineStation()", e);
         }
         return null;
     }
@@ -75,7 +79,7 @@ public class LineService {
                 apiUrl, lineName, lineId, stopId, direction ? 0 : 1);
         
         String content = HttpClientUtils.getResponse(url);
-        if (content == null || content.isEmpty()) {
+        if (TextUtils.isEmpty(content)) {
             return null;
         }
         
@@ -90,7 +94,7 @@ public class LineService {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("com.yhtye.shgongjiao.service.LineService", "getStationCars()", e);
         }
         return cars;
     }
