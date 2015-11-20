@@ -1,5 +1,6 @@
 package com.yhtye.shanghaishishigongjiaochaxun;
 
+import com.everpod.shanghai.R;
 import com.umeng.analytics.MobclickAgent;
 import com.yhtye.shgongjiao.tools.NetUtil;
 import com.yhtye.shgongjiao.tools.RegularUtil;
