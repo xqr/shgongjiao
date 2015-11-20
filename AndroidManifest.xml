@@ -39,7 +39,7 @@
         </activity>
         
         <meta-data android:value="564a98e4e0f55a22f8002a4b" android:name="UMENG_APPKEY"></meta-data>
-        <meta-data android:value="xiaomi" android:name="UMENG_CHANNEL"/>
+        <meta-data android:value="xiaomi2" android:name="UMENG_CHANNEL"/>
     </application>
 
 </manifest>
