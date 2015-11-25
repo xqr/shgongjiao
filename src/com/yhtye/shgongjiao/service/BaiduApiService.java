@@ -1,0 +1,93 @@
+package com.yhtye.shgongjiao.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.yhtye.shgongjiao.entity.RoutesScheme;
+import com.yhtye.shgongjiao.entity.SchemeSteps;
+
+public class BaiduApiService {
+    
+    public static List<RoutesScheme> parseDirectionRoutes(String responseString) {
+        if (TextUtils.isEmpty(responseString)) {
+            return null;
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode jsonNodes = mapper.readValue(responseString, JsonNode.class);
+            if (jsonNodes == null || jsonNodes.get("retData") == null) {
+                return null;
+            }
+            jsonNodes = mapper.readValue(jsonNodes.get("retData"), JsonNode.class);
+            if (jsonNodes == null || jsonNodes.get("routes") == null) {
+                return null;
+            }
+            
+            List<RoutesScheme> list = new ArrayList<RoutesScheme>();
+            
+            jsonNodes = mapper.readValue(jsonNodes.get("routes"), JsonNode.class);
+            for (JsonNode node : jsonNodes) {
+                JsonNode schemeNode = mapper.readValue(node.get("scheme"), JsonNode.class);
+                if (schemeNode == null || schemeNode.get(0).get("steps") == null) {
+                    continue;
+                }
+                schemeNode = schemeNode.get(0);
+                // 路线方案总的信息描述
+                RoutesScheme routesScheme = new RoutesScheme();
+                routesScheme.setDistance(schemeNode.get("distance").getIntValue());
+                routesScheme.setDuration(schemeNode.get("duration").getIntValue());
+                
+                JsonNode stepsNode = mapper.readValue(schemeNode.get("steps"), JsonNode.class);
+                if (stepsNode == null) {
+                    continue;
+                }
+                // 循环steps，获取每一步的信息
+                List<String> vehicleNames = new ArrayList<String>();
+                List<SchemeSteps> stepsList = new ArrayList<SchemeSteps>();
+                for (JsonNode distanceNode : stepsNode) {
+                    distanceNode = distanceNode.get(0);
+                    // 每个step对象
+                    SchemeSteps steps = new SchemeSteps();
+                    steps.setDistance(distanceNode.get("distance").getIntValue());
+                    steps.setDuration(distanceNode.get("duration").getIntValue());
+                    steps.setType(distanceNode.get("type").getIntValue());
+                    steps.setStepInstruction(distanceNode.get("stepInstruction").getTextValue());
+                    steps.setSname(distanceNode.get("sname").getTextValue());
+                    if (steps.getType() == 5) {
+                        // 步行
+                        stepsList.add(steps);
+                    } else {
+                        if (distanceNode.get("vehicle") != null) {
+                            JsonNode vehicleNode = mapper.readValue(distanceNode.get("vehicle"), JsonNode.class);
+                            if (vehicleNode != null) {
+                                //  车辆信息
+                                steps.setVehicleEndName(vehicleNode.get("end_name").getTextValue());
+                                steps.setVehicleName(vehicleNode.get("name").getTextValue());
+                                steps.setVehicleStartName(vehicleNode.get("start_name").getTextValue());
+                                steps.setVehicleStopNum(vehicleNode.get("stop_num").getIntValue());
+                                steps.setVehicleType(vehicleNode.get("type").getIntValue());
+                                
+                                vehicleNames.add(steps.getVehicleName());
+                                stepsList.add(steps);
+                            }
+                        }
+                    }
+                    routesScheme.setSteps(stepsList);
+                    routesScheme.setVehicleNames(vehicleNames);
+                }
+                list.add(routesScheme);
+            }
+            return list;
+        } catch (Exception e) {
+            Log.e("com.yhtye.shgongjiao.service.BaiduApiService", "parseDirectionRoutes()", e);
+        }
+        
+        return null;
+    }
+}

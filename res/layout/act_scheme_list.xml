@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical" >
+  
+    <RelativeLayout  
+        android:id="@+id/lr_scheme"  
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content" >  
+        
+        <ImageView android:id="@+id/luxianicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/luxian"/>
+        
+        <TextView  
+            android:id="@+id/tv_station_name" 
+            android:layout_width="wrap_content"  
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/luxianicon"
+            android:layout_toEndOf="@id/luxianicon"
+            android:textColor="@color/black"
+            android:text="轨道交通6号线 > 轨道交通2号线 "/> 
+    </RelativeLayout>  
+  
+    <RelativeLayout  
+        android:id="@+id/ll_steps"  
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"  
+        android:orientation="vertical" >  
+  
+        <TextView  
+                android:id="@+id/tv_card_name"  
+                android:background="#fcf7e6"
+                android:text="@string/no_cars"  
+                android:layout_width="fill_parent"  
+                android:layout_height="wrap_content" 
+                android:padding="5dp"
+                android:textSize="13sp"  
+                android:textColor="#000000"/>
+</RelativeLayout>  
+  
+</LinearLayout>  

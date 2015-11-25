@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:windowSoftInputMode="adjustPan"
     package="com.yhtye.shanghaishishigongjiaochaxun"
     android:versionCode="12"
-    android:versionName="2.1">
+    android:versionName="2.1"
+    android:windowSoftInputMode="adjustPan" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" >
+    </uses-permission>
+
     <uses-feature android:name="android.hardware.wifi" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-sdk
@@ -17,6 +20,7 @@
         android:targetSdkVersion="18" />
 
     <application
+        android:name=".BaiduApiApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -26,6 +30,7 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -37,9 +42,19 @@
             android:name=".ResultActivity"
             android:label="@string/title_activity_result" >
         </activity>
-        
-        <meta-data android:value="564a98e4e0f55a22f8002a4b" android:name="UMENG_APPKEY"></meta-data>
-        <meta-data android:value="xiaomi" android:name="UMENG_CHANNEL"/>
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="564a98e4e0f55a22f8002a4b" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="xiaomi" />
+
+        <activity
+            android:name=".SchemeActivity"
+            android:label="@string/title_activity_scheme" >
+        </activity>
     </application>
 
 </manifest>

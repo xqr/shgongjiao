@@ -1,0 +1,73 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.yhtye.shanghaishishigongjiaochaxun.SchemeActivity" >
+
+    <RelativeLayout 
+        android:layout_width="fill_parent"  
+        android:layout_height="60dp"
+        android:background="@color/blue">
+        
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/fanhuishangyiye" 
+            android:onClick="backPrePageClick"/>
+
+        <TextView style="@style/result_text"
+            android:id="@+id/linename"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="@string/luxianfangan"
+            android:layout_toEndOf="@+id/imageView1"
+            android:layout_toRightOf="@+id/imageView1"/>
+    </RelativeLayout>
+
+    <RelativeLayout android:id="@+id/wuscheme"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        
+        <ImageView android:id="@+id/wu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:layout_marginBottom="50dp"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/wu"/>
+        
+        <TextView android:id="@+id/wucontent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/wu"
+            android:textSize="20sp"
+            android:textColor="@color/silver"
+            android:text="没有找到结果"/>
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/wucontent"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
+            android:textColor="@color/silver"
+            android:text="你可以更换起点或终点再尝试"/>       
+    </RelativeLayout>
+    
+</LinearLayout>
