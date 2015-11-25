@@ -181,6 +181,10 @@ public class ResultActivity extends Activity implements OnItemClickListener {
      * @param v
      */
     public void switchDirectionClick(View v) {
+        if (lineInfo == null || lineStation == null) {
+            return;
+        }
+        
         direction = !direction;
         showLineInfo();
         
