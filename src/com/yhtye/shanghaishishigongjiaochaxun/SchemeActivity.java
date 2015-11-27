@@ -16,15 +16,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class SchemeActivity extends Activity {
+public class SchemeActivity extends Activity implements OnItemClickListener {
 
     private String qidian = null;
     private String zongdian = null;
     
     private RelativeLayout wuschemeLayout = null;
+    private ListView listSchemeView = null;
     
+    private SchemeListAdapter adapter;
+    private boolean[] isCurrentItems; 
+    private int[] isOpendItems;
+    private List<RoutesScheme> routesSchemeList;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +71,7 @@ public class SchemeActivity extends Activity {
                                 return;
                             }
                             // TODO 如果正确的话如何处理
-                            
+                            showSchemes(routesList);
                         } catch (UnsupportedEncodingException e) {
                             Log.e("paseScheme", e.getMessage());
                         }
@@ -78,8 +86,46 @@ public class SchemeActivity extends Activity {
     
     private void init() {
         wuschemeLayout = (RelativeLayout) findViewById(R.id.wuscheme);
+        listSchemeView = (ListView) findViewById(R.id.list_scheme);
     }
     
+    private void showSchemes(List<RoutesScheme> routesSchemeList) {
+        isCurrentItems = new boolean[routesSchemeList.size()];
+        isOpendItems = new int[routesSchemeList.size()];
+        
+        // 刚进入的时候第一条打开
+        isCurrentItems[0] = true;
+        isOpendItems[0] = 1;
+        for (int i = 1; i < isCurrentItems.length; i++) {  
+            isCurrentItems[i] = false;
+            isOpendItems[i] = 0;
+        }
+        
+        if (adapter == null) {
+            adapter = new SchemeListAdapter(this, routesSchemeList, 
+                    isCurrentItems, isOpendItems, qidian, zongdian);
+        }
+        listSchemeView.setAdapter(adapter);
+        listSchemeView.setOnItemClickListener(this);
+    }
+    
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position,
+            long id) {
+        /* 
+         * 只打开一个 
+         */  
+        for (int i = 0; i < isCurrentItems.length; i++) {  
+            if (i != position) {  
+                isCurrentItems[i] = false;  
+            }
+        } 
+        // 打开或者合上  
+        isCurrentItems[position] = !isCurrentItems[position];
+        isOpendItems[position] = isOpendItems[position] + 1;
+        // 即时刷新  
+        adapter.notifyDataSetChanged(); 
+    }
     
     /**
      * 关闭当前页面
@@ -89,5 +135,4 @@ public class SchemeActivity extends Activity {
     public void backPrePageClick(View v) {
         SchemeActivity.this.finish();
     }
-    
 }

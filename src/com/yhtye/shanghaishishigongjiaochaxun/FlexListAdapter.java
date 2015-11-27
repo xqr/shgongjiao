@@ -40,7 +40,7 @@ public class FlexListAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        if (stations == null) {
+        if (stations == null || stations.size() <= position) {
             return null;
         }
         return stations.get(position);

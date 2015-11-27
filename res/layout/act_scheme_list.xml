@@ -19,7 +19,7 @@
             android:src="@drawable/luxian"/>
         
         <TextView  
-            android:id="@+id/tv_station_name" 
+            android:id="@+id/tv_scheme_name" 
             android:layout_width="wrap_content"  
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -28,22 +28,26 @@
             android:textColor="@color/black"
             android:text="轨道交通6号线 > 轨道交通2号线 "/> 
     </RelativeLayout>  
-  
-    <RelativeLayout  
+     
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/silver"/>
+    
+    <TableLayout  
         android:id="@+id/ll_steps"  
         android:layout_width="fill_parent"  
         android:layout_height="wrap_content"  
-        android:orientation="vertical" >  
-  
-        <TextView  
-                android:id="@+id/tv_card_name"  
-                android:background="#fcf7e6"
-                android:text="@string/no_cars"  
-                android:layout_width="fill_parent"  
-                android:layout_height="wrap_content" 
-                android:padding="5dp"
-                android:textSize="13sp"  
-                android:textColor="#000000"/>
-</RelativeLayout>  
-  
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="15dp">  
+        
+    </TableLayout>  
+    <View
+            android:id="@+id/div_scheme_bar"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/silver"/>
+    
 </LinearLayout>  

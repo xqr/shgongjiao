@@ -58,7 +58,9 @@ public class BaiduApiService {
                     steps.setDuration(distanceNode.get("duration").getIntValue());
                     steps.setType(distanceNode.get("type").getIntValue());
                     steps.setStepInstruction(distanceNode.get("stepInstruction").getTextValue());
-                    steps.setSname(distanceNode.get("sname").getTextValue());
+                    if (distanceNode.get("sname") != null) {
+                        steps.setSname(distanceNode.get("sname").getTextValue());
+                    }
                     if (steps.getType() == 5) {
                         // 步行
                         stepsList.add(steps);

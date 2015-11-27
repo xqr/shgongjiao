@@ -119,16 +119,16 @@ public class FlexLinearLayout extends LinearLayout {
             llCards = (RelativeLayout) layout.findViewById(R.id.ll_cards);  
         }
         if (tvStationName == null) {
-            tvStationName = (TextView)findViewById(R.id.tv_station_name);
+            tvStationName = (TextView)layout.findViewById(R.id.tv_station_name);
         }
         if (ivXialaIco == null) {
-            ivXialaIco = (ImageView)findViewById(R.id.iv_xiala_ico);
+            ivXialaIco = (ImageView)layout.findViewById(R.id.iv_xiala_ico);
         }
         if (ivXiatopIco == null) {
-            ivXiatopIco = (ImageView)findViewById(R.id.iv_xiatop_ico);
+            ivXiatopIco = (ImageView)layout.findViewById(R.id.iv_xiatop_ico);
         }
         if (tvCardName == null) {
-            tvCardName = (TextView)findViewById(R.id.tv_card_name);
+            tvCardName = (TextView)layout.findViewById(R.id.tv_card_name);
         }
     }
 }
