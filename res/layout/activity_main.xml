@@ -61,6 +61,18 @@
             android:textSize="13sp"
             android:hint="@string/default_line"/>
     
+    <Button 
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:text="@string/button_send"
+        android:textColor="#ffffff"
+        android:background="@drawable/button_chaxun"
+        android:textSize="24sp"
+        android:layout_marginTop="30dp"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
+        android:onClick="searchLineClick"/>
+    
     <TextView android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"

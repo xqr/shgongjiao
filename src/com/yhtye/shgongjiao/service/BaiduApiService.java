@@ -11,6 +11,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.yhtye.shgongjiao.entity.PositionInfo;
 import com.yhtye.shgongjiao.entity.RoutesScheme;
 import com.yhtye.shgongjiao.entity.SchemeSteps;
 
@@ -132,4 +133,25 @@ public class BaiduApiService {
         return null;
     }
     
+    public static PositionInfo parseMyPosition(String responseString) {
+        if (TextUtils.isEmpty(responseString)) {
+            return null;
+        }
+        
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode jsonNode = mapper.readValue(responseString, JsonNode.class);
+            if (jsonNode != null 
+                    && jsonNode.get("errNum").getIntValue() == 0 
+                    && jsonNode.get("retData") != null) {
+                JsonNode nodes =  mapper.readValue(jsonNode.get("retData"), JsonNode.class);
+                for (JsonNode node : nodes) {
+                    return new PositionInfo(node.get("x").getDoubleValue(), node.get("y").getDoubleValue());
+                }
+            }
+        } catch (Exception e) {
+            Log.e("com.yhtye.shgongjiao.service.BaiduApiService", "parseMyPosition()", e);
+        }
+        return null;
+    }
 }

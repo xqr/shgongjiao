@@ -1,6 +1,13 @@
 package com.yhtye.shanghaishishigongjiaochaxun;
 
+import java.util.List;
+
+import com.baidu.apistore.sdk.ApiCallBack;
+import com.baidu.apistore.sdk.ApiStoreSDK;
 import com.umeng.analytics.MobclickAgent;
+import com.yhtye.shgongjiao.entity.PositionInfo;
+import com.yhtye.shgongjiao.service.BaiduApiService;
+import com.yhtye.shgongjiao.service.SprznyService;
 import com.yhtye.shgongjiao.tools.NetUtil;
 import com.yhtye.shgongjiao.tools.RegularUtil;
 
@@ -8,6 +15,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +36,8 @@ public class MainActivity extends Activity {
     
     private EditText qidianEditText = null;
     private EditText zongdianEditText = null;
+    
+    private PositionInfo myPosition = null;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +112,7 @@ public class MainActivity extends Activity {
     }
     
     /**
-     * 交换起点和终点
+     * 换乘查询—交换起点和终点
      * 
      * @param v
      */
@@ -114,7 +124,7 @@ public class MainActivity extends Activity {
     }
     
     /**
-     * 换乘路线查询
+     * 换乘查询—换乘路线查询
      * 
      * @param v
      */
@@ -144,7 +154,7 @@ public class MainActivity extends Activity {
     }
     
     /**
-     * 换乘查询按钮点击事件响应
+     * 实时公交—线路查询按钮点击事件响应
      * 
      * @param v
      */
@@ -169,6 +179,34 @@ public class MainActivity extends Activity {
         intent.setClass(MainActivity.this, ResultActivity.class);  
         intent.putExtra("lineName", lineName);
         startActivity(intent);
+    }
+    
+    /**
+     * 实时公交—我的位置
+     */
+    public void initMyPosition() {
+        ApiStoreSDK.execute(
+                "http://apis.baidu.com/apistore/lbswebapi/geoconv",
+                ApiStoreSDK.GET, 
+                null, 
+                new ApiCallBack() {
+                    @Override
+                    public void onSuccess(int status, String responseString) {
+                        Log.i("success", responseString);
+                        myPosition = BaiduApiService.parseMyPosition(responseString);
+                        if (myPosition != null) {
+                            List<String> stations = SprznyService.searchNearStations(myPosition.getX(), 
+                                    myPosition.getY());
+                        }
+                    }
+
+                    @Override
+                    public void onError(int status, String responseString,
+                            Exception e) {
+                        Log.i("error", responseString);
+                    }
+                }
+            );
     }
     
     @Override
