@@ -1,9 +1,8 @@
 package com.yhtye.shanghaishishigongjiaochaxun;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
 import com.baidu.apistore.sdk.ApiCallBack;
 import com.baidu.apistore.sdk.ApiStoreSDK;
@@ -14,6 +13,7 @@ import com.yhtye.shgongjiao.service.BaiduApiService;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,9 +22,6 @@ import android.widget.RelativeLayout;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class SchemeActivity extends Activity implements OnItemClickListener {
-
-    private String qidian = null;
-    private String zongdian = null;
     
     private RelativeLayout wuschemeLayout = null;
     private ListView listSchemeView = null;
@@ -32,7 +29,7 @@ public class SchemeActivity extends Activity implements OnItemClickListener {
     private SchemeListAdapter adapter;
     private boolean[] isCurrentItems; 
     private int[] isOpendItems;
-    private List<RoutesScheme> routesSchemeList;
+    
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +40,14 @@ public class SchemeActivity extends Activity implements OnItemClickListener {
         init();
         
         Intent intent = getIntent();
-        qidian = intent.getStringExtra("qidian");
-        zongdian = intent.getStringExtra("zongdian");
+        String qidian = intent.getStringExtra("qidian");
+        String zongdian = intent.getStringExtra("zongdian");
         
+        doSearchSchemeRoutes(qidian, zongdian, false);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public void doSearchSchemeRoutes(final String qidian, final String zongdian, final boolean retry) {
         Parameters params = new Parameters();
         try {
             params.put("origin", URLEncoder.encode(qidian, "UTF-8"));
@@ -53,26 +55,44 @@ public class SchemeActivity extends Activity implements OnItemClickListener {
             params.put("mode", "transit");
             params.put("region", URLEncoder.encode("上海", "UTF-8"));
         } catch(Exception e) {
-            e.printStackTrace();
         }
         ApiStoreSDK.execute(
                 "http://apis.baidu.com/apistore/lbswebapi/direction",                         // 接口地址
                 ApiStoreSDK.GET,                  // 接口方法
-                params,          // 接口参数
-                
+                params,          // 接口参数               
                 new ApiCallBack() {
                     @Override
                     public void onSuccess(int status, String responseString) {
                         try {
-                            Log.i("sdkdemoonSuccess: ", URLDecoder.decode(responseString, "UTF-8"));
-                            List<RoutesScheme> routesList = BaiduApiService.parseDirectionRoutes(responseString);
+                            if (!TextUtils.isEmpty(responseString) 
+                                    && !retry 
+                                    && !responseString.contains("routes")) {
+                                Map<String, List<String>> resultMap = BaiduApiService
+                                        .parseAccuratePosition(responseString);
+                                if (resultMap == null || resultMap.size() == 0) {
+                                    wuschemeLayout.setVisibility(View.VISIBLE);
+                                    return;
+                                }
+                                String tempqidian = null;
+                                if (resultMap.containsKey("origin")) {
+                                    tempqidian = resultMap.get("origin").get(0);
+                                }
+                                String tempzongdian = null;
+                                if (resultMap.containsKey("destination")) {
+                                    tempzongdian = resultMap.get("destination").get(0);
+                                }
+                                doSearchSchemeRoutes(tempqidian == null ? qidian : tempqidian , 
+                                        tempzongdian == null ? zongdian : tempzongdian, true);
+                                return;
+                            }
+                            List<RoutesScheme> routesList = BaiduApiService
+                                    .parseDirectionRoutes(responseString);
                             if (routesList == null || routesList.isEmpty()) {
                                 wuschemeLayout.setVisibility(View.VISIBLE);
                                 return;
                             }
-                            // TODO 如果正确的话如何处理
-                            showSchemes(routesList);
-                        } catch (UnsupportedEncodingException e) {
+                            showSchemes(routesList, qidian, zongdian);
+                        } catch (Exception e) {
                             Log.e("paseScheme", e.getMessage());
                         }
                     }
@@ -89,7 +109,7 @@ public class SchemeActivity extends Activity implements OnItemClickListener {
         listSchemeView = (ListView) findViewById(R.id.list_scheme);
     }
     
-    private void showSchemes(List<RoutesScheme> routesSchemeList) {
+    private void showSchemes(List<RoutesScheme> routesSchemeList, String qidian, String zongdian) {
         isCurrentItems = new boolean[routesSchemeList.size()];
         isOpendItems = new int[routesSchemeList.size()];
         

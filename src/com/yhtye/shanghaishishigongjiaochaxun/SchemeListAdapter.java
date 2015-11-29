@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -108,7 +107,7 @@ public class SchemeListAdapter extends BaseAdapter {
                 }
             }
             tv_scheme_name.setText(schemeName);  
-            // TODO 详细信息
+            // 换乘详细信息
             if (isCurrentItem && isOpendItem == 1) {
                 ll_steps.removeAllViews();
                 ll_steps.addView(getTableRow(R.drawable.start, qidian));
@@ -149,6 +148,11 @@ public class SchemeListAdapter extends BaseAdapter {
             textView.setTextColor(getResources().getColor(R.color.black));
             textView.setText(text);
             textView.setGravity(Gravity.CENTER_VERTICAL);
+            // 控件居中
+            TableRow.LayoutParams tparam = new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+           tparam.gravity = Gravity.CENTER_VERTICAL; 
+           textView.setLayoutParams(tparam);
             
             tableRow.addView(imageView);
             tableRow.addView(textView);

@@ -1,7 +1,9 @@
 package com.yhtye.shgongjiao.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -92,4 +94,42 @@ public class BaiduApiService {
         
         return null;
     }
+    
+    public static Map<String, List<String>> parseAccuratePosition(String responseString) {
+        if (TextUtils.isEmpty(responseString)) {
+            return null;
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode jsonNodes = mapper.readValue(responseString, JsonNode.class);
+            if (jsonNodes == null || jsonNodes.get("retData") == null) {
+                return null;
+            }
+            jsonNodes = mapper.readValue(jsonNodes.get("retData"), JsonNode.class);
+            if (jsonNodes == null) {
+                return null;
+            }
+            
+            Map<String, List<String>> resultMap = new HashMap<String, List<String>>();
+            for (String key : new String[] {"origin", "destination"}) {
+                if (jsonNodes.get(key) != null) {
+                    // 解析起终点
+                    List<String> list = new ArrayList<String>();
+                    jsonNodes = mapper.readValue(jsonNodes.get(key), JsonNode.class);
+                    for (JsonNode node : jsonNodes) {
+                        list.add(node.get("name").getTextValue());
+                    }
+                    if (list.size() > 0) {
+                        resultMap.put(key, list);
+                    }
+                }
+            }
+            return resultMap;
+        } catch (Exception e) {
+            Log.e("com.yhtye.shgongjiao.service.BaiduApiService", "parseAccuratePosition()", e);
+        }
+        
+        return null;
+    }
+    
 }
