@@ -15,19 +15,22 @@
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/gongjiaoback" 
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/fanhuishangyiye" 
             android:onClick="backPrePageClick"/>
 
         <TextView style="@style/result_text"
             android:id="@+id/linename"
             android:layout_width="fill_parent"
-            android:layout_height="42dp"
-            android:layout_alignParentTop="true"
+            android:layout_height="match_parent"
             android:textSize="20sp"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:gravity="center" 
+            android:layout_centerVertical="true" 
+            android:gravity="center"
             android:layout_toEndOf="@+id/imageView1"
             android:layout_toRightOf="@+id/imageView1"/>
     </RelativeLayout>
@@ -87,9 +90,11 @@
             android:id="@+id/startime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="5dp"
             android:text="首发时间" />
 
         <TextView style="@style/result_text"
@@ -104,19 +109,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
-            android:layout_weight="1"
             android:text="末班时间" />
 </LinearLayout>
 
         <ImageView
             android:id="@+id/switch_icon"
-            android:layout_width="26dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="14dp"
-            android:src="@drawable/switch_icon" 
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/baisebanfeng" 
             android:onClick="switchDirectionClick" />
         
     </RelativeLayout>
@@ -125,23 +131,26 @@
         android:layout_width="fill_parent"  
         android:layout_height="wrap_content"
         android:background="#fcf7e6"
-        android:paddingLeft="10dp" >
+        android:paddingLeft="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
         
         <ImageView
             android:id="@+id/tishi"
-            android:layout_width="12dp"
-            android:layout_height="22dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@drawable/tishi" />
+            android:src="@drawable/jinggao" />
         
         <TextView android:id="@+id/tips"
             android:layout_width="fill_parent"
             android:layout_height="28dp"
             android:textSize="12sp"
-            android:textColor="#000000"
+            android:textColor="@color/black"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:layout_toRightOf="@+id/tishi"
+            android:layout_toEndOf="@+id/tishi"
             android:gravity="center_vertical"
             android:text="@string/station_tip"/>
     </RelativeLayout>
@@ -149,7 +158,8 @@
     <ListView android:id="@+id/list_cards"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        style="@drawable/content_bg"
+        android:background="#00aaff"
+        android:divider="@null"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp">
