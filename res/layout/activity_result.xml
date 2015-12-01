@@ -158,8 +158,10 @@
     <ListView android:id="@+id/list_cards"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#00aaff"
-        android:divider="@null"
+        android:background="#ededf0"
+        android:divider="#ededf0"
+        android:dividerHeight="10dp"
+        android:listSelector="@android:color/transparent"  
         android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp">
