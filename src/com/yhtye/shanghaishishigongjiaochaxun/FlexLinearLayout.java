@@ -9,6 +9,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,13 +18,16 @@ import android.widget.TextView;
 public class FlexLinearLayout extends LinearLayout {
     private LayoutInflater mInflater;
     
-    private LinearLayout layout;  
+    private RelativeLayout layout;  
     private RelativeLayout llCards; 
     
     private TextView tvStationName;
     private ImageView ivXialaIco;
     private ImageView ivXiatopIco;
     private TextView tvCardName;
+    
+    private View viewTimeline2;
+    private View viewTimeline3;
     
     /** 
      * 创建一个带有伸缩效果的LinearLayout 
@@ -43,7 +47,7 @@ public class FlexLinearLayout extends LinearLayout {
         
         mInflater = (LayoutInflater) context  
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);  
-        layout = (LinearLayout) mInflater.inflate(R.layout.act_stations_list,  null);  
+        layout = (RelativeLayout) mInflater.inflate(R.layout.act_stations_list,  null);  
         init();
         
         this.addView(layout);
@@ -67,9 +71,13 @@ public class FlexLinearLayout extends LinearLayout {
         int lineindex = position + 1;
         tvStationName.setText(lineindex +" . "+ station.getZdmc());
         if (isCurrentItem) {
-            tvStationName.setTextColor(0xFF3D8CB8);  
+            tvStationName.setTextColor(0xFF3D8CB8);
+            viewTimeline2.setVisibility(View.GONE);
+            viewTimeline3.setVisibility(View.VISIBLE);
         } else {
             tvStationName.setTextColor(Color.GRAY);
+            viewTimeline2.setVisibility(View.VISIBLE);
+            viewTimeline3.setVisibility(View.GONE);
         }
         
         if (isCurrentItem && cars != null && !cars.isEmpty()) {
@@ -129,6 +137,12 @@ public class FlexLinearLayout extends LinearLayout {
         }
         if (tvCardName == null) {
             tvCardName = (TextView)layout.findViewById(R.id.tv_card_name);
+        }
+        if (viewTimeline2 == null) {
+            viewTimeline2 = layout.findViewById(R.id.view_timeline_2);
+        }
+        if (viewTimeline3 == null) {
+            viewTimeline3 = layout.findViewById(R.id.view_timeline_3);
         }
     }
 }
