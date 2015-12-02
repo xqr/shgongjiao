@@ -3,6 +3,7 @@ package com.yhtye.shanghaishishigongjiaochaxun;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import com.everpod.shanghai.R;
 import com.umeng.analytics.MobclickAgent;
 import com.yhtye.shgongjiao.entity.CarInfo;
 import com.yhtye.shgongjiao.entity.LineInfo;

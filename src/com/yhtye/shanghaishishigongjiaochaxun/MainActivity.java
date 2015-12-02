@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.baidu.apistore.sdk.ApiCallBack;
 import com.baidu.apistore.sdk.ApiStoreSDK;
+import com.everpod.shanghai.R;
 import com.umeng.analytics.MobclickAgent;
 import com.yhtye.shgongjiao.entity.PositionInfo;
 import com.yhtye.shgongjiao.service.BaiduApiService;
