@@ -26,6 +26,7 @@ public class FlexLinearLayout extends LinearLayout {
     private ImageView ivXiatopIco;
     private TextView tvCardName;
     
+    private ImageView weixuanzhongicon;
     private View viewTimeline2;
     private View viewTimeline3;
     
@@ -71,11 +72,13 @@ public class FlexLinearLayout extends LinearLayout {
         int lineindex = position + 1;
         tvStationName.setText(lineindex +" . "+ station.getZdmc());
         if (isCurrentItem) {
-            tvStationName.setTextColor(0xFF3D8CB8);
+            tvStationName.setTextColor(getResources().getColor(R.color.red));
+            weixuanzhongicon.setImageResource(R.drawable.xuanzhongzhuangtai);
             viewTimeline2.setVisibility(View.GONE);
             viewTimeline3.setVisibility(View.VISIBLE);
         } else {
             tvStationName.setTextColor(Color.GRAY);
+            weixuanzhongicon.setImageResource(R.drawable.weixuanzhong);
             viewTimeline2.setVisibility(View.VISIBLE);
             viewTimeline3.setVisibility(View.GONE);
         }
@@ -127,22 +130,25 @@ public class FlexLinearLayout extends LinearLayout {
             llCards = (RelativeLayout) layout.findViewById(R.id.ll_cards);  
         }
         if (tvStationName == null) {
-            tvStationName = (TextView)layout.findViewById(R.id.tv_station_name);
+            tvStationName = (TextView) layout.findViewById(R.id.tv_station_name);
         }
         if (ivXialaIco == null) {
-            ivXialaIco = (ImageView)layout.findViewById(R.id.iv_xiala_ico);
+            ivXialaIco = (ImageView) layout.findViewById(R.id.iv_xiala_ico);
         }
         if (ivXiatopIco == null) {
-            ivXiatopIco = (ImageView)layout.findViewById(R.id.iv_xiatop_ico);
+            ivXiatopIco = (ImageView) layout.findViewById(R.id.iv_xiatop_ico);
         }
         if (tvCardName == null) {
-            tvCardName = (TextView)layout.findViewById(R.id.tv_card_name);
+            tvCardName = (TextView) layout.findViewById(R.id.tv_card_name);
         }
         if (viewTimeline2 == null) {
             viewTimeline2 = layout.findViewById(R.id.view_timeline_2);
         }
         if (viewTimeline3 == null) {
             viewTimeline3 = layout.findViewById(R.id.view_timeline_3);
+        }
+        if (weixuanzhongicon == null) {
+            weixuanzhongicon = (ImageView) layout.findViewById(R.id.weixuanzhongicon);
         }
     }
 }

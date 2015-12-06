@@ -9,12 +9,20 @@ public class PositionInfo {
         this.y = String.valueOf(y);
     }
     
+    /**
+     * 经度
+     * @return
+     */
     public String getX() {
         return x;
     }
     public void setX(String x) {
         this.x = x;
     }
+    /**
+     * 纬度
+     * @return
+     */
     public String getY() {
         return y;
     }

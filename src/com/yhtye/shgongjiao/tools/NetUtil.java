@@ -1,6 +1,11 @@
 package com.yhtye.shgongjiao.tools;
 
+import com.yhtye.shgongjiao.entity.PositionInfo;
+
 import android.content.Context;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -28,5 +33,41 @@ public class NetUtil {
 
         }
         return false;
+    }
+    
+    /**
+     * 通过GPS定位
+     * 
+     * @param context
+     * @return
+     */
+    public static PositionInfo checkGps(Context context) {
+        LocationManager locationManager = (LocationManager)context
+                .getSystemService(Context.LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+            // 未开启GPS
+            // 查找到服务信息
+            Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_FINE); // 高精度
+            criteria.setAltitudeRequired(false);
+            criteria.setBearingRequired(false);
+            criteria.setCostAllowed(true);
+            criteria.setPowerRequirement(Criteria.POWER_LOW); // 低功耗
+            String provider =locationManager.getBestProvider(criteria, true); // 获取GPS信息
+            Location location =locationManager.getLastKnownLocation(provider); // 通过GPS获取位置
+
+            return new PositionInfo(location.getLatitude(), location.getLongitude());
+        } else {
+            //根据设置的Criteria对象，获取最符合此标准的provider对象
+            String currentProvider = locationManager.getProvider(LocationManager.GPS_PROVIDER).getName();
+            
+            //根据当前provider对象获取最后一次位置信息
+            Location currentLocation = locationManager.getLastKnownLocation(currentProvider);
+            //如果位置信息为null，则请求更新位置信息
+            if(currentLocation == null){
+                return null;
+            }
+            return new PositionInfo(currentLocation.getLatitude(), currentLocation.getLongitude());
+        }
     }
 }

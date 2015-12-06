@@ -18,7 +18,7 @@
     </style>
     
     <style name="result_text"> <!-- 为样式定义一个全局唯一的名字 -->
-        <item name="android:textSize">15sp</item> <!-- name 属性为样式要用在的 View 控件持有的属性 -->
+        <item name="android:textSize">18sp</item> <!-- name 属性为样式要用在的 View 控件持有的属性 -->
         <item name="android:textColor">#FFFFFF</item>
     </style>
 

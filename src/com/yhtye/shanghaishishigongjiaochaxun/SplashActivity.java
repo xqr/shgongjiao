@@ -29,12 +29,12 @@ public class SplashActivity extends Activity {
         Handler x = new Handler();
         x.postDelayed(new splashhandler(), 800);
         // 开启日志debug模式
-        MobclickAgent.setDebugMode( true );
+//        MobclickAgent.setDebugMode( true );
         // 日志传输过程采用加密模式
         AnalyticsConfig.enableEncrypt(true);
     }
     
-    class splashhandler implements Runnable {
+    private class splashhandler implements Runnable {
         public void run() {
             // 销毁当前Activity，切换到主页面
             Intent intent=new Intent();  

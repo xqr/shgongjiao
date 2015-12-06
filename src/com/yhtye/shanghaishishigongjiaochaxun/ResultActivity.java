@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -55,6 +56,10 @@ public class ResultActivity extends Activity implements OnItemClickListener {
     private ListView lv_cards; 
     private FlexListAdapter adapter;
     private Handler handler = null;
+    
+    // 正反方向初始化滚动位置
+    private int truePosition = -1;
+    private int falsePosition = -1;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,9 +167,18 @@ public class ResultActivity extends Activity implements OnItemClickListener {
                     theActivity.lineinfoLayout.setVisibility(View.VISIBLE);
                 }
             } else if (messageFlag == StationsMessage) {
+                // 初始化
+                theActivity.checkListPosition();
                 // 站点信息
                 theActivity.showStations(theActivity);
                 theActivity.lv_cards.setAdapter(theActivity.adapter);
+                
+                // 尝试滚动
+                theActivity.lv_cards.setSelected(true);
+                if (theActivity.truePosition >= 4 && theActivity.falsePosition >= 4) { 
+                    theActivity.setListViewPos(theActivity.direction ? theActivity.truePosition : theActivity.falsePosition);
+                }
+                
                 theActivity.lv_cards.setOnItemClickListener(theActivity);
             } else if (messageFlag == CarsMessage) {
                 // 车辆信息
@@ -174,7 +188,40 @@ public class ResultActivity extends Activity implements OnItemClickListener {
             }
         }
     }
-
+    
+    /**
+     * 定位初始化滚动
+     */
+    private void checkListPosition() {
+        if (lineStation == null 
+                || MainActivity.stationNameList == null 
+                || MainActivity.stationNameList.size() < 1) {
+            return;
+        }
+        
+        int i = 2;
+        for (StationInfo station  : lineStation.getFalseDirection()) {
+            for (String name : MainActivity.stationNameList) {
+                if (station.getZdmc().equals(name)) {
+                    falsePosition = i;
+                    break;
+                }
+            }
+            i++;
+        }
+        
+        i = 2;
+        for (StationInfo station  : lineStation.getTrueDirection()) {
+            for (String name : MainActivity.stationNameList) {
+                if (station.getZdmc().equals(name)) {
+                    truePosition = i;
+                    break;
+                }
+            }
+            i++;
+        }
+    }
+    
     /**
      * 交换方向
      * 
@@ -187,9 +234,28 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         direction = !direction;
         showLineInfo();
         
+        // 尝试滚动
+        lv_cards.setSelected(true);
+        if (truePosition >= 4 && falsePosition >= 4) { 
+            setListViewPos(direction ? truePosition : falsePosition);
+        }
+        
         showStations(this);
         // 即时刷新  
         adapter.notifyDataSetChanged(); 
+    }
+    
+    /**
+     * 定位滚动位置
+     * 
+     * @param pos
+     */
+    private void setListViewPos(int pos) {
+        if (android.os.Build.VERSION.SDK_INT >= 8) {
+            lv_cards.smoothScrollToPosition(pos);
+        } else {
+            lv_cards.setSelection(pos);
+        }
     }
     
     /**
@@ -282,10 +348,12 @@ public class ResultActivity extends Activity implements OnItemClickListener {
             isCurrentItems = new boolean[lineStation.getFalseDirection().size()];
             adapter.setStations(lineStation.getFalseDirection());
         }
+        
         // 刚进入的时候全部条目显示闭合状态  
         for (int i = 0; i < isCurrentItems.length; i++) {  
             isCurrentItems[i] = false;  
         }
+        
         adapter.setIsCurrentItems(isCurrentItems);
     }
     
