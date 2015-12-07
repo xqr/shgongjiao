@@ -23,6 +23,7 @@ import android.os.Bundle;
 //import android.os.Handler;
 //import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 //import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -251,13 +252,14 @@ public class MainActivity extends Activity implements OnItemClickListener {
             if (myPosition == null) {
                 return;
             }
+//            myPosition = new PositionInfo(31.256361, 121.58719);
             
             stationNameList = SprznyService.searchNearStations(myPosition.getX(), 
                     myPosition.getY());
             if (stationNameList == null || stationNameList.size() == 0) {
                 return;
             }
-            
+            Log.i("newr", stationNameList.toString());
 //            String name = stationNameList.get(0);
 //            List<StopStation> list = SprznyService.searchStationLines(name);
 //            if (list != null && list.size() > 0) {

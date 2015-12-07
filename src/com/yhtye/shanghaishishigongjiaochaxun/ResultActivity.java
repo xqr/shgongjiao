@@ -158,7 +158,7 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         
         @Override  
         public void handleMessage(Message msg) {  
-            ResultActivity  theActivity =  mActivity.get();
+            final ResultActivity  theActivity =  mActivity.get();
             int messageFlag = msg.what;
             if (messageFlag == LineMessage) {
                 // 线路信息
@@ -180,7 +180,12 @@ public class ResultActivity extends Activity implements OnItemClickListener {
                 // 尝试滚动
                 theActivity.lv_cards.setSelected(true);
                 if (theActivity.truePosition >= 4 && theActivity.falsePosition >= 4) { 
-                    theActivity.setListViewPos(theActivity.direction ? theActivity.truePosition : theActivity.falsePosition);
+                    theActivity.lv_cards.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            theActivity.setListViewPos(theActivity.direction ? theActivity.truePosition : theActivity.falsePosition);
+                        }
+                    });
                 }
                 
                 theActivity.lv_cards.setOnItemClickListener(theActivity);

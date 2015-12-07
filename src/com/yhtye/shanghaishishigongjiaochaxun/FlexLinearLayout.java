@@ -20,6 +20,7 @@ public class FlexLinearLayout extends LinearLayout {
     
     private RelativeLayout layout;  
     private RelativeLayout llCards; 
+    private LinearLayout relative;
     
     private TextView tvStationName;
     private ImageView ivXialaIco;
@@ -76,11 +77,13 @@ public class FlexLinearLayout extends LinearLayout {
             weixuanzhongicon.setImageResource(R.drawable.xuanzhongzhuangtai);
             viewTimeline2.setVisibility(View.GONE);
             viewTimeline3.setVisibility(View.VISIBLE);
+            relative.setBackgroundResource(R.drawable.yixuanzhongzhandian);
         } else {
             tvStationName.setTextColor(Color.GRAY);
             weixuanzhongicon.setImageResource(R.drawable.weixuanzhong);
             viewTimeline2.setVisibility(View.VISIBLE);
             viewTimeline3.setVisibility(View.GONE);
+            relative.setBackgroundResource(R.drawable.zhandianweizhankai);
         }
         
         if (isCurrentItem && cars != null && !cars.isEmpty()) {
@@ -149,6 +152,9 @@ public class FlexLinearLayout extends LinearLayout {
         }
         if (weixuanzhongicon == null) {
             weixuanzhongicon = (ImageView) layout.findViewById(R.id.weixuanzhongicon);
+        }
+        if (relative == null) {
+            relative = (LinearLayout) layout.findViewById(R.id.relative);
         }
     }
 }
