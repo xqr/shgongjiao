@@ -44,6 +44,9 @@ public class NetUtil {
     public static PositionInfo checkGps(Context context) {
         LocationManager locationManager = (LocationManager)context
                 .getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager == null) {
+            return null;
+        }
         if (!locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
             // 未开启GPS
             // 查找到服务信息
