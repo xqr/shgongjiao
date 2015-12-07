@@ -5,9 +5,11 @@ import java.util.List;
 
 import com.umeng.analytics.MobclickAgent;
 import com.yhtye.shgongjiao.entity.CarInfo;
+import com.yhtye.shgongjiao.entity.HistoryInfo;
 import com.yhtye.shgongjiao.entity.LineInfo;
 import com.yhtye.shgongjiao.entity.LineStationInfo;
 import com.yhtye.shgongjiao.entity.StationInfo;
+import com.yhtye.shgongjiao.service.HistoryService;
 import com.yhtye.shgongjiao.service.LineService;
 import com.yhtye.shgongjiao.tools.NetUtil;
 import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
@@ -18,7 +20,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -61,6 +62,8 @@ public class ResultActivity extends Activity implements OnItemClickListener {
     private int truePosition = -1;
     private int falsePosition = -1;
     
+    private HistoryService historyService = null;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +71,7 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         
         Intent intent = getIntent();
         lineName = intent.getStringExtra("lineName");
+        direction = intent.getBooleanExtra("direction", true);
         
         init();
         
@@ -310,6 +314,9 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         zhongdianTextView = (TextView)findViewById(R.id.zhongdian);
         startimeTextView = (TextView)findViewById(R.id.startime);
         stoptimeTextView = (TextView)findViewById(R.id.stoptime);
+        
+        // 初始化
+        historyService = new HistoryService(ResultActivity.this);
     }
     
     /**
@@ -330,6 +337,9 @@ public class ResultActivity extends Activity implements OnItemClickListener {
             startimeTextView.setText(lineInfo.getEnd_earlytime());
             stoptimeTextView.setText(lineInfo.getEnd_latetime());
         }
+        // 记录搜索历史
+        historyService.appendHistory(new HistoryInfo(lineName, direction, 
+                lineInfo.getStart_stop(), lineInfo.getEnd_stop()));
     }
     
     private void showStations(ResultActivity activity) {

@@ -23,7 +23,7 @@ public class LineService {
         
         try {
             String content = HttpClientUtils.getResponse(url);
-            if (TextUtils.isEmpty(content)) {
+            if (TextUtils.isEmpty(content) || content.equals("no")) {
                 return null;
             }
             // 非法字符过滤

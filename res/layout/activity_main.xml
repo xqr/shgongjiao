@@ -73,6 +73,15 @@
         android:paddingRight="15dip"
         android:onClick="searchLineClick"/>
     
+    <ListView android:id="@+id/list_history_line"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:listSelector="@android:color/transparent"
+        android:divider="@null">
+        
+    </ListView>
+    
     <TextView android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"

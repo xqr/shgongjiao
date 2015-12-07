@@ -1,13 +1,17 @@
 package com.yhtye.shanghaishishigongjiaochaxun;
 
-import java.lang.ref.WeakReference;
+//import java.lang.ref.WeakReference;
+//import java.util.HashMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+//import java.util.Map;
 
 import com.umeng.analytics.MobclickAgent;
+import com.yhtye.shgongjiao.entity.HistoryInfo;
 import com.yhtye.shgongjiao.entity.PositionInfo;
-import com.yhtye.shgongjiao.entity.StopStation;
+//import com.yhtye.shgongjiao.entity.StopStation;
+import com.yhtye.shgongjiao.service.HistoryService;
 import com.yhtye.shgongjiao.service.SprznyService;
 import com.yhtye.shgongjiao.tools.NetUtil;
 import com.yhtye.shgongjiao.tools.RegularUtil;
@@ -16,9 +20,10 @@ import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+//import android.os.Handler;
+//import android.os.Message;
 import android.text.TextUtils;
+//import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -28,7 +33,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnItemClickListener {
 
     private EditText numberoneEditText = null;
     
@@ -45,9 +50,15 @@ public class MainActivity extends Activity {
     
     private PositionInfo myPosition = null;
     
-    private Handler handler = null;
+//    private Handler handler = null;
     
-    // List
+    private HistoryService historyService = null;
+    
+    // List 历史记录
+    private HistoryListAdapter adapter;
+    private ListView listHistoryView = null;
+    
+    // 附近站点
 //    private NearListParentsAdapter adapter;
 //    private boolean[] isCurrentItems; 
 //    private ListView listSchemeView = null;
@@ -61,13 +72,16 @@ public class MainActivity extends Activity {
         
         // 通过经纬度查询附件站点
         ThreadPoolManagerFactory.getInstance().execute(new SearchNearStationsRunable());
+        
+        // 查询历史记录
+        showHistory();
     }
     
     /**
      * 初始化按钮和界面元素
      */
     private void initBar() {
-        handler = new ResultHandler(this);
+//        handler = new ResultHandler(this);
         
         shishichaxunButton = (Button) findViewById(R.id.shishichaxun);
         huanshengchaxunButton = (Button) findViewById(R.id.huanshengchaxun);
@@ -83,6 +97,8 @@ public class MainActivity extends Activity {
         huanchenglayout = (LinearLayout) findViewById(R.id.huanchenglayout);
         
 //        listSchemeView = (ListView) shishichaxunlayout.findViewById(R.id.list_near_station);
+        listHistoryView = (ListView) shishichaxunlayout.findViewById(R.id.list_history_line);
+        historyService = new HistoryService(MainActivity.this);
     }
     
     /**
@@ -195,11 +211,30 @@ public class MainActivity extends Activity {
             lineName = lineName + "路";
         }
         
+        // 统计
+        Map<String,String> m = new HashMap<String,String>();
+        m.put("lineName", lineName);
+        MobclickAgent.onEventValue(MainActivity.this, "searchline", m, Integer.MAX_VALUE);
+        
         // 切换Activity
         intent.setClass(MainActivity.this, ResultActivity.class);  
         intent.putExtra("lineName", lineName);
         startActivity(intent);
     }
+    
+    private List<HistoryInfo> historyList = null;
+    private void showHistory() {
+        historyList = historyService.getHistory();
+        if (historyList == null || historyList.size() == 0) {
+            return;
+        }
+        if (adapter == null) {
+            adapter = new HistoryListAdapter(MainActivity.this, historyList);
+        }
+        listHistoryView.setAdapter(adapter);
+        listHistoryView.setOnItemClickListener(this);
+    }
+    
     
 //    private  Map<String, List<StopStation>> stationMap = new HashMap<String, List<StopStation>>();
     public static  List<String> stationNameList;
@@ -255,17 +290,17 @@ public class MainActivity extends Activity {
 //        }
 //    }
     
-    private static class ResultHandler extends Handler {
-        private WeakReference<MainActivity> mActivity;
-        
-        public ResultHandler(MainActivity activity) {
-            this.mActivity = new WeakReference<MainActivity>(activity); 
-        }
-        
-        @Override  
-        public void handleMessage(Message msg) {  
-            MainActivity  theActivity =  mActivity.get();
-            
+//    private static class ResultHandler extends Handler {
+//        private WeakReference<MainActivity> mActivity;
+//        
+//        public ResultHandler(MainActivity activity) {
+//            this.mActivity = new WeakReference<MainActivity>(activity); 
+//        }
+//        
+//        @Override  
+//        public void handleMessage(Message msg) {  
+//            MainActivity  theActivity =  mActivity.get();
+//            
 //            int messageFlag = msg.what;
 //            if (messageFlag == 1) {
 //                theActivity.showNearStationList(theActivity.stationNameList, theActivity.stationMap);
@@ -273,8 +308,8 @@ public class MainActivity extends Activity {
 //                // 即时刷新  
 //                theActivity.adapter.notifyDataSetChanged(); 
 //            }
-        }
-    }
+//        }
+//    }
     
 //    private void showNearStationList(List<String> stations, Map<String, List<StopStation>> stationMap) {
 //        isCurrentItems = new boolean[stations.size()];
@@ -321,6 +356,27 @@ public class MainActivity extends Activity {
 //            adapter.notifyDataSetChanged(); 
 //        }
 //    }
+    
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position,
+            long id) {
+        // 点击历史记录 
+        HistoryInfo historyInfo = historyList.get(position);
+        if (historyInfo == null) {
+            return;
+        }
+        
+        intent.setClass(MainActivity.this, ResultActivity.class);  
+        intent.putExtra("lineName", historyInfo.getLineName());
+        intent.putExtra("direction", historyInfo.isDirection());
+        
+        Map<String,String> m = new HashMap<String,String>();
+        m.put("lineName", historyInfo.getLineName());
+        m.put("direction", historyInfo.isDirection() +"");
+        MobclickAgent.onEventValue(MainActivity.this, "historyclick", m, Integer.MAX_VALUE);
+        
+        startActivity(intent);
+    }
     
     @Override
     public void onResume() {
