@@ -252,6 +252,9 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         if (truePosition >= 4 && falsePosition >= 4) { 
             setListViewPos(direction ? truePosition : falsePosition);
         }
+        if (truePosition >=2 && falsePosition >= 2) {
+            onItemClick(null, null, direction ? truePosition -2 : falsePosition -2, 0);
+        }
         
         showStations(this);
         // 即时刷新  
