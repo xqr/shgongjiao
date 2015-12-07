@@ -29,7 +29,7 @@ public class SplashActivity extends Activity {
         Handler x = new Handler();
         x.postDelayed(new splashhandler(), 800);
         // 开启日志debug模式
-        MobclickAgent.setDebugMode( true );
+//        MobclickAgent.setDebugMode( true );
         // 日志传输过程采用加密模式
         AnalyticsConfig.enableEncrypt(true);
     }
