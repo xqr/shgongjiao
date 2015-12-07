@@ -187,6 +187,9 @@ public class ResultActivity extends Activity implements OnItemClickListener {
                         }
                     });
                 }
+                if (theActivity.truePosition >=2 && theActivity.falsePosition >= 2) {
+                    theActivity.onItemClick(null, null, theActivity.direction ? theActivity.truePosition -2 : theActivity.falsePosition -2, 0);
+                }
                 
                 theActivity.lv_cards.setOnItemClickListener(theActivity);
             } else if (messageFlag == CarsMessage) {
@@ -279,6 +282,10 @@ public class ResultActivity extends Activity implements OnItemClickListener {
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
+        if (position < 0 || position >= isCurrentItems.length) {
+            return;
+        }
+        
         // 检查网络
         if (!NetUtil.checkNet(ResultActivity.this)) {
             Toast.makeText(ResultActivity.this, R.string.network_tip, Toast.LENGTH_SHORT).show();
