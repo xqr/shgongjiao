@@ -154,4 +154,28 @@ public class BaiduApiService {
         }
         return null;
     }
+    
+    public static List<String> parseNearStations(String responseString) {
+        if (TextUtils.isEmpty(responseString)) {
+            return null;
+        }
+        
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode jsonNode = mapper.readValue(responseString, JsonNode.class);
+            if (jsonNode != null 
+                    && jsonNode.get("errNum").getIntValue() == 0 
+                    && jsonNode.get("retData") != null) {
+                List<String> list = new ArrayList<String>();
+                JsonNode nodes =  mapper.readValue(jsonNode.get("retData"), JsonNode.class);
+                for (JsonNode node : nodes) {
+                    list.add(node.get("name").getTextValue());
+                }
+                return list;
+            }
+        } catch (Exception e) {
+            Log.e("com.yhtye.shgongjiao.service.BaiduApiService", "parseNearStations()", e);
+        }
+        return null;
+    }
 }
