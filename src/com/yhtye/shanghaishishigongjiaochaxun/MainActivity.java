@@ -248,18 +248,20 @@ public class MainActivity extends Activity implements OnItemClickListener {
         
         @Override
         public void run() {
-            myPosition =  NetUtil.checkGps(MainActivity.this);
-            if (myPosition == null) {
-                return;
+            try {
+                myPosition = NetUtil.checkGps(MainActivity.this);
+                if (myPosition == null) {
+                    return;
+                }
+                // myPosition = new PositionInfo(31.256361, 121.58719);
+                
+                stationNameList = SprznyService.searchNearStations(myPosition.getX(), myPosition.getY());
+                if (stationNameList == null || stationNameList.size() == 0) {
+                    return;
+                }
+            } catch (Exception e) {
+                
             }
-//            myPosition = new PositionInfo(31.256361, 121.58719);
-            
-            stationNameList = SprznyService.searchNearStations(myPosition.getX(), 
-                    myPosition.getY());
-            if (stationNameList == null || stationNameList.size() == 0) {
-                return;
-            }
-            Log.i("newr", stationNameList.toString());
 //            String name = stationNameList.get(0);
 //            List<StopStation> list = SprznyService.searchStationLines(name);
 //            if (list != null && list.size() > 0) {
