@@ -55,7 +55,9 @@ public class NetUtil {
             criteria.setPowerRequirement(Criteria.POWER_LOW); // 低功耗
             String provider =locationManager.getBestProvider(criteria, true); // 获取GPS信息
             Location location =locationManager.getLastKnownLocation(provider); // 通过GPS获取位置
-
+            if (location == null) {
+                return null;
+            }
             return new PositionInfo(location.getLatitude(), location.getLongitude());
         } else {
             //根据设置的Criteria对象，获取最符合此标准的provider对象
