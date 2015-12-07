@@ -6,9 +6,11 @@ import java.util.List;
 import com.everpod.shanghai.R;
 import com.umeng.analytics.MobclickAgent;
 import com.yhtye.shgongjiao.entity.CarInfo;
+import com.yhtye.shgongjiao.entity.HistoryInfo;
 import com.yhtye.shgongjiao.entity.LineInfo;
 import com.yhtye.shgongjiao.entity.LineStationInfo;
 import com.yhtye.shgongjiao.entity.StationInfo;
+import com.yhtye.shgongjiao.service.HistoryService;
 import com.yhtye.shgongjiao.service.LineService;
 import com.yhtye.shgongjiao.tools.NetUtil;
 import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
@@ -57,6 +59,12 @@ public class ResultActivity extends Activity implements OnItemClickListener {
     private FlexListAdapter adapter;
     private Handler handler = null;
     
+    // 正反方向初始化滚动位置
+    private int truePosition = -1;
+    private int falsePosition = -1;
+    
+    private HistoryService historyService = null;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +72,7 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         
         Intent intent = getIntent();
         lineName = intent.getStringExtra("lineName");
+        direction = intent.getBooleanExtra("direction", true);
         
         init();
         
@@ -150,7 +159,7 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         
         @Override  
         public void handleMessage(Message msg) {  
-            ResultActivity  theActivity =  mActivity.get();
+            final ResultActivity  theActivity =  mActivity.get();
             int messageFlag = msg.what;
             if (messageFlag == LineMessage) {
                 // 线路信息
@@ -163,9 +172,26 @@ public class ResultActivity extends Activity implements OnItemClickListener {
                     theActivity.lineinfoLayout.setVisibility(View.VISIBLE);
                 }
             } else if (messageFlag == StationsMessage) {
+                // 初始化
+                theActivity.checkListPosition();
                 // 站点信息
                 theActivity.showStations(theActivity);
                 theActivity.lv_cards.setAdapter(theActivity.adapter);
+                
+                // 尝试滚动
+                theActivity.lv_cards.setSelected(true);
+                if (theActivity.truePosition >= 4 && theActivity.falsePosition >= 4) { 
+                    theActivity.lv_cards.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            theActivity.setListViewPos(theActivity.direction ? theActivity.truePosition : theActivity.falsePosition);
+                        }
+                    });
+                }
+                if (theActivity.truePosition >=2 && theActivity.falsePosition >= 2) {
+                    theActivity.onItemClick(null, null, theActivity.direction ? theActivity.truePosition -2 : theActivity.falsePosition -2, 0);
+                }
+                
                 theActivity.lv_cards.setOnItemClickListener(theActivity);
             } else if (messageFlag == CarsMessage) {
                 // 车辆信息
@@ -175,7 +201,40 @@ public class ResultActivity extends Activity implements OnItemClickListener {
             }
         }
     }
-
+    
+    /**
+     * 定位初始化滚动
+     */
+    private void checkListPosition() {
+        if (lineStation == null 
+                || MainActivity.stationNameList == null 
+                || MainActivity.stationNameList.size() < 1) {
+            return;
+        }
+        
+        int i = 2;
+        for (StationInfo station  : lineStation.getFalseDirection()) {
+            for (String name : MainActivity.stationNameList) {
+                if (station.getZdmc().equals(name)) {
+                    falsePosition = i;
+                    break;
+                }
+            }
+            i++;
+        }
+        
+        i = 2;
+        for (StationInfo station  : lineStation.getTrueDirection()) {
+            for (String name : MainActivity.stationNameList) {
+                if (station.getZdmc().equals(name)) {
+                    truePosition = i;
+                    break;
+                }
+            }
+            i++;
+        }
+    }
+    
     /**
      * 交换方向
      * 
@@ -188,9 +247,28 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         direction = !direction;
         showLineInfo();
         
+        // 尝试滚动
+        lv_cards.setSelected(true);
+        if (truePosition >= 4 && falsePosition >= 4) { 
+            setListViewPos(direction ? truePosition : falsePosition);
+        }
+        
         showStations(this);
         // 即时刷新  
         adapter.notifyDataSetChanged(); 
+    }
+    
+    /**
+     * 定位滚动位置
+     * 
+     * @param pos
+     */
+    private void setListViewPos(int pos) {
+        if (android.os.Build.VERSION.SDK_INT >= 8) {
+            lv_cards.smoothScrollToPosition(pos);
+        } else {
+            lv_cards.setSelection(pos);
+        }
     }
     
     /**
@@ -205,6 +283,10 @@ public class ResultActivity extends Activity implements OnItemClickListener {
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
+        if (position < 0 || position >= isCurrentItems.length) {
+            return;
+        }
+        
         // 检查网络
         if (!NetUtil.checkNet(ResultActivity.this)) {
             Toast.makeText(ResultActivity.this, R.string.network_tip, Toast.LENGTH_SHORT).show();
@@ -245,6 +327,9 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         zhongdianTextView = (TextView)findViewById(R.id.zhongdian);
         startimeTextView = (TextView)findViewById(R.id.startime);
         stoptimeTextView = (TextView)findViewById(R.id.stoptime);
+        
+        // 初始化
+        historyService = new HistoryService(ResultActivity.this);
     }
     
     /**
@@ -265,6 +350,9 @@ public class ResultActivity extends Activity implements OnItemClickListener {
             startimeTextView.setText(lineInfo.getEnd_earlytime());
             stoptimeTextView.setText(lineInfo.getEnd_latetime());
         }
+        // 记录搜索历史
+        historyService.appendHistory(new HistoryInfo(lineName, direction, 
+                lineInfo.getStart_stop(), lineInfo.getEnd_stop()));
     }
     
     private void showStations(ResultActivity activity) {
@@ -283,10 +371,12 @@ public class ResultActivity extends Activity implements OnItemClickListener {
             isCurrentItems = new boolean[lineStation.getFalseDirection().size()];
             adapter.setStations(lineStation.getFalseDirection());
         }
+        
         // 刚进入的时候全部条目显示闭合状态  
         for (int i = 0; i < isCurrentItems.length; i++) {  
             isCurrentItems[i] = false;  
         }
+        
         adapter.setIsCurrentItems(isCurrentItems);
     }
     

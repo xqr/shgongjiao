@@ -7,9 +7,22 @@
     <View
         android:id="@+id/view_timeline_1"
         android:layout_width="3dp"
-        android:layout_height="15dp"
+        android:layout_height="30dp"
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/blue" />
+    
+    <View
+        android:id="@+id/view_timeline_4"
+        android:layout_width="3dp"
+        android:layout_height="7dp"
+        android:layout_below="@+id/view_timeline_1"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
         android:background="@color/blue" />
 
     <ImageView
@@ -17,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_below="@+id/view_timeline_1"
+        android:layout_below="@+id/view_timeline_4"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:src="@drawable/weixuanzhong" />
@@ -25,7 +38,7 @@
     <View
         android:id="@+id/view_timeline_2"
         android:layout_width="3dp"
-        android:layout_height="50dp"
+        android:layout_height="43dp"
         android:layout_below="@+id/weixuanzhongicon"
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"
@@ -34,7 +47,7 @@
     <View
         android:id="@+id/view_timeline_3"
         android:layout_width="3dp"
-        android:layout_height="80dp"
+        android:layout_height="85dp"
         android:layout_below="@+id/weixuanzhongicon"
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"
@@ -45,10 +58,10 @@
         android:id="@+id/relative"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/weixuanzhongicon"
+        android:layout_below="@+id/view_timeline_1"
         android:layout_marginTop="-20dp"
-        android:layout_toEndOf="@+id/weixuanzhongicon"
-        android:layout_toRightOf="@+id/weixuanzhongicon"
+        android:layout_toEndOf="@+id/view_timeline_1"
+        android:layout_toRightOf="@+id/view_timeline_1"
         android:background="@drawable/zhandianqipao"
         android:orientation="vertical"
         android:padding="5dp" >
@@ -63,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:padding="10dp"
+                android:padding="15dp"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -74,8 +87,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
                 android:src="@drawable/weizhankai" />
 
             <ImageView
@@ -85,8 +98,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
                 android:src="@drawable/zhankai" />
         </RelativeLayout>
 
@@ -109,10 +122,10 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:layout_below="@+id/fenggexianicon"
-                android:layout_margin="8dp"
+                android:layout_margin="15dp"
                 android:text="@string/no_cars"
                 android:textColor="@color/red"
-                android:textSize="15sp" />
+                android:textSize="18sp" />
         </RelativeLayout>
     </LinearLayout>
 

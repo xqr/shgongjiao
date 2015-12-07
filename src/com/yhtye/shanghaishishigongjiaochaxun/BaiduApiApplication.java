@@ -9,7 +9,7 @@ public class BaiduApiApplication extends Application {
     
     @Override
     public void onCreate() {
-        // TODO 您的其他初始化流程
+        // 您的其他初始化流程
         ApiStoreSDK.init(this, baiduApikey);
         super.onCreate();
     }

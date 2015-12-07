@@ -23,7 +23,7 @@ public class LineService {
         
         try {
             String content = HttpClientUtils.getResponse(url);
-            if (TextUtils.isEmpty(content)) {
+            if (TextUtils.isEmpty(content) || content.equals("no")) {
                 return null;
             }
             // 非法字符过滤
@@ -82,7 +82,7 @@ public class LineService {
         if (TextUtils.isEmpty(content)) {
             return null;
         }
-        
+
         List<CarInfo> cars = new ArrayList<CarInfo>();
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -94,7 +94,7 @@ public class LineService {
                 }
             }
         } catch (Exception e) {
-            Log.e("com.yhtye.shgongjiao.service.LineService", "getStationCars()", e);
+            Log.e("com.yhtye.shgongjiao.service.LineService", "getStationCars(): " + e.getMessage());
         }
         return cars;
     }

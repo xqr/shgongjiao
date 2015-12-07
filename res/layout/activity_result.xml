@@ -47,6 +47,7 @@
         android:layout_height="wrap_content"
         android:background="#00aaff"
         android:paddingLeft="10dp" 
+        android:paddingTop="10dp"
         android:visibility="invisible">
 
         <TextView
@@ -54,7 +55,7 @@
             style="@style/result_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
+            android:paddingBottom="20dp"
             android:layout_alignParentTop="true"/>
 
         <TextView
@@ -74,43 +75,48 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textView1"/>
 
-        <LinearLayout android:orientation="horizontal"
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/qidian">
-            
-        <TextView style="@style/result_text"
-            android:id="@+id/start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#43bd49"
-            android:text=" 首 " />
+            android:layout_below="@+id/qidian"
+            android:orientation="horizontal" >
 
-        <TextView style="@style/result_text"
-            android:id="@+id/startime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="5dp"
-            android:text="首发时间" />
+            <TextView
+                android:id="@+id/start"
+                style="@style/result_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#43bd49"
+                android:text=" 首 " />
 
-        <TextView style="@style/result_text"
-            android:id="@+id/stop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#d34545"
-            android:text=" 末 " />
+            <TextView
+                android:id="@+id/startime"
+                style="@style/result_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginStart="5dp"
+                android:text="首发时间" />
 
-        <TextView style="@style/result_text"
-            android:id="@+id/stoptime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:text="末班时间" />
-</LinearLayout>
+            <TextView
+                android:id="@+id/stop"
+                style="@style/result_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#d34545"
+                android:text=" 末 " />
+
+            <TextView
+                android:id="@+id/stoptime"
+                style="@style/result_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:text="末班时间" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/switch_icon"
@@ -119,11 +125,24 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
             android:src="@drawable/baisebanfeng" 
             android:onClick="switchDirectionClick" />
+        
+        <TextView style="@style/result_text"
+            android:layout_below ="@+id/switch_icon"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返程"
+            android:clickable="true"
+            android:onClick="switchDirectionClick"/>
         
     </RelativeLayout>
     

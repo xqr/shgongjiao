@@ -7,7 +7,7 @@ import java.util.Map;
 import com.baidu.apistore.sdk.ApiCallBack;
 import com.baidu.apistore.sdk.ApiStoreSDK;
 import com.baidu.apistore.sdk.network.Parameters;
-import com.everpod.shanghai.R;
+import com.umeng.analytics.MobclickAgent;
 import com.yhtye.shgongjiao.entity.RoutesScheme;
 import com.yhtye.shgongjiao.service.BaiduApiService;
 
@@ -155,5 +155,17 @@ public class SchemeActivity extends Activity implements OnItemClickListener {
      */
     public void backPrePageClick(View v) {
         SchemeActivity.this.finish();
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }
