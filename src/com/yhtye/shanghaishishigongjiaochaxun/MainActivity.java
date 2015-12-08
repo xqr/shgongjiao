@@ -23,6 +23,7 @@ import android.os.Bundle;
 //import android.os.Handler;
 //import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 //import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -252,8 +253,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 if (myPosition == null) {
                     return;
                 }
-                // TODO 
-                 myPosition = new PositionInfo(31.256361, 121.58719);
+                
+//                myPosition = new PositionInfo(31.256361, 121.58719);
                 
                 stationNameList = BaiduApiService.getNearStations(myPosition);
                 if (stationNameList == null || stationNameList.size() == 0) {
