@@ -253,6 +253,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
         if (myPosition == null) {
             return;
         }
+        
+//        myPosition = new PositionInfo(31.256361, 121.58719);
         Parameters params = new Parameters();
         try {
             params.put("location", URLEncoder.encode(String.format("%s,%s", 
