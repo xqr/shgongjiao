@@ -69,21 +69,5 @@ public class NetUtil {
             return null;
         }
         return new PositionInfo(location.getLatitude(), location.getLongitude());
-//        
-//        if (!locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
-//            // 未开启GPS
-//            
-//        } else {
-//            //根据设置的Criteria对象，获取最符合此标准的provider对象
-////            String currentProvider = locationManager.getProvider(LocationManager.GPS_PROVIDER).getName();
-//            
-//            //根据当前provider对象获取最后一次位置信息
-//            Location currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//            //如果位置信息为null，则请求更新位置信息
-//            if(currentLocation == null){
-//                return null;
-//            }
-//            return new PositionInfo(currentLocation.getLatitude(), currentLocation.getLongitude());
-//        }
     }
 }
