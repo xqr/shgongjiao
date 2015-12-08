@@ -187,8 +187,8 @@ public class ResultActivity extends Activity implements OnItemClickListener {
                         }
                     });
                 }
-                if (theActivity.truePosition >=2 && theActivity.falsePosition >= 2) {
-                    theActivity.onItemClick(null, null, theActivity.direction ? theActivity.truePosition -2 : theActivity.falsePosition -2, 0);
+                if (theActivity.truePosition >=0 && theActivity.falsePosition >= 0) {
+                    theActivity.onItemClick(null, null, theActivity.direction ? theActivity.truePosition : theActivity.falsePosition, 0);
                 }
                 
                 theActivity.lv_cards.setOnItemClickListener(theActivity);
@@ -211,26 +211,28 @@ public class ResultActivity extends Activity implements OnItemClickListener {
             return;
         }
         
-        int i = 2;
-        for (StationInfo station  : lineStation.getFalseDirection()) {
-            for (String name : MainActivity.stationNameList) {
-                if (station.getZdmc().equals(name)) {
-                    falsePosition = i;
-                    break;
+        for (String name : MainActivity.stationNameList) {
+            int i = 0;
+            if (falsePosition < 0) {
+                for (StationInfo station : lineStation.getFalseDirection()) {
+                    if (station.getZdmc().equals(name)) {
+                        falsePosition = i;
+                        break;
+                    }
+                    i++;
                 }
             }
-            i++;
-        }
-        
-        i = 2;
-        for (StationInfo station  : lineStation.getTrueDirection()) {
-            for (String name : MainActivity.stationNameList) {
-                if (station.getZdmc().equals(name)) {
-                    truePosition = i;
-                    break;
+            
+            i = 0;
+            if (truePosition < 0) { 
+                for (StationInfo station : lineStation.getTrueDirection()) {
+                    if (station.getZdmc().equals(name)) {
+                        truePosition = i;
+                        break;
+                    }
+                    i++;
                 }
             }
-            i++;
         }
     }
     
@@ -255,12 +257,12 @@ public class ResultActivity extends Activity implements OnItemClickListener {
             lv_cards.post(new Runnable() {
                 @Override
                 public void run() {
-                    setListViewPos(direction ? truePosition : falsePosition - 1);
+                    setListViewPos(direction ? truePosition : falsePosition);
                 }
             });
         }
-        if (truePosition >=2 && falsePosition >= 2) {
-            onItemClick(null, null, direction ? truePosition -2 : falsePosition -2, 0);
+        if (truePosition >=0 && falsePosition >= 0) {
+            onItemClick(null, null, direction ? truePosition : falsePosition, 0);
         }
     }
     
