@@ -1,20 +1,20 @@
 package com.yhtye.shanghaishishigongjiaochaxun;
 
-import java.net.URLEncoder;
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
 
-import com.baidu.apistore.sdk.ApiCallBack;
-import com.baidu.apistore.sdk.ApiStoreSDK;
-import com.baidu.apistore.sdk.network.Parameters;
 import com.everpod.shanghai.R;
 import com.umeng.analytics.MobclickAgent;
 import com.yhtye.shgongjiao.entity.RoutesScheme;
 import com.yhtye.shgongjiao.service.BaiduApiService;
+import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +32,11 @@ public class SchemeActivity extends Activity implements OnItemClickListener {
     private boolean[] isCurrentItems; 
     private int[] isOpendItems;
     
+    private Handler handler = null;
+    
+    private String qidian;
+    private String zhongdian;
+    private List<RoutesScheme> routesList;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,71 +47,107 @@ public class SchemeActivity extends Activity implements OnItemClickListener {
         init();
         
         Intent intent = getIntent();
-        String qidian = intent.getStringExtra("qidian");
-        String zongdian = intent.getStringExtra("zongdian");
         
-        doSearchSchemeRoutes(qidian, zongdian, false);
+        qidian = intent.getStringExtra("qidian");
+        zhongdian = intent.getStringExtra("zongdian");
+        
+        // 启动线程
+        ThreadPoolManagerFactory.getInstance().execute(new SearchSchemeRoutesRunable(false));
     }
     
-    @SuppressWarnings("unchecked")
-    public void doSearchSchemeRoutes(final String qidian, final String zongdian, final boolean retry) {
-        Parameters params = new Parameters();
-        try {
-            params.put("origin", URLEncoder.encode(qidian, "UTF-8"));
-            params.put("destination", URLEncoder.encode(zongdian, "UTF-8"));
-            params.put("mode", "transit");
-            params.put("region", URLEncoder.encode("上海", "UTF-8"));
-        } catch(Exception e) {
+    private static class ResultHandler extends Handler {
+        private WeakReference<SchemeActivity> mActivity;
+        
+        public ResultHandler(SchemeActivity activity) {
+            this.mActivity = new WeakReference<SchemeActivity>(activity); 
         }
-        ApiStoreSDK.execute(
-                "http://apis.baidu.com/apistore/lbswebapi/direction",                         // 接口地址
-                ApiStoreSDK.GET,                  // 接口方法
-                params,          // 接口参数               
-                new ApiCallBack() {
-                    @Override
-                    public void onSuccess(int status, String responseString) {
-                        try {
-                            if (!TextUtils.isEmpty(responseString) 
-                                    && !retry 
-                                    && !responseString.contains("routes")) {
-                                Map<String, List<String>> resultMap = BaiduApiService
-                                        .parseAccuratePosition(responseString);
-                                if (resultMap == null || resultMap.size() == 0) {
-                                    wuschemeLayout.setVisibility(View.VISIBLE);
-                                    return;
-                                }
-                                String tempqidian = null;
-                                if (resultMap.containsKey("origin")) {
-                                    tempqidian = resultMap.get("origin").get(0);
-                                }
-                                String tempzongdian = null;
-                                if (resultMap.containsKey("destination")) {
-                                    tempzongdian = resultMap.get("destination").get(0);
-                                }
-                                doSearchSchemeRoutes(tempqidian == null ? qidian : tempqidian , 
-                                        tempzongdian == null ? zongdian : tempzongdian, true);
-                                return;
-                            }
-                            List<RoutesScheme> routesList = BaiduApiService
-                                    .parseDirectionRoutes(responseString);
-                            if (routesList == null || routesList.isEmpty()) {
-                                wuschemeLayout.setVisibility(View.VISIBLE);
-                                return;
-                            }
-                            showSchemes(routesList, qidian, zongdian);
-                        } catch (Exception e) {
-                            Log.e("paseScheme", e.getMessage());
-                        }
+        
+        @Override  
+        public void handleMessage(Message msg) {  
+            final SchemeActivity  theActivity =  mActivity.get();
+            
+            int messageFlag = msg.what;
+            if (messageFlag == 1) {
+                theActivity.wuschemeLayout.setVisibility(View.VISIBLE);
+            } else if (messageFlag == 2) {
+                theActivity.showSchemes(theActivity.routesList, theActivity.qidian, theActivity.zhongdian);
+            }
+        }
+    }
+    
+    /**
+     * 查询线路
+     */
+    public class SearchSchemeRoutesRunable implements Runnable {
+        private boolean retry;
+        
+        public SearchSchemeRoutesRunable(boolean retry) {
+            this.retry = retry;
+        }
+        
+        @Override
+        public void run() {
+            try {
+            String responseString = BaiduApiService.getDirectionRoutesResponse(qidian, zhongdian);
+            if (TextUtils.isEmpty(responseString)) {
+                // 发出message = 1
+                Message msg=new Message();  
+                msg.what = 1;
+                handler.sendMessage(msg);
+                return;
+            }
+            if (!retry 
+                    && !responseString.contains("routes")) {
+                // 地点模糊
+                Map<String, List<String>> resultMap = BaiduApiService.parseAccuratePosition(responseString);
+                if (resultMap == null || resultMap.size() == 0) {
+                    // 发出message = 1
+                    Message msg=new Message();  
+                    msg.what = 1;
+                    handler.sendMessage(msg);
+                    return;
+                }
+                
+                if (resultMap.containsKey("origin")) {
+                    String tempqidian = resultMap.get("origin").get(0);
+                    if (!TextUtils.isEmpty(tempqidian)) {
+                        qidian = tempqidian;
                     }
-                    
-                    @Override
-                    public void onError(int status, String responseString, Exception e) {
-                        wuschemeLayout.setVisibility(View.VISIBLE);
+                }
+
+                if (resultMap.containsKey("destination")) {
+                    String tempzongdian = resultMap.get("destination").get(0);
+                    if (!TextUtils.isEmpty(tempzongdian)) {
+                        zhongdian = tempzongdian;
                     }
-            });
+                }
+                // 重新提交一次
+                ThreadPoolManagerFactory.getInstance().execute(new SearchSchemeRoutesRunable(true));
+                return;
+            }
+            routesList = BaiduApiService.parseDirectionRoutes(responseString);
+            if (routesList == null || routesList.isEmpty()) {
+                Message msg=new Message();  
+                msg.what = 1;
+                handler.sendMessage(msg);
+                return;
+            }
+            // 发出message = 2，成功处理
+            Message msg=new Message();  
+            msg.what = 2;
+            handler.sendMessage(msg);
+        } catch (Exception e) {
+            Log.e("paseScheme", e.getMessage());
+            Message msg=new Message();  
+            msg.what = 1;
+            handler.sendMessage(msg);
+        }
+        }
     }
     
     private void init() {
+        handler = new ResultHandler(this);
+        
         wuschemeLayout = (RelativeLayout) findViewById(R.id.wuscheme);
         listSchemeView = (ListView) findViewById(R.id.list_scheme);
     }

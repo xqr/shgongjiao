@@ -20,6 +20,8 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
+import android.util.Log;
+
 public class HttpClientUtils {
     /**
      * post请求
@@ -53,9 +55,7 @@ public class HttpClientUtils {
             return htmlStr;
 
         } catch (Exception e) {
-            // TODO 
-            e.printStackTrace();
-//            ErrorLogger.info("url:%s, params:%s", e, url, paramsMap.toString());
+            Log.i(url, e.getMessage());
         }
         return null;
     }
