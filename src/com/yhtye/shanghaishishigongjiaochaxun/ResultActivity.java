@@ -4,7 +4,6 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 import com.everpod.shanghai.R;
-import com.umeng.analytics.MobclickAgent;
 import com.yhtye.shgongjiao.entity.CarInfo;
 import com.yhtye.shgongjiao.entity.HistoryInfo;
 import com.yhtye.shgongjiao.entity.LineInfo;
@@ -15,7 +14,6 @@ import com.yhtye.shgongjiao.service.LineService;
 import com.yhtye.shgongjiao.tools.NetUtil;
 import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,7 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class ResultActivity extends Activity implements OnItemClickListener {
+public class ResultActivity extends BaseActivity implements OnItemClickListener {
     // 定义消息标记
     private static final int LineMessage = 1;
     private static final int StationsMessage = 2;
@@ -387,17 +385,5 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         }
         
         adapter.setIsCurrentItems(isCurrentItems);
-    }
-    
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
     }
 }

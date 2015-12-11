@@ -3,6 +3,10 @@ package com.yhtye.shanghaishishigongjiaochaxun;
 import com.everpod.shanghai.R;
 import com.umeng.analytics.AnalyticsConfig;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateConfig;
+import com.umeng.update.UpdateResponse;
 import com.yhtye.shgongjiao.tools.NetUtil;
 
 import android.app.Activity;
@@ -15,12 +19,17 @@ import android.widget.Toast;
  * 启动页面
  *
  */
-public class SplashActivity extends Activity {
+public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        
+        // 开启日志debug模式
+//      MobclickAgent.setDebugMode( true );
+        // 日志传输过程采用加密模式
+        AnalyticsConfig.enableEncrypt(true);
         
         // 网络检查
         if (!NetUtil.checkNet(this)) {
@@ -29,10 +38,6 @@ public class SplashActivity extends Activity {
         
         Handler x = new Handler();
         x.postDelayed(new splashhandler(), 800);
-        // 开启日志debug模式
-//        MobclickAgent.setDebugMode( true );
-        // 日志传输过程采用加密模式
-        AnalyticsConfig.enableEncrypt(true);
     }
     
     private class splashhandler implements Runnable {
@@ -43,17 +48,5 @@ public class SplashActivity extends Activity {
             startActivity(intent);
             SplashActivity.this.finish();
         }
-    }
-    
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
     }
 }

@@ -5,12 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.everpod.shanghai.R;
-import com.umeng.analytics.MobclickAgent;
 import com.yhtye.shgongjiao.entity.RoutesScheme;
 import com.yhtye.shgongjiao.service.BaiduApiService;
 import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,7 +21,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class SchemeActivity extends Activity implements OnItemClickListener {
+public class SchemeActivity extends BaseActivity implements OnItemClickListener {
     
     private RelativeLayout wuschemeLayout = null;
     private ListView listSchemeView = null;
@@ -201,17 +199,5 @@ public class SchemeActivity extends Activity implements OnItemClickListener {
      */
     public void backPrePageClick(View v) {
         SchemeActivity.this.finish();
-    }
-    
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
     }
 }
