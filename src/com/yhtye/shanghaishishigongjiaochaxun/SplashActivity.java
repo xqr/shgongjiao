@@ -1,6 +1,6 @@
 package com.yhtye.shanghaishishigongjiaochaxun;
 
-import com.everpod.shanghai.R;
+import com.instant.bus.R;
 import com.umeng.analytics.AnalyticsConfig;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;

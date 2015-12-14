@@ -3,7 +3,7 @@ package com.yhtye.shanghaishishigongjiaochaxun;
 import java.util.List;
 import java.util.Map;
 
-import com.everpod.shanghai.R;
+import com.instant.bus.R;
 import com.yhtye.shgongjiao.entity.StopStation;
 import android.content.Context;
 import android.view.LayoutInflater;

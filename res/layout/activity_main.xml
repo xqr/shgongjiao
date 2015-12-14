@@ -200,4 +200,6 @@
         android:paddingRight="15dip"
         android:onClick="searchRoutesClick"/>
     </LinearLayout>
+    
+    
 </LinearLayout>

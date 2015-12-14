@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">上海公交</string>
+    <string name="app_name">上海公交查询</string>
     <string name="shishichaxun">实时查询</string>
     <string name="huanshengchaxun">换乘查询</string>
     <string name="button_send">查询</string>

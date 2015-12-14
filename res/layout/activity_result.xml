@@ -43,7 +43,7 @@
         android:id="@+id/lineinfo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#00aaff"
+        android:background="@color/blue"
         android:paddingLeft="10dp" 
         android:paddingTop="10dp"
         android:visibility="invisible">
