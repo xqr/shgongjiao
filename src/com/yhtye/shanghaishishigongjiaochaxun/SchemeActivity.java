@@ -108,16 +108,20 @@ public class SchemeActivity extends Activity implements OnItemClickListener {
                 }
                 
                 if (resultMap.containsKey("origin")) {
-                    String tempqidian = resultMap.get("origin").get(0);
-                    if (!TextUtils.isEmpty(tempqidian)) {
-                        qidian = tempqidian;
+                    for (String tempqidian : resultMap.get("origin")) {
+                        if (!TextUtils.isEmpty(tempqidian) && !tempqidian.equals(qidian)) {
+                            qidian = tempqidian;
+                            break;
+                        }
                     }
                 }
 
                 if (resultMap.containsKey("destination")) {
-                    String tempzongdian = resultMap.get("destination").get(0);
-                    if (!TextUtils.isEmpty(tempzongdian)) {
-                        zhongdian = tempzongdian;
+                    for (String tempzongdian : resultMap.get("destination")) {
+                        if (!TextUtils.isEmpty(tempzongdian) && !tempzongdian.equals(zhongdian)) {
+                            zhongdian = tempzongdian;
+                            break;
+                        }
                     }
                 }
                 // 重新提交一次

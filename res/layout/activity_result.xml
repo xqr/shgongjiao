@@ -27,12 +27,10 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:textSize="20sp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:layout_centerVertical="true" 
-            android:gravity="center"
-            android:layout_toEndOf="@+id/imageView1"
-            android:layout_toRightOf="@+id/imageView1"/>
+            android:gravity="center"/>
     </RelativeLayout>
     
     <View
