@@ -17,7 +17,7 @@ import com.yhtye.gongjiao.tools.HttpClientUtils;
 public class LineService {
     private String apiUrl = "http://www.bjbus.com/home/ajax_search_bus_stop.php";
     
-    public LineInfo getLineInfo(String lineName, int retryTimes) {
+    public List<LineInfo> getLineInfo(String lineName, int retryTimes) {
         String url = apiUrl + "?act=getLineDirOption&selBLine=" + lineName;
         
         try {
@@ -26,9 +26,27 @@ public class LineService {
                 return null;
             }
             
+            String[] contentStr = content.split("</option>");
+            if (contentStr.length > 1) {
+                List<LineInfo> list = new ArrayList<LineInfo>();
+                for (String item : contentStr) {
+                    String[] cc = item.split(">");
+                    if (cc.length < 2) {
+                        continue;
+                    }
+                    String[] ee = cc[0].split("\"");
+                    if (ee.length == 2) {
+                        LineInfo lineInfo = new LineInfo();
+                        lineInfo.setLine_id(ee[1]);
+                        lineInfo.setFangxiang(cc[1]);
+                        lineInfo.setLine_name(lineName);
+                        
+                        list.add(lineInfo);
+                    }
+                }
+                return list;
+            }
             
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(content, LineInfo.class);
         } catch (Exception e) {
             if (retryTimes > 0) {
                 return getLineInfo(lineName, --retryTimes);
@@ -38,8 +56,9 @@ public class LineService {
         return null;
     }
     
-    public LineStationInfo getLineStation(String lineName, String lineId) {
-        String url = String.format("%s/HandlerTwo.ashx?name=%s&lineid=%s", apiUrl, lineName, lineId);
+    public LineInfo getLineStation(LineInfo lineInfo, String selBStop, boolean allStops) {
+        String url = String.format("%s?act=busTime&selBLine=%s&selBDir=%s&selBStop=%s", 
+                apiUrl, lineInfo.getLine_name(), lineInfo.getLine_id(), selBStop);
         
         String content = HttpClientUtils.getResponse(url);
         if (TextUtils.isEmpty(content)) {
