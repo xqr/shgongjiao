@@ -65,30 +65,32 @@ public class LineService {
             return null;
         }
         
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            JsonNode jsonNodes = mapper.readValue(content, JsonNode.class);
-            if (jsonNodes != null) {
-                LineStationInfo lineStation = new LineStationInfo();
-                for (JsonNode node : jsonNodes) {
-                    node = mapper.readValue(node, JsonNode.class);
-                    String direction = node.get("direction").getValueAsText();
-                    node = mapper.readValue(node.get("stops"), JsonNode.class);
-                    List<StationInfo> stations = new ArrayList<StationInfo>();
-                    for (JsonNode stopNode : node) {
-                        stations.add(mapper.readValue(stopNode, StationInfo.class));
-                    }
-                    if (direction.equals("true")) {
-                        lineStation.setTrueDirection(stations);
-                    } else {
-                        lineStation.setFalseDirection(stations);
-                    }
-                }
-                return lineStation;
-            }
-        } catch (Exception e) {
-            Log.e("com.yhtye.shgongjiao.service.LineService", "getLineStation()", e);
-        }
+        
+        
+//        ObjectMapper mapper = new ObjectMapper();
+//        try {
+//            JsonNode jsonNodes = mapper.readValue(content, JsonNode.class);
+//            if (jsonNodes != null) {
+//                LineStationInfo lineStation = new LineStationInfo();
+//                for (JsonNode node : jsonNodes) {
+//                    node = mapper.readValue(node, JsonNode.class);
+//                    String direction = node.get("direction").getValueAsText();
+//                    node = mapper.readValue(node.get("stops"), JsonNode.class);
+//                    List<StationInfo> stations = new ArrayList<StationInfo>();
+//                    for (JsonNode stopNode : node) {
+//                        stations.add(mapper.readValue(stopNode, StationInfo.class));
+//                    }
+//                    if (direction.equals("true")) {
+//                        lineStation.setTrueDirection(stations);
+//                    } else {
+//                        lineStation.setFalseDirection(stations);
+//                    }
+//                }
+//                return lineStation;
+//            }
+//        } catch (Exception e) {
+//            Log.e("com.yhtye.shgongjiao.service.LineService", "getLineStation()", e);
+//        }
         return null;
     }
     
