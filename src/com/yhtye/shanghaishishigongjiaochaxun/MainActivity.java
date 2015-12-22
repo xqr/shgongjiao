@@ -109,8 +109,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
     
     private void initAd() {
         // 代码设置AppSid和Appsec，此函数必须在AdView实例化前调用
-         AdView.setAppSid(MainActivity.this, "bb064061");
-         AdView.setAppSec(MainActivity.this, "bb064061");
+//         AdView.setAppSid(MainActivity.this, "bb064061");
+//         AdView.setAppSec(MainActivity.this, "bb064061");
         
          // 人群属性
          AdSettings.setKey(new String[] { "baidu", "中 国 " });
