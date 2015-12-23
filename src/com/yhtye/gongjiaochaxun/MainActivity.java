@@ -82,7 +82,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
         ThreadPoolManagerFactory.getInstance().execute(new SearchNearStationsRunable());
         
         // 查询历史记录
-        showHistory();
+//        showHistory();
     }
     
     /**
@@ -215,8 +215,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
             return;
         }
         // 校验输入的完整性
-        if (RegularUtil.isNumeric(lineName)) {
-            lineName = lineName + "路";
+        if (!RegularUtil.isNumeric(lineName)) {
+            Toast.makeText(MainActivity.this, "请输入要查询的公交路线", Toast.LENGTH_SHORT).show();
+            return;
         }
         
         // 统计

@@ -60,13 +60,13 @@ public class HistoryListAdapter extends BaseAdapter {
         HistoryInfo history = list.get(position);
         if (history != null) {
             String text = null;
-            if (history.isDirection()) {
-                text = String.format("%s ( %s > %s )", history.getLineName(), 
-                        history.getStartStop(), history.getEndStop());
-            } else {
-                text = String.format("%s ( %s > %s )", history.getLineName(), 
-                        history.getEndStop(), history.getStartStop());
-            }
+//            if (history.isDirection()) {
+//                text = String.format("%s ( %s > %s )", history.getLineName(), 
+//                        history.getStartStop(), history.getEndStop());
+//            } else {
+//                text = String.format("%s ( %s > %s )", history.getLineName(), 
+//                        history.getEndStop(), history.getStartStop());
+//            }
             viewHolder.historylinenameTv.setText(text);
         }
         

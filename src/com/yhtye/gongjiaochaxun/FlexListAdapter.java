@@ -2,9 +2,7 @@ package com.yhtye.gongjiaochaxun;
 
 import java.util.List;
 
-import com.yhtye.gongjiao.entity.CarInfo;
 import com.yhtye.gongjiao.entity.StationInfo;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,6 @@ public class FlexListAdapter extends BaseAdapter {
     private List<StationInfo> stations;
     private Context context; 
     private boolean[] isCurrentItems;
-    private List<CarInfo> cars;
     
     public FlexListAdapter(Context context) {
         this.context = context;
@@ -58,10 +55,10 @@ public class FlexListAdapter extends BaseAdapter {
         StationInfo station = stations.get(position);
         if (null == convertView) {  
             view = new FlexLinearLayout(context, station,  
-                    position, false, cars);  
+                    position, false);  
         } else {
             view = (FlexLinearLayout) convertView;  
-            view.setWorkTitleLayout(station, position, isCurrentItems[position], cars);  
+            view.setWorkTitleLayout(station, position, isCurrentItems[position]);  
         }  
         return view;  
     }
@@ -88,13 +85,5 @@ public class FlexListAdapter extends BaseAdapter {
 
     public void setIsCurrentItems(boolean[] isCurrentItems) {
         this.isCurrentItems = isCurrentItems;
-    }
-    
-    public List<CarInfo> getCars() {
-        return cars;
-    }
-
-    public void setCars(List<CarInfo> cars) {
-        this.cars = cars;
     }
 }

@@ -12,24 +12,20 @@ public class HistoryInfo implements Serializable {
      * 方向
      */
     private boolean direction;
-    /**
-     * 起点
-     */
-    private String startStop = "";
-    /**
-     * 终点
-     */
-    private String endStop = "";
+    
+    private String trueLineId;
+    private String trueFangxiang;
+    
+    private String falseLineId = "";
+    private String falseFangxiang = "";
     
     public HistoryInfo() {
         
     }
     
-    public HistoryInfo(String lineName, boolean direction, String startStop, String endStop) {
+    public HistoryInfo(String lineName, boolean direction) {
         this.lineName = lineName;
         this.direction = direction;
-        this.startStop = startStop;
-        this.endStop = endStop;
     }
     
     public String getLineName() {
@@ -45,19 +41,35 @@ public class HistoryInfo implements Serializable {
         this.direction = direction;
     }
 
-    public String getStartStop() {
-        return startStop;
+    public String getTrueLineId() {
+        return trueLineId;
     }
 
-    public void setStartStop(String startStop) {
-        this.startStop = startStop;
+    public void setTrueLineId(String trueLineId) {
+        this.trueLineId = trueLineId;
     }
 
-    public String getEndStop() {
-        return endStop;
+    public String getTrueFangxiang() {
+        return trueFangxiang;
     }
 
-    public void setEndStop(String endStop) {
-        this.endStop = endStop;
+    public void setTrueFangxiang(String trueFangxiang) {
+        this.trueFangxiang = trueFangxiang;
+    }
+
+    public String getFalseLineId() {
+        return falseLineId;
+    }
+
+    public void setFalseLineId(String falseLineId) {
+        this.falseLineId = falseLineId;
+    }
+
+    public String getFalseFangxiang() {
+        return falseFangxiang;
+    }
+
+    public void setFalseFangxiang(String falseFangxiang) {
+        this.falseFangxiang = falseFangxiang;
     }
 }

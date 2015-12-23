@@ -125,7 +125,7 @@
                 android:layout_margin="15dp"
                 android:text="@string/no_cars"
                 android:textColor="@color/red"
-                android:textSize="18sp" />
+                android:textSize="13sp" />
         </RelativeLayout>
     </LinearLayout>
 

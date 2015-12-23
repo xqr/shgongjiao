@@ -1,10 +1,7 @@
 package com.yhtye.gongjiaochaxun;
 
-import java.util.List;
 import com.yhtye.beijingshishigongjiaochaxun.R;
-import com.yhtye.gongjiao.entity.CarInfo;
 import com.yhtye.gongjiao.entity.StationInfo;
-import com.yhtye.gongjiao.tools.RegularUtil;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -45,7 +42,7 @@ public class FlexLinearLayout extends LinearLayout {
      *            是否为伸展 
      */  
     public FlexLinearLayout(final Context context, final StationInfo station,  
-            final int position, boolean isCurrentItem, List<CarInfo> cars) {  
+            final int position, boolean isCurrentItem) {  
         super(context);  
         
         mInflater = (LayoutInflater) context  
@@ -54,7 +51,7 @@ public class FlexLinearLayout extends LinearLayout {
         init();
         
         this.addView(layout);
-        setWorkTitleLayout(station, position, isCurrentItem, cars);  
+        setWorkTitleLayout(station, position, isCurrentItem);
     }
     
     /** 
@@ -68,7 +65,7 @@ public class FlexLinearLayout extends LinearLayout {
      *            是否为伸展 
      */  
     public void setWorkTitleLayout(final StationInfo station, final int position,  
-            boolean isCurrentItem, List<CarInfo> cars) {  
+            boolean isCurrentItem) {  
         init();
         
         int lineindex = position + 1;
@@ -86,41 +83,10 @@ public class FlexLinearLayout extends LinearLayout {
             viewTimeline3.setVisibility(View.GONE);
             relative.setBackgroundResource(R.drawable.zhandianweizhankai);
         }
-        
-        if (isCurrentItem && cars != null && !cars.isEmpty()) {
-            String text = "";
-            for(CarInfo car : cars) {
-                if (!TextUtils.isEmpty(text)) {
-                    text = text + "\n";
-                }
-                String time = car.getTime();
-                if (RegularUtil.isNumeric(time)) {
-                    try {
-                        int totalTime = Integer.parseInt(time);
-                        int needTime = 1;
-                        if (totalTime < 60) {
-                            // 小于1分钟
-                            if (car.getStopdis() <= 0 || totalTime < 30) {
-                                text = text + String.format("%s即将到站", car.getTerminal());
-                                continue;
-                            }
-                        } else {
-                            needTime =  totalTime / 60;
-                            if (totalTime % 60 != 0) {
-                                needTime = needTime + 1;
-                            }
-                        }
-                        time = needTime + "分钟";
-                    } catch (Exception e) {
-                    }
-                }
-                
-                text = text + String.format("%s还有%s站，约%s", car.getTerminal(), 
-                        car.getStopdis(), time);
-            }
-            tvCardName.setText(text);
-        } else {
+        if (TextUtils.isEmpty(station.getCarmessage())) {
             tvCardName.setText(R.string.no_cars);
+        } else {
+            tvCardName.setText(station.getCarmessage());
         }
         
         ivXiatopIco.setVisibility(isCurrentItem ? VISIBLE : GONE);

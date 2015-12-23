@@ -4,6 +4,16 @@ public class StationInfo {
     private String zdmc;
     private String id;
     private String carmessage;
+    
+    public StationInfo() {
+        
+    }
+    
+    public StationInfo(String id, String zdmc) {
+        this.id = id;
+        this.zdmc = zdmc;
+    }
+    
     public String getZdmc() {
         return zdmc;
     }
