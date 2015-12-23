@@ -1,8 +1,11 @@
 package com.yhtye.gongjiao.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class LineInfo {
+public class LineInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
     private String start_earlytime;
     private String end_latetime;
     private String start_stop;

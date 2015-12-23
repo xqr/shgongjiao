@@ -1,32 +1,30 @@
 package com.yhtye.gongjiaochaxun;
 
-//import java.lang.ref.WeakReference;
-//import java.util.HashMap;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-//import java.util.Map;
+
+import org.codehaus.jackson.map.ObjectMapper;
 
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.yhtye.beijingshishigongjiaochaxun.R;
 import com.yhtye.gongjiao.entity.HistoryInfo;
+import com.yhtye.gongjiao.entity.LineInfo;
 import com.yhtye.gongjiao.entity.PositionInfo;
 import com.yhtye.gongjiao.service.BaiduApiService;
 import com.yhtye.gongjiao.service.HistoryService;
 import com.yhtye.gongjiao.tools.NetUtil;
 import com.yhtye.gongjiao.tools.RegularUtil;
 import com.yhtye.gongjiao.tools.ThreadPoolManagerFactory;
-//import com.yhtye.shgongjiao.entity.StopStation;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 //import android.os.Handler;
 //import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
-//import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -36,7 +34,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class MainActivity extends Activity implements OnItemClickListener {
+public class MainActivity extends BaseActivity implements OnItemClickListener {
 
     private EditText numberoneEditText = null;
     
@@ -78,11 +76,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
         
         initBar();
         
-        // 通过经纬度查询附件站点
-        ThreadPoolManagerFactory.getInstance().execute(new SearchNearStationsRunable());
+//        // 通过经纬度查询附件站点
+//        ThreadPoolManagerFactory.getInstance().execute(new SearchNearStationsRunable());
         
         // 查询历史记录
-//        showHistory();
+        showHistory();
     }
     
     /**
@@ -228,6 +226,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
         // 切换Activity
         intent.setClass(MainActivity.this, ResultActivity.class);  
         intent.putExtra("lineName", lineName);
+        intent.putExtra("direction", true);
+        intent.putExtra("linelist", "");
         startActivity(intent);
     }
     
@@ -246,43 +246,43 @@ public class MainActivity extends Activity implements OnItemClickListener {
     
     
 //    private  Map<String, List<StopStation>> stationMap = new HashMap<String, List<StopStation>>();
-    public static  List<String> stationNameList;
-    
-    /**
-     * 通过经纬度查询站点信息
-     *
-     */
-    private class SearchNearStationsRunable  implements Runnable {
-        
-        @Override
-        public void run() {
-            try {
-                myPosition = NetUtil.checkGps(MainActivity.this);
-                if (myPosition == null) {
-                    return;
-                }
-                
-//                myPosition = new PositionInfo(31.256361, 121.58719);
-                
-                stationNameList = BaiduApiService.getNearStations(myPosition);
-                if (stationNameList == null || stationNameList.size() == 0) {
-                    return;
-                }
-            } catch (Exception e) {
-                
-            }
-//            String name = stationNameList.get(0);
-//            List<StopStation> list = SprznyService.searchStationLines(name);
-//            if (list != null && list.size() > 0) {
-//                stationMap.put(name, list);
+//    public static  List<String> stationNameList;
+//    
+//    /**
+//     * 通过经纬度查询站点信息
+//     *
+//     */
+//    private class SearchNearStationsRunable  implements Runnable {
+//        
+//        @Override
+//        public void run() {
+//            try {
+//                myPosition = NetUtil.checkGps(MainActivity.this);
+//                if (myPosition == null) {
+//                    return;
+//                }
+//                
+////                myPosition = new PositionInfo(31.256361, 121.58719);
+//                
+//                stationNameList = BaiduApiService.getNearStations(myPosition);
+//                if (stationNameList == null || stationNameList.size() == 0) {
+//                    return;
+//                }
+//            } catch (Exception e) {
+//                
 //            }
-//            
-//            // 数据展开
-//            Message msg=new Message();
-//            msg.what = 1;
-//            handler.sendMessage(msg);
-        }
-    }
+////            String name = stationNameList.get(0);
+////            List<StopStation> list = SprznyService.searchStationLines(name);
+////            if (list != null && list.size() > 0) {
+////                stationMap.put(name, list);
+////            }
+////            
+////            // 数据展开
+////            Message msg=new Message();
+////            msg.what = 1;
+////            handler.sendMessage(msg);
+//        }
+//    }
     
 //    private class SearchNearStationCarRunable  implements Runnable {
 //        private String stationName;
@@ -370,6 +370,20 @@ public class MainActivity extends Activity implements OnItemClickListener {
 //        }
 //    }
     
+    public String getLinestoString(List<LineInfo> lineList) {
+        if (lineList == null) {
+            return null;
+        }
+        StringWriter str=new StringWriter();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mapper.writeValue(str, lineList);
+        } catch (Exception e) {
+            Log.e("error", e.getMessage());
+        }
+        return str.toString();
+    }
+    
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
@@ -380,26 +394,15 @@ public class MainActivity extends Activity implements OnItemClickListener {
         }
         
         intent.setClass(MainActivity.this, ResultActivity.class);  
-        intent.putExtra("lineName", historyInfo.getLineName());
+        intent.putExtra("lineName", historyInfo.getLineFangxiang());
         intent.putExtra("direction", historyInfo.isDirection());
+        intent.putExtra("linelist", getLinestoString(historyInfo.getLineList()));
         
         Map<String,String> m = new HashMap<String,String>();
-        m.put("lineName", historyInfo.getLineName());
+        m.put("lineName", historyInfo.getLineFangxiang());
         m.put("direction", historyInfo.isDirection() +"");
         MobclickAgent.onEventValue(MainActivity.this, "historyclick", m, Integer.MAX_VALUE);
         
         startActivity(intent);
-    }
-    
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
     }
 }

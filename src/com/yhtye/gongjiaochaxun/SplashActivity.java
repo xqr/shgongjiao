@@ -1,11 +1,9 @@
 package com.yhtye.gongjiaochaxun;
 
 import com.umeng.analytics.AnalyticsConfig;
-import com.umeng.analytics.MobclickAgent;
 import com.yhtye.beijingshishigongjiaochaxun.R;
 import com.yhtye.gongjiao.tools.NetUtil;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +13,7 @@ import android.widget.Toast;
  * 启动页面
  *
  */
-public class SplashActivity extends Activity {
+public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +41,5 @@ public class SplashActivity extends Activity {
             startActivity(intent);
             SplashActivity.this.finish();
         }
-    }
-    
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
     }
 }

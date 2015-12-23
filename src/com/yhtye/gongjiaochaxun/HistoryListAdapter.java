@@ -59,15 +59,7 @@ public class HistoryListAdapter extends BaseAdapter {
         // 设置数据
         HistoryInfo history = list.get(position);
         if (history != null) {
-            String text = null;
-//            if (history.isDirection()) {
-//                text = String.format("%s ( %s > %s )", history.getLineName(), 
-//                        history.getStartStop(), history.getEndStop());
-//            } else {
-//                text = String.format("%s ( %s > %s )", history.getLineName(), 
-//                        history.getEndStop(), history.getStartStop());
-//            }
-            viewHolder.historylinenameTv.setText(text);
+            viewHolder.historylinenameTv.setText(history.getLineFangxiang());
         }
         
         return convertView;

@@ -1,19 +1,21 @@
 package com.yhtye.gongjiaochaxun;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.umeng.analytics.MobclickAgent;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+
 import com.yhtye.beijingshishigongjiaochaxun.R;
 import com.yhtye.gongjiao.entity.HistoryInfo;
 import com.yhtye.gongjiao.entity.LineInfo;
-import com.yhtye.gongjiao.entity.StationInfo;
 import com.yhtye.gongjiao.service.HistoryService;
 import com.yhtye.gongjiao.service.LineService;
 import com.yhtye.gongjiao.tools.NetUtil;
 import com.yhtye.gongjiao.tools.ThreadPoolManagerFactory;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,7 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class ResultActivity extends Activity implements OnItemClickListener {
+public class ResultActivity extends BaseActivity implements OnItemClickListener {
     // 定义消息标记
     private static final int NoLineMessage = 1;
     private static final int StationsMessage = 2;
@@ -56,11 +58,12 @@ public class ResultActivity extends Activity implements OnItemClickListener {
     private FlexListAdapter adapter;
     private Handler handler = null;
     
-    // 正反方向初始化滚动位置
-    private int truePosition = -1;
-    private int falsePosition = -1;
+//    // 正反方向初始化滚动位置
+//    private int truePosition = -1;
+//    private int falsePosition = -1;
     
     private HistoryService historyService = null;
+    private ProgressDialog progressDialog = null;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +73,43 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         Intent intent = getIntent();
         lineName = intent.getStringExtra("lineName");
         direction = intent.getBooleanExtra("direction", true);
+        String linelist = intent.getStringExtra("linelist");
         
-        init();
-        
-        // 启动新线程获取线路信息
-        ThreadPoolManagerFactory.getInstance().execute(new SearchLineRunable(lineName));
+        initView();
+        if (TextUtils.isEmpty(linelist)) {
+            // 启动新线程获取线路信息
+            progressDialog.show();
+            ThreadPoolManagerFactory.getInstance().execute(new SearchLineRunable(lineName));
+        } else {
+            parseLineList(linelist);
+            Message msg2=new Message();
+            msg2.what = StationsMessage;
+            handler.sendMessage(msg2);
+        }
+    }
+    
+    /**
+     * 解析lineList
+     * 
+     * @param content
+     */
+    private void parseLineList(String content) {
+        if (TextUtils.isEmpty(content)) {
+            return;
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode jsonNode = mapper.readValue(content, JsonNode.class);
+            if (jsonNode != null) {
+                List<LineInfo> list = new ArrayList<LineInfo>();
+                for (JsonNode node : jsonNode) {
+                    list.add(mapper.readValue(node, LineInfo.class));
+                }
+                lineList = list;
+            }
+        } catch (Exception e) {
+            Log.e("error", e.getMessage());
+        }
     }
     
     /**
@@ -92,6 +127,7 @@ public class ResultActivity extends Activity implements OnItemClickListener {
             if (TextUtils.isEmpty(nowLineName)) {
                 return;
             }
+            
             List<LineInfo> newlineList = lineService.getLineInfo(nowLineName, 1);
             if (lineName == null || !nowLineName.equals(lineName)) {
                 // 如果用户已切换了路线，抛弃之前的结果不再继续处理
@@ -128,6 +164,7 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         
         @Override
         public void run() {
+            
             if (lineList != null && lineList.size() > 0) {
                 LineInfo lineInfo = getNowLineInfo();
                 lineInfo = lineService.getLineStation(lineInfo, 1, true); 
@@ -153,6 +190,7 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         
         @Override
         public void run() {
+            
             LineInfo lineInfo = getNowLineInfo();
             if (lineInfo.getStations() == null) {
                 lineInfo = lineService.getLineStation(lineInfo, position + 1, true);
@@ -176,6 +214,8 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         @Override  
         public void handleMessage(Message msg) {  
             final ResultActivity  theActivity =  mActivity.get();
+            theActivity.progressDialog.dismiss();
+            
             int messageFlag = msg.what;
             if (messageFlag == NoLineMessage) {
                 // 没有该线路
@@ -191,19 +231,19 @@ public class ResultActivity extends Activity implements OnItemClickListener {
                 theActivity.showStations(theActivity, lineInfo);
                 theActivity.lv_cards.setAdapter(theActivity.adapter);
                 
-                // 尝试滚动
-                theActivity.lv_cards.setSelected(true);
-                if (theActivity.truePosition >= 4 && theActivity.falsePosition >= 4) { 
-                    theActivity.lv_cards.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            theActivity.setListViewPos(theActivity.direction ? theActivity.truePosition : theActivity.falsePosition);
-                        }
-                    });
-                }
-                if (theActivity.truePosition >=0 && theActivity.falsePosition >= 0) {
-                    theActivity.onItemClick(null, null, theActivity.direction ? theActivity.truePosition : theActivity.falsePosition, 0);
-                }
+//                // 尝试滚动
+//                theActivity.lv_cards.setSelected(true);
+//                if (theActivity.truePosition >= 4 && theActivity.falsePosition >= 4) { 
+//                    theActivity.lv_cards.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            theActivity.setListViewPos(theActivity.direction ? theActivity.truePosition : theActivity.falsePosition);
+//                        }
+//                    });
+//                }
+//                if (theActivity.truePosition >=0 && theActivity.falsePosition >= 0) {
+//                    theActivity.onItemClick(null, null, theActivity.direction ? theActivity.truePosition : theActivity.falsePosition, 0);
+//                }
                 
                 theActivity.lv_cards.setOnItemClickListener(theActivity);
             } else if (messageFlag == CarsMessage) {
@@ -273,6 +313,7 @@ public class ResultActivity extends Activity implements OnItemClickListener {
             adapter.notifyDataSetChanged(); 
         } else {
             // 加载站点信息
+            progressDialog.show();
             ThreadPoolManagerFactory.getInstance().execute(new SearchLineStationRunable());
         }
         
@@ -292,18 +333,18 @@ public class ResultActivity extends Activity implements OnItemClickListener {
 //        }
     }
     
-    /**
-     * 定位滚动位置
-     * 
-     * @param pos
-     */
-    private void setListViewPos(int pos) {
-        if (android.os.Build.VERSION.SDK_INT >= 8) {
-            lv_cards.smoothScrollToPosition(pos);
-        } else {
-            lv_cards.setSelection(pos);
-        }
-    }
+//    /**
+//     * 定位滚动位置
+//     * 
+//     * @param pos
+//     */
+//    private void setListViewPos(int pos) {
+//        if (android.os.Build.VERSION.SDK_INT >= 8) {
+//            lv_cards.smoothScrollToPosition(pos);
+//        } else {
+//            lv_cards.setSelection(pos);
+//        }
+//    }
     
     /**
      * 关闭当前页面
@@ -311,6 +352,7 @@ public class ResultActivity extends Activity implements OnItemClickListener {
      * @param v
      */
     public void backPrePageClick(View v) {
+        progressDialog.dismiss();
         ResultActivity.this.finish();
     }
     
@@ -339,6 +381,7 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         isCurrentItems[position] = !isCurrentItems[position];
         if (isCurrentItems[position]) {
             // 启动线程
+//            progressDialog.show();
             ThreadPoolManagerFactory.getInstance().execute(new SearchCarsSearchLineRunable(position));
         } else {
             // 即时刷新  
@@ -349,7 +392,7 @@ public class ResultActivity extends Activity implements OnItemClickListener {
     /**
      * 初始化
      */
-    private void init() {
+    private void initView() {
         handler = new ResultHandler(this);
         lv_cards = (ListView) findViewById(R.id.list_cards);
         
@@ -364,6 +407,9 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         
         // 初始化
         historyService = new HistoryService(ResultActivity.this);
+        progressDialog = new ProgressDialog(ResultActivity.this);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("数据加载中，请耐心等待……");
     }
     
     /**
@@ -396,23 +442,6 @@ public class ResultActivity extends Activity implements OnItemClickListener {
             return ;
         }
         
-//        HistoryInfo history = new HistoryInfo(lineName, direction);
-//        history.setTrueFangxiang(lineList.get(0).getFangxiang());
-//        history.setTrueLineId(lineList.get(0).getLine_id());
-        
-        
-//        if (lineList.size() == 1) {
-//            lineInfo = lineList.get(0);
-//            
-//        } else {
-//            history.setTrueFangxiang(lineList.get(1).getFangxiang());
-//            history.setTrueLineId(lineList.get(1).getLine_id());
-//            if (direction) {
-//                lineInfo = lineList.get(0);
-//            } else {
-//                lineInfo = lineList.get(1);
-//            }
-//        }
         linenameTextView.setText(lineInfo.getFangxiang());
         if (!TextUtils.isEmpty(lineInfo.getStart_stop())) {
             qidianTextView.setText(lineInfo.getStart_stop());
@@ -421,8 +450,8 @@ public class ResultActivity extends Activity implements OnItemClickListener {
             stoptimeTextView.setText(lineInfo.getEnd_latetime());
         }
         
-//        // 记录搜索历史
-//        historyService.appendHistory(history);
+        // 记录搜索历史
+        historyService.appendHistory(new HistoryInfo(lineInfo.getFangxiang(), direction, lineList));
     }
     
     private void showStations(ResultActivity activity, LineInfo lineInfo) {
@@ -442,17 +471,5 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         }
         
         adapter.setIsCurrentItems(isCurrentItems);
-    }
-    
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
     }
 }
