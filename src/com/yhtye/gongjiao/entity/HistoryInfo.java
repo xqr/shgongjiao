@@ -1,12 +1,7 @@
 package com.yhtye.gongjiao.entity;
 
 import java.io.Serializable;
-import java.io.StringWriter;
 import java.util.List;
-
-import org.codehaus.jackson.map.ObjectMapper;
-
-import android.util.Log;
 
 public class HistoryInfo implements Serializable {
     private static final long serialVersionUID = 9070687073013182163L;

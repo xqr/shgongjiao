@@ -149,6 +149,25 @@ public class LineService {
         if (list.size() == 2) {
             lineInfo.setStart_earlytime(list.get(0));
             lineInfo.setEnd_latetime(list.get(1));
+        } else if (list.size() == 1) {
+            lineInfo.setStart_earlytime(list.get(0));
+            lineInfo.setEnd_latetime("--");
+        } else {
+            // 首车：7:00-8:30、17:30-19:00末车
+            int shouIndex = content.indexOf("首车：");
+            int moIndex = content.indexOf("末车");
+            int endIndex = content.indexOf("分段计价");
+            String earlytime = content.substring(shouIndex+3, moIndex);
+            String latetime = content.substring(moIndex+3, endIndex);
+            if (earlytime.contains("、")) {
+                String[] timeStr = earlytime.split("、", 2);
+                if (timeStr.length == 2) {
+                    earlytime = timeStr[0];
+                    latetime = timeStr[1];
+                }
+            }
+            lineInfo.setStart_earlytime(earlytime);
+            lineInfo.setEnd_latetime(latetime);
         }
     }
     

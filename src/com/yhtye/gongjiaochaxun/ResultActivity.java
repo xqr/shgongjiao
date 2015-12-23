@@ -397,7 +397,7 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         lv_cards = (ListView) findViewById(R.id.list_cards);
         
         linenameTextView = (TextView)findViewById(R.id.linename);
-        linenameTextView.setText(lineName);
+        setLineName(lineName);
         
         lineinfoLayout = (RelativeLayout)findViewById(R.id.lineinfo);
         qidianTextView = (TextView)findViewById(R.id.qidian);
@@ -441,8 +441,8 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         if (lineInfo == null) {
             return ;
         }
-        
-        linenameTextView.setText(lineInfo.getFangxiang());
+        lineName = lineInfo.getLine_name();
+        setLineName(lineInfo.getFangxiang());
         if (!TextUtils.isEmpty(lineInfo.getStart_stop())) {
             qidianTextView.setText(lineInfo.getStart_stop());
             zhongdianTextView.setText(lineInfo.getEnd_stop());
@@ -452,6 +452,10 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         
         // 记录搜索历史
         historyService.appendHistory(new HistoryInfo(lineInfo.getFangxiang(), direction, lineList));
+    }
+    
+    private void setLineName(String name) {
+        linenameTextView.setText(lineName + "路");
     }
     
     private void showStations(ResultActivity activity, LineInfo lineInfo) {

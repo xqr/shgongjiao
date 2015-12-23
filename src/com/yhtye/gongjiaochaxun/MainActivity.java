@@ -212,6 +212,16 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
             Toast.makeText(MainActivity.this, "请输入要查询的公交路线", Toast.LENGTH_SHORT).show();
             return;
         }
+        
+        if (lineName.endsWith("路")) {
+            lineName = lineName.substring(0, lineName.length() - 1);
+        }
+        
+        if (TextUtils.isEmpty(lineName)) {
+            Toast.makeText(MainActivity.this, "请输入要查询的公交路线", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
 //        // 校验输入的完整性
 //        if (!RegularUtil.isNumeric(lineName)) {
 //            Toast.makeText(MainActivity.this, "请输入要查询的公交路线", Toast.LENGTH_SHORT).show();
