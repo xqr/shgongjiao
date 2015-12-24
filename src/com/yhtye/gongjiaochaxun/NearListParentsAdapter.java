@@ -2,7 +2,7 @@ package com.yhtye.gongjiaochaxun;
 
 import java.util.List;
 import java.util.Map;
-import com.yhtye.beijingshishigongjiaochaxun.R;
+import com.yhtye.beijing.R;
 import com.yhtye.gongjiao.entity.StopStation;
 
 import android.content.Context;

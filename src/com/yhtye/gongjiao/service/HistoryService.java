@@ -17,7 +17,7 @@ import com.yhtye.gongjiao.entity.HistoryInfo;
 
 public class HistoryService {
     private Context context;
-    private int maxCount = 6;
+    private int maxCount = 5;
     
     public HistoryService(Context context) {
         this.context = context;

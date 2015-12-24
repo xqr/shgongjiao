@@ -7,7 +7,7 @@ import java.util.List;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.yhtye.beijingshishigongjiaochaxun.R;
+import com.yhtye.beijing.R;
 import com.yhtye.gongjiao.entity.HistoryInfo;
 import com.yhtye.gongjiao.entity.LineInfo;
 import com.yhtye.gongjiao.service.HistoryService;
@@ -381,7 +381,7 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         isCurrentItems[position] = !isCurrentItems[position];
         if (isCurrentItems[position]) {
             // 启动线程
-//            progressDialog.show();
+            progressDialog.show();
             ThreadPoolManagerFactory.getInstance().execute(new SearchCarsSearchLineRunable(position));
         } else {
             // 即时刷新  

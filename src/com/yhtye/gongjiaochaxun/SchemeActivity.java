@@ -4,7 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
 
-import com.yhtye.beijingshishigongjiaochaxun.R;
+import com.yhtye.beijing.R;
 import com.yhtye.gongjiao.entity.RoutesScheme;
 import com.yhtye.gongjiao.service.BaiduApiService;
 import com.yhtye.gongjiao.tools.ThreadPoolManagerFactory;
