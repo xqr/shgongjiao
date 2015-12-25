@@ -2,7 +2,7 @@ package com.yhtye.gongjiaochaxun;
 
 import java.util.List;
 
-import com.yhtye.beijing.R;
+import com.everpod.beijing.R;
 import com.yhtye.gongjiao.entity.StopStation;
 
 import android.content.Context;

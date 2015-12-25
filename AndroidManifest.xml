@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yhtye.beijing"
+    package="com.everpod.beijing"
     android:versionCode="1"
     android:versionName="1.0.1"
     android:windowSoftInputMode="adjustPan" >
@@ -48,7 +48,7 @@
         </meta-data>
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="xiaomi" />
+            android:value="xiaomi2" />
 
         <activity
             android:name="com.yhtye.gongjiaochaxun.SchemeActivity"
