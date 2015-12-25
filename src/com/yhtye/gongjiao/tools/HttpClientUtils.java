@@ -55,9 +55,7 @@ public class HttpClientUtils {
             return htmlStr;
 
         } catch (Exception e) {
-            // TODO 
-            e.printStackTrace();
-//            ErrorLogger.info("url:%s, params:%s", e, url, paramsMap.toString());
+            Log.i(url, e.getMessage());
         }
         return null;
     }
@@ -76,6 +74,8 @@ public class HttpClientUtils {
             httpclient.getParams().setParameter(ClientPNames.COOKIE_POLICY,
                     CookiePolicy.BROWSER_COMPATIBILITY);
             httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000); 
+            
+            httpGet.setHeader("Referer", "http://www.bjbus.com");
             HttpResponse response = httpclient.execute(httpGet);
             if (response == null) {
                 return null;
