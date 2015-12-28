@@ -214,7 +214,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         @Override  
         public void handleMessage(Message msg) {  
             final ResultActivity  theActivity =  mActivity.get();
-            theActivity.progressDialog.dismiss();
+            if (theActivity != null && !theActivity.isFinishing()) {
+                theActivity.progressDialog.dismiss();
+            }
             
             int messageFlag = msg.what;
             if (messageFlag == NoLineMessage) {
@@ -475,5 +477,13 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         }
         
         adapter.setIsCurrentItems(isCurrentItems);
+    }
+    
+    @Override
+    protected void onDestroy() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        super.onDestroy();
     }
 }
