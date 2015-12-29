@@ -159,6 +159,9 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         @Override  
         public void handleMessage(Message msg) {  
             final ResultActivity  theActivity =  mActivity.get();
+            if (theActivity == null) {
+                return;
+            }
             int messageFlag = msg.what;
             if (messageFlag == LineMessage) {
                 // 线路信息
