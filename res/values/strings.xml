@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">北京实时公交</string>
+    <string name="app_name">武汉实时公交</string>
     <string name="shishichaxun">实时查询</string>
     <string name="huanshengchaxun">换乘查询</string>
     <string name="button_send">查询</string>
     <string name="luxianfangan">路线方案</string>
     
     <string name="default_line">请输入公交线路名称,如123、专10</string>
-    <string name="rule">1、北京实时公交查询提供的信息可为用户出行提供参考，因信息更新等原因可能导致与实际不符，敬请谅解。\n2、由于公交线路还在不断更新补充中，部分线路尚未纳入查询系统，敬请谅解。</string>
+    <string name="rule">1、武汉实时公交查询提供的信息可为用户出行提供参考，因信息更新等原因可能导致与实际不符，敬请谅解。\n2、由于公交线路还在不断更新补充中，部分线路尚未纳入查询系统，敬请谅解。</string>
     <string name="network_tip">网络状态被关闭</string>
     <string name="station_tip">请注意选择您乘车的方向，不要选错哦</string>
     <string name="no_line">暂无该线路信息</string>

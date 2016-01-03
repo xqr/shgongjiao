@@ -1,7 +1,7 @@
 package com.yhtye.gongjiaochaxun;
 
 import com.umeng.analytics.AnalyticsConfig;
-import com.yhtye.beijing.R;
+import com.yhtye.wuhan.R;
 import com.yhtye.gongjiao.tools.NetUtil;
 
 import android.content.Intent;

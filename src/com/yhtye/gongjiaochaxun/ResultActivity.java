@@ -1,13 +1,11 @@
 package com.yhtye.gongjiaochaxun;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.yhtye.beijing.R;
+import com.yhtye.wuhan.R;
+import com.yhtye.gongjiao.entity.BusLineInfo;
 import com.yhtye.gongjiao.entity.HistoryInfo;
 import com.yhtye.gongjiao.entity.LineInfo;
 import com.yhtye.gongjiao.service.HistoryService;
@@ -35,12 +33,12 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
     private static final int NoLineMessage = 1;
     private static final int StationsMessage = 2;
     private static final int CarsMessage = 3;
-    private static final int OtherStationsMessage = 4;
     
     // 路线名称
     private String lineName = null;
-    // 线路信息 
-    private List<LineInfo> lineList = null;
+    // 线路信息
+    private BusLineInfo trueBusLine = null;
+    private BusLineInfo falseBusLine = null;
     // item的状态
     private boolean[] isCurrentItems;
     // 方向
@@ -57,10 +55,6 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
     private ListView lv_cards; 
     private FlexListAdapter adapter;
     private Handler handler = null;
-    
-//    // 正反方向初始化滚动位置
-//    private int truePosition = -1;
-//    private int falsePosition = -1;
     
     private HistoryService historyService = null;
     private ProgressDialog progressDialog = null;
@@ -79,11 +73,15 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         if (TextUtils.isEmpty(linelist)) {
             // 启动新线程获取线路信息
             progressDialog.show();
-            ThreadPoolManagerFactory.getInstance().execute(new SearchLineRunable(lineName));
+            ThreadPoolManagerFactory.getInstance().execute(new SearchLineRunable(lineName, direction, StationsMessage));
         } else {
-            parseLineList(linelist);
+            boolean success = parseLineList(linelist, direction);
             Message msg2=new Message();
-            msg2.what = StationsMessage;
+            if (success) {
+                msg2.what = StationsMessage;
+            } else {
+                msg2.what = NoLineMessage;
+            }
             handler.sendMessage(msg2);
         }
     }
@@ -93,23 +91,25 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
      * 
      * @param content
      */
-    private void parseLineList(String content) {
+    private boolean parseLineList(String content, boolean direction) {
         if (TextUtils.isEmpty(content)) {
-            return;
+            return false;
         }
         ObjectMapper mapper = new ObjectMapper();
         try {
-            JsonNode jsonNode = mapper.readValue(content, JsonNode.class);
-            if (jsonNode != null) {
-                List<LineInfo> list = new ArrayList<LineInfo>();
-                for (JsonNode node : jsonNode) {
-                    list.add(mapper.readValue(node, LineInfo.class));
+            BusLineInfo busLine = mapper.readValue(content, BusLineInfo.class);
+            if (busLine != null) {
+                if (direction) {
+                    trueBusLine = busLine;
+                } else {
+                    falseBusLine = busLine;
                 }
-                lineList = list;
+                return true;
             }
         } catch (Exception e) {
             Log.e("error", e.getMessage());
         }
+        return false;
     }
     
     /**
@@ -117,9 +117,13 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
      */
     private class SearchLineRunable implements Runnable {
         private String nowLineName;
+        private boolean direction;
+        private int messageFlag;
         
-        public SearchLineRunable(String lineName) {
+        public SearchLineRunable(String lineName, boolean direction, int messageFlag) {
             this.nowLineName = lineName;
+            this.direction = direction;
+            this.messageFlag = messageFlag;
         }
         
         @Override
@@ -127,80 +131,29 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             if (TextUtils.isEmpty(nowLineName)) {
                 return;
             }
-            
-            List<LineInfo> newlineList = lineService.getLineInfo(nowLineName, 1);
+  
+            BusLineInfo busLine = lineService.getLineInfo(nowLineName, direction, 1);
             if (lineName == null || !nowLineName.equals(lineName)) {
                 // 如果用户已切换了路线，抛弃之前的结果不再继续处理
                 return;
             }
-            lineList = newlineList;
-            
-            if (lineList != null && lineList.size() > 0) {
-                LineInfo lineInfo = getNowLineInfo();
-                lineInfo = lineService.getLineStation(lineInfo, 1, true); 
-                if (lineName == null || !nowLineName.equals(lineName)) {
-                    // 如果用户已切换了路线，抛弃之前的结果不再继续处理
-                    return;
-                }
-                if (lineInfo.getStations() != null) {
-                    Message msg2=new Message();
-                    msg2.what = StationsMessage;
-                    handler.sendMessage(msg2);
-                    return;
-                }
-            }
-            // 没有线路信息
-            Message msg = new Message();
-            msg.what = NoLineMessage;
-            handler.sendMessage(msg);
-        }
-    }
-    
-    /**
-     * 查询线路停靠站点
-     *
-     */
-    private class SearchLineStationRunable implements Runnable {
-        
-        @Override
-        public void run() {
-            
-            if (lineList != null && lineList.size() > 0) {
-                LineInfo lineInfo = getNowLineInfo();
-                lineInfo = lineService.getLineStation(lineInfo, 1, true); 
-                if (lineInfo.getStations() != null) {
-                    Message msg2=new Message();
-                    msg2.what = OtherStationsMessage;
-                    handler.sendMessage(msg2);
-                }
-            }
-        }
-    }
-    
-    /**
-     * 实时查询车辆信息
-     *
-     */
-    private class SearchCarsSearchLineRunable  implements Runnable {
-        private int position;
-        
-        public SearchCarsSearchLineRunable(int position) {
-            this.position = position;
-        }
-        
-        @Override
-        public void run() {
-            
-            LineInfo lineInfo = getNowLineInfo();
-            if (lineInfo.getStations() == null) {
-                lineInfo = lineService.getLineStation(lineInfo, position + 1, true);
-            } else {
-                lineInfo = lineService.getLineStation(lineInfo, position + 1, false);
-            }
-            
-            Message msg=new Message();  
-            msg.what = CarsMessage;
-            handler.sendMessage(msg);
+
+           if (direction) {
+               trueBusLine = busLine;
+           } else {
+               falseBusLine = busLine;
+           }
+           if (busLine == null) {
+                // 没有线路信息
+                Message msg = new Message();
+                msg.what = NoLineMessage;
+                handler.sendMessage(msg);
+           } else {
+               // 没有线路信息
+               Message msg = new Message();
+               msg.what = messageFlag;
+               handler.sendMessage(msg);
+           }
         }
     }
     
@@ -222,77 +175,19 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
                 Toast.makeText(theActivity, R.string.no_line, Toast.LENGTH_LONG).show();
                 theActivity.finish();
             } else if (messageFlag == StationsMessage) {
-                // 初始化
-                theActivity.checkListPosition();
                 // 站点信息
-                LineInfo lineInfo = theActivity.getNowLineInfo();
+                BusLineInfo lineInfo = theActivity.getNowLineInfo();
                 theActivity.showLineInfo(lineInfo);
                 theActivity.lineinfoLayout.setVisibility(View.VISIBLE);
                 theActivity.showStations(theActivity, lineInfo);
                 theActivity.lv_cards.setAdapter(theActivity.adapter);
                 
-//                // 尝试滚动
-//                theActivity.lv_cards.setSelected(true);
-//                if (theActivity.truePosition >= 4 && theActivity.falsePosition >= 4) { 
-//                    theActivity.lv_cards.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            theActivity.setListViewPos(theActivity.direction ? theActivity.truePosition : theActivity.falsePosition);
-//                        }
-//                    });
-//                }
-//                if (theActivity.truePosition >=0 && theActivity.falsePosition >= 0) {
-//                    theActivity.onItemClick(null, null, theActivity.direction ? theActivity.truePosition : theActivity.falsePosition, 0);
-//                }
-                
                 theActivity.lv_cards.setOnItemClickListener(theActivity);
             } else if (messageFlag == CarsMessage) {
                 // 即时刷新  
                 theActivity.adapter.notifyDataSetChanged(); 
-            } else if (messageFlag == OtherStationsMessage) {
-                // 站点信息
-                LineInfo lineInfo = theActivity.getNowLineInfo();
-                theActivity.showLineInfo(lineInfo);
-                theActivity.showStations(theActivity, lineInfo);
-                // 即时刷新  
-                theActivity.adapter.notifyDataSetChanged(); 
             }
         }
-    }
-    
-    /**
-     * 定位初始化滚动
-     */
-    private void checkListPosition() {
-//        if (lineStation == null 
-//                || MainActivity.stationNameList == null 
-//                || MainActivity.stationNameList.size() < 1) {
-//            return;
-//        }
-//        
-//        for (String name : MainActivity.stationNameList) {
-//            int i = 0;
-//            if (falsePosition < 0) {
-//                for (StationInfo station : lineStation.getFalseDirection()) {
-//                    if (station.getZdmc().equals(name)) {
-//                        falsePosition = i;
-//                        break;
-//                    }
-//                    i++;
-//                }
-//            }
-//            
-//            i = 0;
-//            if (truePosition < 0) { 
-//                for (StationInfo station : lineStation.getTrueDirection()) {
-//                    if (station.getZdmc().equals(name)) {
-//                        truePosition = i;
-//                        break;
-//                    }
-//                    i++;
-//                }
-//            }
-//        }
     }
     
     /**
@@ -301,12 +196,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
      * @param v
      */
     public void switchDirectionClick(View v) {
-        if (lineList == null || lineList.size() < 2) {
-            return;
-        }
         direction = !direction;
-        LineInfo lineInfo = getNowLineInfo();
-        if (lineInfo.getStations() != null) {
+        BusLineInfo lineInfo = getNowLineInfo();
+        if (lineInfo != null && lineInfo.getStops() != null) {
             showLineInfo(lineInfo);
             showStations(this, lineInfo);
             // 即时刷新
@@ -314,37 +206,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         } else {
             // 加载站点信息
             progressDialog.show();
-            ThreadPoolManagerFactory.getInstance().execute(new SearchLineStationRunable());
+            ThreadPoolManagerFactory.getInstance().execute(new SearchLineRunable(lineName, direction, StationsMessage));
         }
-        
-//        
-//        // 尝试滚动
-//        lv_cards.setSelected(true);
-//        if (truePosition >= 4 && falsePosition >= 4) {
-//            lv_cards.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    setListViewPos(direction ? truePosition : falsePosition);
-//                }
-//            });
-//        }
-//        if (truePosition >=0 && falsePosition >= 0) {
-//            onItemClick(null, null, direction ? truePosition : falsePosition, 0);
-//        }
     }
-    
-//    /**
-//     * 定位滚动位置
-//     * 
-//     * @param pos
-//     */
-//    private void setListViewPos(int pos) {
-//        if (android.os.Build.VERSION.SDK_INT >= 8) {
-//            lv_cards.smoothScrollToPosition(pos);
-//        } else {
-//            lv_cards.setSelection(pos);
-//        }
-//    }
     
     /**
      * 关闭当前页面
@@ -382,7 +246,7 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         if (isCurrentItems[position]) {
             // 启动线程
             progressDialog.show();
-            ThreadPoolManagerFactory.getInstance().execute(new SearchCarsSearchLineRunable(position));
+            ThreadPoolManagerFactory.getInstance().execute(new SearchLineRunable(lineName, direction, CarsMessage));
         } else {
             // 即时刷新  
             adapter.notifyDataSetChanged(); 
@@ -417,57 +281,51 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
      * 
      * @return
      */
-    private LineInfo getNowLineInfo() {
-        if (lineList == null || lineList.size() == 0) {
-            return null;
+    private BusLineInfo getNowLineInfo() {
+        if (direction) {
+            return trueBusLine;
         }
-        LineInfo lineInfo = null;       
-        if (lineList.size() == 1) {
-            lineInfo = lineList.get(0);
-        } else {
-            if (direction) {
-                lineInfo = lineList.get(0);
-            } else {
-                lineInfo = lineList.get(1);
-            }
-        }
-        return lineInfo;
+        return falseBusLine;
     }
     
     /**
      * 展示线路信息
      */
-    private void showLineInfo(LineInfo lineInfo) {
-        if (lineInfo == null) {
+    private void showLineInfo(BusLineInfo busLine) {
+        if (busLine == null || busLine.getLine() == null) {
             return ;
         }
-        lineName = lineInfo.getLine_name();
-        setLineName(lineInfo.getFangxiang());
-        if (!TextUtils.isEmpty(lineInfo.getStart_stop())) {
-            qidianTextView.setText(lineInfo.getStart_stop());
-            zhongdianTextView.setText(lineInfo.getEnd_stop());
-            startimeTextView.setText(lineInfo.getStart_earlytime());
-            stoptimeTextView.setText(lineInfo.getEnd_latetime());
+        LineInfo lineInfo = busLine.getLine();
+        
+        if (!TextUtils.isEmpty(lineInfo.getStartStopName())) {
+            qidianTextView.setText(lineInfo.getStartStopName());
+            zhongdianTextView.setText(lineInfo.getEndStopName());
+            startimeTextView.setText(lineInfo.getFirstTime());
+            stoptimeTextView.setText(lineInfo.getLastTime());
         }
         
         // 记录搜索历史
-        historyService.appendHistory(new HistoryInfo(lineInfo.getFangxiang(), direction, lineList));
+        String fangxiang = String.format("%s路(%s -> %s)", lineInfo.getLineName(), 
+                lineInfo.getStartStopName(), lineInfo.getEndStopName());
+        historyService.appendHistory(new HistoryInfo(fangxiang, 
+                lineInfo.getDirection() == 0 ? false : true, busLine));
     }
     
     private void setLineName(String name) {
         linenameTextView.setText(lineName + "路");
     }
     
-    private void showStations(ResultActivity activity, LineInfo lineInfo) {
-        if (lineInfo == null || lineInfo.getStations() == null) {
+    private void showStations(ResultActivity activity, BusLineInfo busLine) {
+        if (busLine == null || busLine.getStops() == null) {
             return;
         }
         if (adapter == null) {
             adapter = new FlexListAdapter(activity);
         }
         
-        isCurrentItems = new boolean[lineInfo.getStations().size()];
-        adapter.setStations(lineInfo.getStations());
+        isCurrentItems = new boolean[busLine.getStops().size()];
+        adapter.setStations(busLine.getStops());
+        adapter.setBus(busLine.getBus());
         
         // 刚进入的时候全部条目显示闭合状态  
         for (int i = 0; i < isCurrentItems.length; i++) {  

@@ -2,6 +2,7 @@ package com.yhtye.gongjiaochaxun;
 
 import java.util.List;
 
+import com.yhtye.gongjiao.entity.BusInfo;
 import com.yhtye.gongjiao.entity.StationInfo;
 import android.content.Context;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.BaseAdapter;
  */
 public class FlexListAdapter extends BaseAdapter {
     private List<StationInfo> stations;
+    private List<BusInfo> busList;
     private Context context; 
     private boolean[] isCurrentItems;
     
@@ -22,9 +24,10 @@ public class FlexListAdapter extends BaseAdapter {
     }
     
     public FlexListAdapter(Context context, List<StationInfo> stations, 
-            boolean[] isCurrentItems) {
+            List<BusInfo> busList, boolean[] isCurrentItems) {
         this.context = context;
         this.stations = stations;
+        this.busList = busList;
         this.isCurrentItems = isCurrentItems;
     }
     
@@ -54,11 +57,11 @@ public class FlexListAdapter extends BaseAdapter {
         FlexLinearLayout view = null;  
         StationInfo station = stations.get(position);
         if (null == convertView) {  
-            view = new FlexLinearLayout(context, station,  
+            view = new FlexLinearLayout(context, station, busList, 
                     position, false);  
         } else {
             view = (FlexLinearLayout) convertView;  
-            view.setWorkTitleLayout(station, position, isCurrentItems[position]);  
+            view.setWorkTitleLayout(station, position, isCurrentItems[position], busList);  
         }  
         return view;  
     }
@@ -85,5 +88,13 @@ public class FlexListAdapter extends BaseAdapter {
 
     public void setIsCurrentItems(boolean[] isCurrentItems) {
         this.isCurrentItems = isCurrentItems;
+    }
+
+    public List<BusInfo> getBusList() {
+        return busList;
+    }
+
+    public void setBus(List<BusInfo> busList) {
+        this.busList = busList;
     }
 }

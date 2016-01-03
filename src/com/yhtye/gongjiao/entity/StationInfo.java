@@ -1,35 +1,66 @@
 package com.yhtye.gongjiao.entity;
 
-public class StationInfo {
-    private String zdmc;
-    private String id;
-    private String carmessage;
+import java.io.Serializable;
+
+public class StationInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    private String stopId;
+    private String stopName;
+    private String stopNo;
+    private double weidu;
+    private double jingdu;
+    private int order; 
     
     public StationInfo() {
         
     }
-    
-    public StationInfo(String id, String zdmc) {
-        this.id = id;
-        this.zdmc = zdmc;
+
+    public String getStopId() {
+        return stopId;
     }
-    
-    public String getZdmc() {
-        return zdmc;
+
+    public void setStopId(String stopId) {
+        this.stopId = stopId;
     }
-    public void setZdmc(String zdmc) {
-        this.zdmc = zdmc;
+
+    public String getStopName() {
+        return stopName;
     }
-    public String getId() {
-        return id;
+
+    public void setStopName(String stopName) {
+        this.stopName = stopName;
     }
-    public void setId(String id) {
-        this.id = id;
+
+    public String getStopNo() {
+        return stopNo;
     }
-    public String getCarmessage() {
-        return carmessage;
+
+    public void setStopNo(String stopNo) {
+        this.stopNo = stopNo;
     }
-    public void setCarmessage(String carmessage) {
-        this.carmessage = carmessage;
+
+    public double getWeidu() {
+        return weidu;
+    }
+
+    public void setWeidu(double weidu) {
+        this.weidu = weidu;
+    }
+
+    public double getJingdu() {
+        return jingdu;
+    }
+
+    public void setJingdu(double jingdu) {
+        this.jingdu = jingdu;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 }

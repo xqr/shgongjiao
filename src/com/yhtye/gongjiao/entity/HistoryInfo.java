@@ -1,7 +1,6 @@
 package com.yhtye.gongjiao.entity;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class HistoryInfo implements Serializable {
     private static final long serialVersionUID = 9070687073013182163L;
@@ -14,16 +13,16 @@ public class HistoryInfo implements Serializable {
      */
     private boolean direction;
     
-    private List<LineInfo> lineList;
+    private BusLineInfo busLine;
     
     public HistoryInfo() {
         
     }
     
-    public HistoryInfo(String lineFangxiang, boolean direction, List<LineInfo> lineList) {
+    public HistoryInfo(String lineFangxiang, boolean direction, BusLineInfo busLine) {
         this.setLineFangxiang(lineFangxiang);
         this.direction = direction;
-        this.lineList = lineList;
+        this.busLine = busLine;
     }
     
     public boolean isDirection() {
@@ -32,14 +31,6 @@ public class HistoryInfo implements Serializable {
     public void setDirection(boolean direction) {
         this.direction = direction;
     }
-    
-    public List<LineInfo> getLineList() {
-        return lineList;
-    }
-
-    public void setLineList(List<LineInfo> lineList) {
-        this.lineList = lineList;
-    }
 
     public String getLineFangxiang() {
         return lineFangxiang;
@@ -47,5 +38,13 @@ public class HistoryInfo implements Serializable {
 
     public void setLineFangxiang(String lineFangxiang) {
         this.lineFangxiang = lineFangxiang;
+    }
+
+    public BusLineInfo getBusLine() {
+        return busLine;
+    }
+
+    public void setBusLine(BusLineInfo busLine) {
+        this.busLine = busLine;
     }
 }

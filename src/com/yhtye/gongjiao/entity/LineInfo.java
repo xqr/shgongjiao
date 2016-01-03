@@ -1,67 +1,72 @@
 package com.yhtye.gongjiao.entity;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class LineInfo implements Serializable {
     private static final long serialVersionUID = 1L;
     
-    private String start_earlytime;
-    private String end_latetime;
-    private String start_stop;
-    private String end_stop;
-    private String line_id;
-    private String line_name;
-    private String fangxiang;
-    // 停靠站信息
-    private List<StationInfo> stations;
+    private String firstTime;
+    private String lastTime;
+    private int stopsNum;
+    private String startStopName;
+    private String endStopName;
+    private String lineId;
+    private String lineName;
+    private String lineNo;
+    private int direction;
     
-    public String getEnd_latetime() {
-        return end_latetime;
+    public String getFirstTime() {
+        return firstTime;
     }
-    public void setEnd_latetime(String end_latetime) {
-        this.end_latetime = end_latetime;
+    public void setFirstTime(String firstTime) {
+        this.firstTime = firstTime;
     }
-    public String getEnd_stop() {
-        return end_stop;
+    public String getLastTime() {
+        return lastTime;
     }
-    public void setEnd_stop(String end_stop) {
-        this.end_stop = end_stop;
+    public void setLastTime(String lastTime) {
+        this.lastTime = lastTime;
     }
-    public String getLine_id() {
-        return line_id;
+    public int getStopsNum() {
+        return stopsNum;
     }
-    public void setLine_id(String line_id) {
-        this.line_id = line_id;
+    public void setStopsNum(int stopsNum) {
+        this.stopsNum = stopsNum;
     }
-    public String getLine_name() {
-        return line_name;
+    public String getStartStopName() {
+        return startStopName;
     }
-    public void setLine_name(String line_name) {
-        this.line_name = line_name;
+    public void setStartStopName(String startStopName) {
+        this.startStopName = startStopName;
     }
-    public String getStart_earlytime() {
-        return start_earlytime;
+    public String getEndStopName() {
+        return endStopName;
     }
-    public void setStart_earlytime(String start_earlytime) {
-        this.start_earlytime = start_earlytime;
+    public void setEndStopName(String endStopName) {
+        this.endStopName = endStopName;
     }
-    public String getStart_stop() {
-        return start_stop;
+    public String getLineId() {
+        return lineId;
     }
-    public void setStart_stop(String start_stop) {
-        this.start_stop = start_stop;
+    public void setLineId(String lineId) {
+        this.lineId = lineId;
     }
-    public String getFangxiang() {
-        return fangxiang;
+    public String getLineName() {
+        return lineName;
     }
-    public void setFangxiang(String fangxiang) {
-        this.fangxiang = fangxiang;
+    public void setLineName(String lineName) {
+        this.lineName = lineName;
     }
-    public List<StationInfo> getStations() {
-        return stations;
+    public String getLineNo() {
+        return lineNo;
     }
-    public void setStations(List<StationInfo> stations) {
-        this.stations = stations;
+    public void setLineNo(String lineNo) {
+        this.lineNo = lineNo;
+    }
+    public int getDirection() {
+        return direction;
+    }
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 }

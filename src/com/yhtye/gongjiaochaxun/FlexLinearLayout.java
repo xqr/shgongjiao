@@ -1,6 +1,9 @@
 package com.yhtye.gongjiaochaxun;
 
-import com.yhtye.beijing.R;
+import java.util.List;
+
+import com.yhtye.wuhan.R;
+import com.yhtye.gongjiao.entity.BusInfo;
 import com.yhtye.gongjiao.entity.StationInfo;
 
 import android.content.Context;
@@ -42,7 +45,7 @@ public class FlexLinearLayout extends LinearLayout {
      *            是否为伸展 
      */  
     public FlexLinearLayout(final Context context, final StationInfo station,  
-            final int position, boolean isCurrentItem) {  
+            final List<BusInfo> busList, final int position, boolean isCurrentItem) {  
         super(context);  
         
         mInflater = (LayoutInflater) context  
@@ -51,7 +54,7 @@ public class FlexLinearLayout extends LinearLayout {
         init();
         
         this.addView(layout);
-        setWorkTitleLayout(station, position, isCurrentItem);
+        setWorkTitleLayout(station, position, isCurrentItem, busList);
     }
     
     /** 
@@ -65,11 +68,11 @@ public class FlexLinearLayout extends LinearLayout {
      *            是否为伸展 
      */  
     public void setWorkTitleLayout(final StationInfo station, final int position,  
-            boolean isCurrentItem) {  
+            boolean isCurrentItem, List<BusInfo> busList) {  
         init();
         
         int lineindex = position + 1;
-        tvStationName.setText(lineindex +" . "+ station.getZdmc());
+        tvStationName.setText(lineindex +" . "+ station.getStopName());
         if (isCurrentItem) {
             tvStationName.setTextColor(getResources().getColor(R.color.red));
             weixuanzhongicon.setImageResource(R.drawable.xuanzhongzhuangtai);
@@ -83,16 +86,44 @@ public class FlexLinearLayout extends LinearLayout {
             viewTimeline3.setVisibility(View.GONE);
             relative.setBackgroundResource(R.drawable.zhandianweizhankai);
         }
-        if (TextUtils.isEmpty(station.getCarmessage())) {
+        
+        String carMessage = getCarMessage(station, busList);
+        if (TextUtils.isEmpty(carMessage)) {
             tvCardName.setText(R.string.no_cars);
         } else {
-            tvCardName.setText(station.getCarmessage());
+            tvCardName.setText(carMessage);
         }
         
         ivXiatopIco.setVisibility(isCurrentItem ? VISIBLE : GONE);
         ivXialaIco.setVisibility(isCurrentItem ? GONE : VISIBLE);
         
         llCards.setVisibility(isCurrentItem ? VISIBLE : GONE);  
+    }
+    
+    private String getCarMessage(StationInfo station, List<BusInfo> busList) {
+        if (station == null || busList == null || busList.size() == 0) {
+            return null;
+        }
+        
+        int stopNum = 0;
+        for (BusInfo item : busList) {
+            if (item.getArrived() == 1 
+                    && item.getStopId().equals(station.getStopId())) {
+                return "车辆已经到站";
+            } 
+            if (station.getOrder() >= item.getOrder()) {
+                stopNum = station.getOrder() - item.getOrder();
+                if (item.getArrived() == 0) {
+                    stopNum = stopNum + 1;
+                }
+            } else {
+                break;
+            }
+        }
+        if (stopNum < 1) {
+            return "等待发车";
+        }
+        return String.format("最近一辆车距离此还有%s站", stopNum);
     }
     
     private void init() {
