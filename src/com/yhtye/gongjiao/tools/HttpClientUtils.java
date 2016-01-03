@@ -30,7 +30,7 @@ public class HttpClientUtils {
      * @param paramsMap  请求参数
      * @return
      */
-    public static String postResponse(String url, Map<String, Object> paramsMap) {
+    public static String postResponse(String url, Map<String, Object> paramsMap, Map<String, String> headerMap) {
         try {
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httpost = new HttpPost(url);
@@ -42,6 +42,11 @@ public class HttpClientUtils {
                 }
             }
             httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000); 
+            if (headerMap != null) {
+                for (String key : headerMap.keySet()) {
+                    httpost.setHeader(key, headerMap.get(key));
+                }
+            }
             
             httpost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
             HttpResponse response = httpclient.execute(httpost);
@@ -66,7 +71,7 @@ public class HttpClientUtils {
      * @param url 请求url
      * @return
      */
-    public static String getResponse(String url) {
+    public static String getResponse(String url, Map<String, String> headerMap) {
         try {
             HttpClient httpclient = new DefaultHttpClient();
             URI uri = new URI(url);
@@ -75,7 +80,11 @@ public class HttpClientUtils {
                     CookiePolicy.BROWSER_COMPATIBILITY);
             httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000); 
             
-            httpGet.setHeader("Referer", "http://www.bjbus.com");
+            if (headerMap != null) {
+                for (String key : headerMap.keySet()) {
+                    httpGet.setHeader(key, headerMap.get(key));
+                }
+            }
             HttpResponse response = httpclient.execute(httpGet);
             if (response == null) {
                 return null;

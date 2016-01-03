@@ -7,7 +7,7 @@ import java.util.List;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.yhtye.beijing.R;
+import com.yhtye.suzhou.R;
 import com.yhtye.gongjiao.entity.HistoryInfo;
 import com.yhtye.gongjiao.entity.LineInfo;
 import com.yhtye.gongjiao.service.HistoryService;
@@ -137,7 +137,7 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             
             if (lineList != null && lineList.size() > 0) {
                 LineInfo lineInfo = getNowLineInfo();
-                lineInfo = lineService.getLineStation(lineInfo, 1, true); 
+                lineInfo = lineService.getLineStation(lineInfo); 
                 if (lineName == null || !nowLineName.equals(lineName)) {
                     // 如果用户已切换了路线，抛弃之前的结果不再继续处理
                     return;
@@ -167,7 +167,7 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             
             if (lineList != null && lineList.size() > 0) {
                 LineInfo lineInfo = getNowLineInfo();
-                lineInfo = lineService.getLineStation(lineInfo, 1, true); 
+                lineInfo = lineService.getLineStation(lineInfo); 
                 if (lineInfo.getStations() != null) {
                     Message msg2=new Message();
                     msg2.what = OtherStationsMessage;
@@ -192,11 +192,12 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         public void run() {
             
             LineInfo lineInfo = getNowLineInfo();
-            if (lineInfo.getStations() == null) {
-                lineInfo = lineService.getLineStation(lineInfo, position + 1, true);
-            } else {
-                lineInfo = lineService.getLineStation(lineInfo, position + 1, false);
-            }
+            // TODO 
+//            if (lineInfo.getStations() == null) {
+//                lineInfo = lineService.getLineStation(lineInfo, position + 1, true);
+//            } else {
+//                lineInfo = lineService.getLineStation(lineInfo, position + 1, false);
+//            }
             
             Message msg=new Message();  
             msg.what = CarsMessage;
@@ -214,6 +215,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         @Override  
         public void handleMessage(Message msg) {  
             final ResultActivity  theActivity =  mActivity.get();
+            if (theActivity == null) {
+                return;
+            }
             theActivity.progressDialog.dismiss();
             
             int messageFlag = msg.what;
@@ -455,7 +459,11 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
     }
     
     private void setLineName(String name) {
-        linenameTextView.setText(lineName + "路");
+        if (name.equals(lineName)) {
+            linenameTextView.setText(lineName + "路");
+        } else {
+            linenameTextView.setText(String.format("%s路(%s)", lineName, name));
+        }
     }
     
     private void showStations(ResultActivity activity, LineInfo lineInfo) {

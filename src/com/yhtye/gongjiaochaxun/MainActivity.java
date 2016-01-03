@@ -9,7 +9,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
-import com.yhtye.beijing.R;
+import com.yhtye.suzhou.R;
 import com.yhtye.gongjiao.entity.HistoryInfo;
 import com.yhtye.gongjiao.entity.LineInfo;
 import com.yhtye.gongjiao.entity.PositionInfo;

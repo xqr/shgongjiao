@@ -1,6 +1,6 @@
 package com.yhtye.gongjiaochaxun;
 
-import com.yhtye.beijing.R;
+import com.yhtye.suzhou.R;
 import com.yhtye.gongjiao.entity.StationInfo;
 
 import android.content.Context;
