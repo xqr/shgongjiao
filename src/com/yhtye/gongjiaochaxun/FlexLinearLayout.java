@@ -2,7 +2,7 @@ package com.yhtye.gongjiaochaxun;
 
 import java.util.List;
 
-import com.yhtye.wuhan.R;
+import com.everpod.wuhan.R;
 import com.yhtye.gongjiao.entity.BusInfo;
 import com.yhtye.gongjiao.entity.StationInfo;
 

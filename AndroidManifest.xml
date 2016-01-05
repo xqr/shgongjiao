@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yhtye.wuhan"
+    package="com.everpod.wuhan"
     android:versionCode="1"
     android:versionName="1.0.1"
     android:windowSoftInputMode="adjustPan" >
@@ -44,7 +44,7 @@
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="567a7069e0f55aff490016aa" >
+            android:value="568bc8ede0f55a12c5000d6c" >
         </meta-data>
         <meta-data
             android:name="UMENG_CHANNEL"

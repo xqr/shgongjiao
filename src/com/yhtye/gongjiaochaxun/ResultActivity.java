@@ -4,7 +4,7 @@ import java.lang.ref.WeakReference;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.yhtye.wuhan.R;
+import com.everpod.wuhan.R;
 import com.yhtye.gongjiao.entity.BusLineInfo;
 import com.yhtye.gongjiao.entity.HistoryInfo;
 import com.yhtye.gongjiao.entity.LineInfo;

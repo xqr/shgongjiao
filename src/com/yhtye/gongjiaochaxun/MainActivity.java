@@ -9,7 +9,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
-import com.yhtye.wuhan.R;
+import com.everpod.wuhan.R;
 import com.yhtye.gongjiao.entity.BusLineInfo;
 import com.yhtye.gongjiao.entity.HistoryInfo;
 import com.yhtye.gongjiao.service.HistoryService;
