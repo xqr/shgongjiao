@@ -15,10 +15,10 @@
             android:id="@+id/linename"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
             android:textSize="20sp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/white"
             android:textStyle="bold"
+            android:layout_centerVertical="true" 
             android:gravity="center"
             android:text="@string/luxianfangan"/>
         
