@@ -1,6 +1,10 @@
 package com.yhtye.gongjiaochaxun;
 
 import java.lang.ref.WeakReference;
+import java.util.Date;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -59,6 +63,8 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
     private HistoryService historyService = null;
     private ProgressDialog progressDialog = null;
     
+    private long lastRefreshTimeStamp = 0;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +72,8 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         
         Intent intent = getIntent();
         lineName = intent.getStringExtra("lineName");
-        direction = intent.getBooleanExtra("direction", true);
+        lineName = exchangeLineName(lineName);
+        direction = intent.getBooleanExtra("direction", false);
         String linelist = intent.getStringExtra("linelist");
         
         initView();
@@ -84,6 +91,28 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             }
             handler.sendMessage(msg2);
         }
+    }
+    
+    /**
+     * 电车转换成普通的车
+     * 
+     * @param lineName
+     * @return
+     */
+    private String exchangeLineName(String lineName) {
+        if (!TextUtils.isEmpty(lineName) && lineName.startsWith("电")) {
+            // 处理匹配
+            Pattern p=Pattern.compile("([0-9]+)"); 
+            Matcher m=p.matcher(lineName);
+            if (m.find()) {
+                lineName = "100" + m.group();
+            }
+            return lineName.toUpperCase(Locale.getDefault());
+        }
+        if (TextUtils.isEmpty(lineName)) {
+            return lineName;
+        }
+        return lineName.toUpperCase(Locale.getDefault());
     }
     
     /**
@@ -137,19 +166,22 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
                 // 如果用户已切换了路线，抛弃之前的结果不再继续处理
                 return;
             }
-
+            
            if (direction) {
                trueBusLine = busLine;
            } else {
                falseBusLine = busLine;
            }
+           
+           lastRefreshTimeStamp = new Date().getTime();
+           
            if (busLine == null) {
                 // 没有线路信息
                 Message msg = new Message();
                 msg.what = NoLineMessage;
                 handler.sendMessage(msg);
            } else {
-               // 没有线路信息
+               busLine.setSearchLineName(lineName);
                Message msg = new Message();
                msg.what = messageFlag;
                handler.sendMessage(msg);
@@ -196,8 +228,16 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
      * @param v
      */
     public void switchDirectionClick(View v) {
-        direction = !direction;
+        // 判断是否为环形公交线路
         BusLineInfo lineInfo = getNowLineInfo();
+        if (lineInfo != null && lineInfo.getLine() != null) {
+            LineInfo nowLine = lineInfo.getLine();
+            if (nowLine.getStartStopName().equals(nowLine.getEndStopName())) {
+                return;
+            }
+        }
+        direction = !direction;
+        lineInfo = getNowLineInfo();
         if (lineInfo != null && lineInfo.getStops() != null) {
             showLineInfo(lineInfo);
             showStations(this, lineInfo);
@@ -243,7 +283,8 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         } 
         // 打开或者合上  
         isCurrentItems[position] = !isCurrentItems[position];
-        if (isCurrentItems[position]) {
+        if (isCurrentItems[position] 
+                && new Date().getTime() - lastRefreshTimeStamp > 30000) {
             // 启动线程
             progressDialog.show();
             ThreadPoolManagerFactory.getInstance().execute(new SearchLineRunable(lineName, direction, CarsMessage));
@@ -302,6 +343,7 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             zhongdianTextView.setText(lineInfo.getEndStopName());
             startimeTextView.setText(lineInfo.getFirstTime());
             stoptimeTextView.setText(lineInfo.getLastTime());
+            linenameTextView.setText(lineInfo.getLineName() + "路");
         }
         
         // 记录搜索历史

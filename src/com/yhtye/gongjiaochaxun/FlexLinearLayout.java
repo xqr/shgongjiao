@@ -109,8 +109,8 @@ public class FlexLinearLayout extends LinearLayout {
         for (BusInfo item : busList) {
             if (item.getArrived() == 1 
                     && item.getStopId().equals(station.getStopId())) {
-                return "车辆已经到站";
-            } 
+                return "车辆已经到站，请准备上车";
+            }
             if (station.getOrder() >= item.getOrder()) {
                 stopNum = station.getOrder() - item.getOrder();
                 if (item.getArrived() == 0) {

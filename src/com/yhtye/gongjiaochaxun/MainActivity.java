@@ -211,7 +211,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         // 切换Activity
         intent.setClass(MainActivity.this, ResultActivity.class);  
         intent.putExtra("lineName", lineName);
-        intent.putExtra("direction", true);
+        intent.putExtra("direction", false);
         intent.putExtra("linelist", "");
         startActivity(intent);
     }
@@ -253,7 +253,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         }
         
         intent.setClass(MainActivity.this, ResultActivity.class);  
-        intent.putExtra("lineName", historyInfo.getBusLine().getLine().getLineName());
+        intent.putExtra("lineName", historyInfo.getBusLine().getSearchLineName());
         intent.putExtra("direction", historyInfo.isDirection());
         intent.putExtra("linelist", getLinestoString(historyInfo.getBusLine()));
         
