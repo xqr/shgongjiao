@@ -199,7 +199,11 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         @Override  
         public void handleMessage(Message msg) {  
             final ResultActivity  theActivity =  mActivity.get();
-            theActivity.progressDialog.dismiss();
+            if (theActivity != null 
+                    && theActivity.progressDialog != null
+                    && theActivity.progressDialog.isShowing()) {
+                theActivity.progressDialog.dismiss();
+            }
             
             int messageFlag = msg.what;
             if (messageFlag == NoLineMessage) {
