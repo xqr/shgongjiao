@@ -10,6 +10,17 @@
         android:layout_width="fill_parent"  
         android:layout_height="60dp"
         android:background="@color/blue">
+
+        <TextView style="@style/result_text"
+            android:id="@+id/linename"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="@string/luxianfangan"/>
         
         <ImageView
             android:id="@+id/imageView1"
@@ -21,19 +32,7 @@
             android:contentDescription="@string/app_name"
             android:src="@drawable/fanhuishangyiye" 
             android:onClick="backPrePageClick"/>
-
-        <TextView style="@style/result_text"
-            android:id="@+id/linename"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:textSize="20sp"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:text="@string/luxianfangan"
-            android:layout_toEndOf="@+id/imageView1"
-            android:layout_toRightOf="@+id/imageView1"/>
+        
     </RelativeLayout>
 
     <RelativeLayout android:id="@+id/wuscheme"
