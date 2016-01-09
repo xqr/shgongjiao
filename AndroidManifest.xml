@@ -48,7 +48,7 @@
         </meta-data>
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="baidu" />
+            android:value="baidu2" />
 
         <activity
             android:name="com.yhtye.gongjiaochaxun.SchemeActivity"
