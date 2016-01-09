@@ -11,6 +11,16 @@
         android:layout_height="60dp"
         android:background="@color/blue">
         
+        <TextView style="@style/result_text"
+            android:id="@+id/linename"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_centerVertical="true" 
+            android:gravity="center"/>
+        
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
@@ -21,16 +31,6 @@
             android:contentDescription="@string/app_name"
             android:src="@drawable/fanhuishangyiye" 
             android:onClick="backPrePageClick"/>
-
-        <TextView style="@style/result_text"
-            android:id="@+id/linename"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:textSize="20sp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:layout_centerVertical="true" 
-            android:gravity="center"/>
     </RelativeLayout>
     
     <View
@@ -44,7 +44,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#00aaff"
-        android:paddingLeft="10dp" 
+        android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:visibility="invisible">
 

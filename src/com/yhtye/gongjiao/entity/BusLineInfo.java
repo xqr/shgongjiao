@@ -10,6 +10,7 @@ public class BusLineInfo implements Serializable {
     private LineInfo line;
     private List<StationInfo> stops;
     private List<BusInfo> bus;
+    private String searchLineName;
     
     public LineInfo getLine() {
         return line;
@@ -28,5 +29,11 @@ public class BusLineInfo implements Serializable {
     }
     public void setBus(List<BusInfo> bus) {
         this.bus = bus;
+    }
+    public String getSearchLineName() {
+        return searchLineName;
+    }
+    public void setSearchLineName(String searchLineName) {
+        this.searchLineName = searchLineName;
     }
 }

@@ -19,7 +19,7 @@ import com.yhtye.gongjiao.tools.HttpClientUtils;
 
 public class BaiduApiService {
     private static final String region = "武汉";
-    private static final String ak = "FFFPdpCMtuw1CklGXjx4TPkn";
+    private static final String ak = "h6IMETCiTx7WOTraYt7AIpjG";
     
     public static String getDirectionRoutesResponse(String origin, String destination) {
         try {
