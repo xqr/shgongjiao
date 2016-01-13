@@ -137,6 +137,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             
             if (lineList != null && lineList.size() > 0) {
                 LineInfo lineInfo = getNowLineInfo();
+                if (lineInfo == null) {
+                    return;
+                }
                 lineInfo = lineService.getLineStation(lineInfo, 1, true); 
                 if (lineName == null || !nowLineName.equals(lineName)) {
                     // 如果用户已切换了路线，抛弃之前的结果不再继续处理
@@ -167,6 +170,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             
             if (lineList != null && lineList.size() > 0) {
                 LineInfo lineInfo = getNowLineInfo();
+                if (lineInfo == null) {
+                    return;
+                }
                 lineInfo = lineService.getLineStation(lineInfo, 1, true); 
                 if (lineInfo.getStations() != null) {
                     Message msg2=new Message();
@@ -214,7 +220,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         @Override  
         public void handleMessage(Message msg) {  
             final ResultActivity  theActivity =  mActivity.get();
-            if (theActivity != null && !theActivity.isFinishing()) {
+            if (theActivity != null 
+                    && theActivity.progressDialog != null 
+                    &&  theActivity.progressDialog.isShowing()) {
                 theActivity.progressDialog.dismiss();
             }
             
@@ -354,7 +362,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
      * @param v
      */
     public void backPrePageClick(View v) {
-        progressDialog.dismiss();
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
         ResultActivity.this.finish();
     }
     
