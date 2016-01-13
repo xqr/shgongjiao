@@ -198,6 +198,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         public void run() {
             
             LineInfo lineInfo = getNowLineInfo();
+            if (lineInfo == null) {
+                return;
+            }
             if (lineInfo.getStations() == null) {
                 lineInfo = lineService.getLineStation(lineInfo, position + 1, true);
             } else {
@@ -316,6 +319,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         }
         direction = !direction;
         LineInfo lineInfo = getNowLineInfo();
+        if (lineInfo == null) {
+            return;
+        }
         if (lineInfo.getStations() != null) {
             showLineInfo(lineInfo);
             showStations(this, lineInfo);
