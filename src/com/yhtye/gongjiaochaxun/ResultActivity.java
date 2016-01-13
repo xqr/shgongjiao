@@ -137,6 +137,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             
             if (lineList != null && lineList.size() > 0) {
                 LineInfo lineInfo = getNowLineInfo();
+                if (lineInfo == null) {
+                    return;
+                }
                 lineInfo = lineService.getLineStation(lineInfo, 1, true); 
                 if (lineName == null || !nowLineName.equals(lineName)) {
                     // 如果用户已切换了路线，抛弃之前的结果不再继续处理
@@ -167,6 +170,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             
             if (lineList != null && lineList.size() > 0) {
                 LineInfo lineInfo = getNowLineInfo();
+                if (lineInfo == null) {
+                    return;
+                }
                 lineInfo = lineService.getLineStation(lineInfo, 1, true); 
                 if (lineInfo.getStations() != null) {
                     Message msg2=new Message();
@@ -192,6 +198,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         public void run() {
             
             LineInfo lineInfo = getNowLineInfo();
+            if (lineInfo == null) {
+                return;
+            }
             if (lineInfo.getStations() == null) {
                 lineInfo = lineService.getLineStation(lineInfo, position + 1, true);
             } else {
@@ -234,21 +243,6 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
                 theActivity.lineinfoLayout.setVisibility(View.VISIBLE);
                 theActivity.showStations(theActivity, lineInfo);
                 theActivity.lv_cards.setAdapter(theActivity.adapter);
-                
-//                // 尝试滚动
-//                theActivity.lv_cards.setSelected(true);
-//                if (theActivity.truePosition >= 4 && theActivity.falsePosition >= 4) { 
-//                    theActivity.lv_cards.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            theActivity.setListViewPos(theActivity.direction ? theActivity.truePosition : theActivity.falsePosition);
-//                        }
-//                    });
-//                }
-//                if (theActivity.truePosition >=0 && theActivity.falsePosition >= 0) {
-//                    theActivity.onItemClick(null, null, theActivity.direction ? theActivity.truePosition : theActivity.falsePosition, 0);
-//                }
-                
                 theActivity.lv_cards.setOnItemClickListener(theActivity);
             } else if (messageFlag == CarsMessage) {
                 // 即时刷新  
@@ -310,6 +304,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         }
         direction = !direction;
         LineInfo lineInfo = getNowLineInfo();
+        if (lineInfo == null) {
+            return;
+        }
         if (lineInfo.getStations() != null) {
             showLineInfo(lineInfo);
             showStations(this, lineInfo);
@@ -320,35 +317,7 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             progressDialog.show();
             ThreadPoolManagerFactory.getInstance().execute(new SearchLineStationRunable());
         }
-        
-//        
-//        // 尝试滚动
-//        lv_cards.setSelected(true);
-//        if (truePosition >= 4 && falsePosition >= 4) {
-//            lv_cards.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    setListViewPos(direction ? truePosition : falsePosition);
-//                }
-//            });
-//        }
-//        if (truePosition >=0 && falsePosition >= 0) {
-//            onItemClick(null, null, direction ? truePosition : falsePosition, 0);
-//        }
     }
-    
-//    /**
-//     * 定位滚动位置
-//     * 
-//     * @param pos
-//     */
-//    private void setListViewPos(int pos) {
-//        if (android.os.Build.VERSION.SDK_INT >= 8) {
-//            lv_cards.smoothScrollToPosition(pos);
-//        } else {
-//            lv_cards.setSelection(pos);
-//        }
-//    }
     
     /**
      * 关闭当前页面
@@ -356,7 +325,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
      * @param v
      */
     public void backPrePageClick(View v) {
-        progressDialog.dismiss();
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
         ResultActivity.this.finish();
     }
     
