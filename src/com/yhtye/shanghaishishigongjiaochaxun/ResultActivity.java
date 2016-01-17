@@ -187,7 +187,9 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         
         showStations(this);
         // 即时刷新  
-        adapter.notifyDataSetChanged(); 
+        if (adapter != null) {
+            adapter.notifyDataSetChanged(); 
+        }
     }
     
     /**
