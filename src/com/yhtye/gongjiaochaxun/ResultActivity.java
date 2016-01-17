@@ -235,29 +235,12 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
                 Toast.makeText(theActivity, R.string.no_line, Toast.LENGTH_LONG).show();
                 theActivity.finish();
             } else if (messageFlag == StationsMessage) {
-                // 初始化
-                theActivity.checkListPosition();
                 // 站点信息
                 LineInfo lineInfo = theActivity.getNowLineInfo();
                 theActivity.showLineInfo(lineInfo);
                 theActivity.lineinfoLayout.setVisibility(View.VISIBLE);
                 theActivity.showStations(theActivity, lineInfo);
                 theActivity.lv_cards.setAdapter(theActivity.adapter);
-                
-//                // 尝试滚动
-//                theActivity.lv_cards.setSelected(true);
-//                if (theActivity.truePosition >= 4 && theActivity.falsePosition >= 4) { 
-//                    theActivity.lv_cards.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            theActivity.setListViewPos(theActivity.direction ? theActivity.truePosition : theActivity.falsePosition);
-//                        }
-//                    });
-//                }
-//                if (theActivity.truePosition >=0 && theActivity.falsePosition >= 0) {
-//                    theActivity.onItemClick(null, null, theActivity.direction ? theActivity.truePosition : theActivity.falsePosition, 0);
-//                }
-                
                 theActivity.lv_cards.setOnItemClickListener(theActivity);
             } else if (messageFlag == CarsMessage) {
                 // 即时刷新  
@@ -271,41 +254,6 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
                 theActivity.adapter.notifyDataSetChanged(); 
             }
         }
-    }
-    
-    /**
-     * 定位初始化滚动
-     */
-    private void checkListPosition() {
-//        if (lineStation == null 
-//                || MainActivity.stationNameList == null 
-//                || MainActivity.stationNameList.size() < 1) {
-//            return;
-//        }
-//        
-//        for (String name : MainActivity.stationNameList) {
-//            int i = 0;
-//            if (falsePosition < 0) {
-//                for (StationInfo station : lineStation.getFalseDirection()) {
-//                    if (station.getZdmc().equals(name)) {
-//                        falsePosition = i;
-//                        break;
-//                    }
-//                    i++;
-//                }
-//            }
-//            
-//            i = 0;
-//            if (truePosition < 0) { 
-//                for (StationInfo station : lineStation.getTrueDirection()) {
-//                    if (station.getZdmc().equals(name)) {
-//                        truePosition = i;
-//                        break;
-//                    }
-//                    i++;
-//                }
-//            }
-//        }
     }
     
     /**
@@ -332,35 +280,7 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             progressDialog.show();
             ThreadPoolManagerFactory.getInstance().execute(new SearchLineStationRunable());
         }
-        
-//        
-//        // 尝试滚动
-//        lv_cards.setSelected(true);
-//        if (truePosition >= 4 && falsePosition >= 4) {
-//            lv_cards.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    setListViewPos(direction ? truePosition : falsePosition);
-//                }
-//            });
-//        }
-//        if (truePosition >=0 && falsePosition >= 0) {
-//            onItemClick(null, null, direction ? truePosition : falsePosition, 0);
-//        }
     }
-    
-//    /**
-//     * 定位滚动位置
-//     * 
-//     * @param pos
-//     */
-//    private void setListViewPos(int pos) {
-//        if (android.os.Build.VERSION.SDK_INT >= 8) {
-//            lv_cards.smoothScrollToPosition(pos);
-//        } else {
-//            lv_cards.setSelection(pos);
-//        }
-//    }
     
     /**
      * 关闭当前页面
