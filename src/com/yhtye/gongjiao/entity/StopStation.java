@@ -3,6 +3,8 @@ package com.yhtye.gongjiao.entity;
 import android.text.TextUtils;
 
 public class StopStation extends LineInfo {
+    private static final long serialVersionUID = 1L;
+    
     private String stop_id;
     private String direction;
     private String fangxiang;
