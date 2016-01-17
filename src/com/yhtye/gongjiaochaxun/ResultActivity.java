@@ -174,7 +174,7 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
                     return;
                 }
                 lineInfo = lineService.getLineStation(lineInfo, 1, true); 
-                if (lineInfo.getStations() != null) {
+                if (lineInfo != null && lineInfo.getStations() != null) {
                     Message msg2=new Message();
                     msg2.what = OtherStationsMessage;
                     handler.sendMessage(msg2);
