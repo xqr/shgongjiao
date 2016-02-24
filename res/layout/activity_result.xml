@@ -11,17 +11,6 @@
         android:layout_height="60dp"
         android:background="@color/blue">
         
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/fanhuishangyiye" 
-            android:onClick="backPrePageClick"/>
-
         <TextView style="@style/result_text"
             android:id="@+id/linename"
             android:layout_width="fill_parent"
@@ -31,6 +20,18 @@
             android:textStyle="bold"
             android:layout_centerVertical="true" 
             android:gravity="center"/>
+        
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/fanhuishangyiye" 
+            android:onClick="backPrePageClick"/>  
+            
     </RelativeLayout>
     
     <View
