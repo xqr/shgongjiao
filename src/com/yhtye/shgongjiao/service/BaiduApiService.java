@@ -18,8 +18,8 @@ import com.yhtye.shgongjiao.entity.SchemeSteps;
 import com.yhtye.shgongjiao.tools.HttpClientUtils;
 
 public class BaiduApiService {
-    private static final String region = "上海";
-    private static final String ak = "vWLtxQbUfWpEFxRNXyiGg3jd";
+    private static final String region = "长沙";
+    private static final String ak = "FFFPdpCMtuw1CklGXjx4TPkn";
     
     public static String getDirectionRoutesResponse(String origin, String destination) {
         try {

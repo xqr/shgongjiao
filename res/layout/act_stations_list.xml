@@ -17,7 +17,7 @@
     <View
         android:id="@+id/view_timeline_4"
         android:layout_width="3dp"
-        android:layout_height="7dp"
+        android:layout_height="10dp"
         android:layout_below="@+id/view_timeline_1"
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"
@@ -47,7 +47,7 @@
     <View
         android:id="@+id/view_timeline_3"
         android:layout_width="3dp"
-        android:layout_height="85dp"
+        android:layout_height="110dp"
         android:layout_below="@+id/weixuanzhongicon"
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"

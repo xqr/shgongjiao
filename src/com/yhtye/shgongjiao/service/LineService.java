@@ -2,7 +2,6 @@ package com.yhtye.shgongjiao.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -16,7 +15,7 @@ import com.yhtye.shgongjiao.entity.StationInfo;
 import com.yhtye.shgongjiao.tools.HttpClientUtils;
 
 public class LineService {
-    private String apiUrl = "http://xxbs.sh.gov.cn:8080/weixinpage";
+    private String apiUrl = "http://113.247.250.208:15388/cskgjweb_haixin";
     
     public LineInfo getLineInfo(String lineName, int retryTimes) {
         String url = apiUrl + "/HandlerOne.ashx?name=" + lineName;
@@ -39,8 +38,9 @@ public class LineService {
         return null;
     }
     
-    public LineStationInfo getLineStation(String lineName, String lineId) {
-        String url = String.format("%s/HandlerTwo.ashx?name=%s&lineid=%s", apiUrl, lineName, lineId);
+    public LineStationInfo getLineStation(String lineName) {
+        String url = String.format("%s/lineQuery/queryStationByLinename?linename=%s", 
+                apiUrl, lineName);
         
         String content = HttpClientUtils.getResponse(url);
         if (TextUtils.isEmpty(content)) {
@@ -49,23 +49,24 @@ public class LineService {
         
         ObjectMapper mapper = new ObjectMapper();
         try {
-            JsonNode jsonNodes = mapper.readValue(content, JsonNode.class);
+            JsonNode jsonNodes = mapper.readValue(content.toLowerCase(), JsonNode.class);
             if (jsonNodes != null) {
                 LineStationInfo lineStation = new LineStationInfo();
+                List<StationInfo> trueStations = new ArrayList<StationInfo>();
+                List<StationInfo> falseStations = new ArrayList<StationInfo>();
                 for (JsonNode node : jsonNodes) {
-                    node = mapper.readValue(node, JsonNode.class);
-                    String direction = node.get("direction").getValueAsText();
-                    node = mapper.readValue(node.get("stops"), JsonNode.class);
-                    List<StationInfo> stations = new ArrayList<StationInfo>();
-                    for (JsonNode stopNode : node) {
-                        stations.add(mapper.readValue(stopNode, StationInfo.class));
+                    StationInfo stationInfo = mapper.readValue(node, StationInfo.class);
+                    if (stationInfo == null) {
+                        continue;
                     }
-                    if (direction.equals("true")) {
-                        lineStation.setTrueDirection(stations);
+                    if (stationInfo.getUpdown().equals("uprun")) {
+                        trueStations.add(stationInfo);
                     } else {
-                        lineStation.setFalseDirection(stations);
+                        falseStations.add(stationInfo);
                     }
                 }
+                lineStation.setTrueDirection(trueStations);
+                lineStation.setFalseDirection(falseStations);
                 return lineStation;
             }
         } catch (Exception e) {
@@ -74,12 +75,12 @@ public class LineService {
         return null;
     }
     
-    public List<CarInfo> getStationCars(String lineName, String lineId, String stopId, boolean direction) {
-        String url = String.format("%s/HandlerThree.ashx?name=%s&lineid=%s&stopid=%s&direction=%s", 
-                apiUrl, lineName, lineId, stopId, direction ? 0 : 1);
+    public List<CarInfo> getStationCars(String lineId, String stopId) {
+        String url = String.format("%s/car/queryCar?stationid=%s&runlineid=%s&carnum=2", 
+                apiUrl, stopId, lineId);
         
         String content = HttpClientUtils.getResponse(url);
-        if (TextUtils.isEmpty(content)) {
+        if (TextUtils.isEmpty(content) || content.equals("[]")) {
             return null;
         }
 
@@ -87,10 +88,13 @@ public class LineService {
         ObjectMapper mapper = new ObjectMapper();
         try {
             JsonNode jsonNode = mapper.readValue(content, JsonNode.class);
-            if (jsonNode != null && jsonNode.get("cars") != null) {
-                JsonNode nodes =  mapper.readValue(jsonNode.get("cars"), JsonNode.class);
-                for (JsonNode node : nodes) {
-                    cars.add(mapper.readValue(node, CarInfo.class));
+            if (jsonNode != null) {
+                for (JsonNode node : jsonNode) {
+                    CarInfo carInfo = new CarInfo();
+                    carInfo.setTerminal(node.get("plate_number").getTextValue());
+                    carInfo.setDistance(node.get("distance").getIntValue());
+                    carInfo.setStopdis(Integer.parseInt(node.get("dis_num").getTextValue()));
+                    cars.add(carInfo);
                 }
             }
         } catch (Exception e) {

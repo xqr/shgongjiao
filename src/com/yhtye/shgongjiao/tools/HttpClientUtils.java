@@ -55,7 +55,7 @@ public class HttpClientUtils {
             return htmlStr;
 
         } catch (Exception e) {
-            Log.i(url, e.getMessage());
+//            Log.i(url, e.getMessage());
         }
         return null;
     }

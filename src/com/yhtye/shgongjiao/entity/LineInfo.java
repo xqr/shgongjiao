@@ -1,13 +1,13 @@
 package com.yhtye.shgongjiao.entity;
 
 public class LineInfo {
-    private String end_earlytime;
-    private String end_latetime;
+    private String end_earlytime = "6:00";
+    private String end_latetime = "22:00";
     private String end_stop;
     private String line_id;
     private String line_name;
-    private String start_earlytime;
-    private String start_latetime;
+    private String start_earlytime = "6:00";
+    private String start_latetime = "22:00";
     private String start_stop;
     
     public String getEnd_earlytime() {

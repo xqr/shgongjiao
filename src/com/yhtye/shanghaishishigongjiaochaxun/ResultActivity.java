@@ -3,7 +3,7 @@ package com.yhtye.shanghaishishigongjiaochaxun;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import com.everpod.shanghai.R;
+import com.everpod.changsha.R;
 import com.yhtye.shgongjiao.entity.CarInfo;
 import com.yhtye.shgongjiao.entity.HistoryInfo;
 import com.yhtye.shgongjiao.entity.LineInfo;
@@ -93,28 +93,29 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             if (TextUtils.isEmpty(nowLineName)) {
                 return;
             }
-            LineInfo newlineInfo = lineService.getLineInfo(nowLineName, 2);
+            LineStationInfo newlineStation = lineService.getLineStation(nowLineName);
             if (lineName == null || !nowLineName.equals(lineName)) {
                 // 如果用户已切换了路线，抛弃之前的结果不再继续处理
                 return;
             }
-            lineInfo = newlineInfo;
-            Message msg=new Message();  
-            msg.what = LineMessage;
-            handler.sendMessage(msg);
-            if (lineInfo != null) {
-                LineStationInfo newlineStation = lineService.getLineStation(nowLineName, 
-                        lineInfo.getLine_id());
-                if (lineName == null || !nowLineName.equals(lineName)) {
-                    // 如果用户已切换了路线，抛弃之前的结果不再继续处理
+            lineStation = newlineStation;
+            if (lineStation != null) {
+                Message msg2 = new Message();
+                msg2.what = StationsMessage;
+                handler.sendMessage(msg2);
+                
+                // 生成路线对象
+                lineInfo = new LineInfo();
+                List <StationInfo> trueStationList = lineStation.getTrueDirection();
+                if (trueStationList == null || trueStationList.isEmpty()) {
                     return;
                 }
-                lineStation = newlineStation;
-                if (lineStation != null) {
-                    Message msg2=new Message();
-                    msg2.what = StationsMessage;
-                    handler.sendMessage(msg2);
-                }
+                lineInfo.setLine_name(nowLineName);
+                lineInfo.setStart_stop(trueStationList.get(0).getStationname());
+                lineInfo.setEnd_stop(trueStationList.get(trueStationList.size()-1).getStationname());
+                Message msg1 = new Message();
+                msg1.what = LineMessage;
+                handler.sendMessage(msg1);
             }
         }
     }
@@ -138,9 +139,8 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             } else {
                 stationInfo = lineStation.getFalseDirection().get(position);
             }
-            List<CarInfo> newCars = lineService.getStationCars(lineName, lineInfo.getLine_id(), 
-                    stationInfo.getId(), direction);
-            // TODO 已经不是这个站点的信息
+            List<CarInfo> newCars = lineService.getStationCars(stationInfo.getRunlineid(), 
+                    stationInfo.getStationid());
             cars = newCars;
             Message msg=new Message();  
             msg.what = CarsMessage;
@@ -217,7 +217,7 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             int i = 0;
             if (falsePosition < 0) {
                 for (StationInfo station : lineStation.getFalseDirection()) {
-                    if (station.getZdmc().equals(name)) {
+                    if (station.getStationname().equals(name)) {
                         falsePosition = i;
                         break;
                     }
@@ -228,7 +228,7 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             i = 0;
             if (truePosition < 0) { 
                 for (StationInfo station : lineStation.getTrueDirection()) {
-                    if (station.getZdmc().equals(name)) {
+                    if (station.getStationname().equals(name)) {
                         truePosition = i;
                         break;
                     }

@@ -1,10 +1,9 @@
 package com.yhtye.shanghaishishigongjiaochaxun;
 
 import java.util.List;
-import com.everpod.shanghai.R;
+import com.everpod.changsha.R;
 import com.yhtye.shgongjiao.entity.CarInfo;
 import com.yhtye.shgongjiao.entity.StationInfo;
-import com.yhtye.shgongjiao.tools.RegularUtil;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -71,8 +70,7 @@ public class FlexLinearLayout extends LinearLayout {
             boolean isCurrentItem, List<CarInfo> cars) {  
         init();
         
-        int lineindex = position + 1;
-        tvStationName.setText(lineindex +" . "+ station.getZdmc());
+        tvStationName.setText(station.getSortid() +" . "+ station.getStationname());
         if (isCurrentItem) {
             tvStationName.setTextColor(getResources().getColor(R.color.red));
             weixuanzhongicon.setImageResource(R.drawable.xuanzhongzhuangtai);
@@ -93,30 +91,9 @@ public class FlexLinearLayout extends LinearLayout {
                 if (!TextUtils.isEmpty(text)) {
                     text = text + "\n";
                 }
-                String time = car.getTime();
-                if (RegularUtil.isNumeric(time)) {
-                    try {
-                        int totalTime = Integer.parseInt(time);
-                        int needTime = 1;
-                        if (totalTime < 60) {
-                            // 小于1分钟
-                            if (car.getStopdis() <= 0 || totalTime < 30) {
-                                text = text + String.format("%s即将到站", car.getTerminal());
-                                continue;
-                            }
-                        } else {
-                            needTime =  totalTime / 60;
-                            if (totalTime % 60 != 0) {
-                                needTime = needTime + 1;
-                            }
-                        }
-                        time = needTime + "分钟";
-                    } catch (Exception e) {
-                    }
-                }
                 
-                text = text + String.format("%s还有%s站，约%s", car.getTerminal(), 
-                        car.getStopdis(), time);
+                text = text + String.format("%s公交还有%s站到达", car.getTerminal(), 
+                        car.getStopdis());
             }
             tvCardName.setText(text);
         } else {
