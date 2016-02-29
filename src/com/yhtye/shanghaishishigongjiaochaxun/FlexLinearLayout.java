@@ -1,7 +1,7 @@
 package com.yhtye.shanghaishishigongjiaochaxun;
 
 import java.util.List;
-import com.everpod.changsha.R;
+import com.yhtye.changsha.R;
 import com.yhtye.shgongjiao.entity.CarInfo;
 import com.yhtye.shgongjiao.entity.StationInfo;
 
