@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yhtye.shanghaishishigongjiaochaxun"
-    android:versionCode="16"
-    android:versionName="2.1.4"
+    android:versionCode="17"
+    android:versionName="2.1.5"
     android:windowSoftInputMode="adjustPan" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -34,6 +34,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:windowSoftInputMode="stateUnchanged"
             android:label="@string/title_activity_main" >
         </activity>
         <activity
@@ -63,6 +64,11 @@
             android:name="com.umeng.update.UpdateDialogActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
+        
+        <meta-data android:name="BaiduMobAd_APP_ID" android:value="cc687057" />
+        <activity 
+            android:name="com.baidu.mobads.AppActivity" 
+            android:configChanges="keyboard|keyboardHidden|orientation" />
     </application>
 
 </manifest>
