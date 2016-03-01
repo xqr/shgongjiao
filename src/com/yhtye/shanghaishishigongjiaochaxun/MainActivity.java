@@ -1,22 +1,17 @@
 package com.yhtye.shanghaishishigongjiaochaxun;
 
-//import java.lang.ref.WeakReference;
-//import java.util.HashMap;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.baidu.mobads.AdSettings;
+import com.baidu.mobads.AdView;
 import com.everpod.shanghai.R;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UmengUpdateListener;
-import com.umeng.update.UpdateConfig;
-import com.umeng.update.UpdateResponse;
 import com.yhtye.shgongjiao.entity.HistoryInfo;
 import com.yhtye.shgongjiao.entity.PositionInfo;
 import com.yhtye.shgongjiao.service.BaiduApiService;
-//import com.yhtye.shgongjiao.entity.StopStation;
 import com.yhtye.shgongjiao.service.HistoryService;
 import com.yhtye.shgongjiao.tools.NetUtil;
 import com.yhtye.shgongjiao.tools.RegularUtil;
@@ -24,10 +19,7 @@ import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
 
 import android.content.Intent;
 import android.os.Bundle;
-//import android.os.Handler;
-//import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -54,18 +46,14 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
     
     private PositionInfo myPosition = null;
     
-//    private Handler handler = null;
-    
     private HistoryService historyService = null;
     
     // List 历史记录
     private HistoryListAdapter adapter;
     private ListView listHistoryView = null;
     
-    // 附近站点
-//    private NearListParentsAdapter adapter;
-//    private boolean[] isCurrentItems; 
-//    private ListView listSchemeView = null;
+    // 广告
+    private AdView adView;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,13 +72,17 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         
         // 查询历史记录
         showHistory();
+        
+        // 加载广告
+        if (NetUtil.checkNet(this)) {
+            initAd();
+        }
     }
     
     /**
      * 初始化按钮和界面元素
      */
     private void initBar() {
-//        handler = new ResultHandler(this);
         
         shishichaxunButton = (Button) findViewById(R.id.shishichaxun);
         huanshengchaxunButton = (Button) findViewById(R.id.huanshengchaxun);
@@ -105,10 +97,22 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         shishichaxunlayout = (LinearLayout) findViewById(R.id.shishichaxunlayout);
         huanchenglayout = (LinearLayout) findViewById(R.id.huanchenglayout);
         
-//        listSchemeView = (ListView) shishichaxunlayout.findViewById(R.id.list_near_station);
         listHistoryView = (ListView) shishichaxunlayout.findViewById(R.id.list_history_line);
         historyService = new HistoryService(MainActivity.this);
     }
+    
+    private void initAd() {        
+        // 人群属性
+        AdSettings.setKey(new String[] { "baidu", "中 国 " });
+        AdSettings.setCity("上海");
+        
+        // 创建广告View
+        String adPlaceId = "2422749"; // 重要：不填写代码位id不能出广告
+        adView = new AdView(this, adPlaceId);
+        
+        LinearLayout baiduguanggaolayout = (LinearLayout) findViewById(R.id.baiduguanggao);
+        baiduguanggaolayout.addView(adView);
+   }
     
     /**
      * 初始化换乘界面元素
@@ -269,104 +273,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
             } catch (Exception e) {
                 
             }
-//            String name = stationNameList.get(0);
-//            List<StopStation> list = SprznyService.searchStationLines(name);
-//            if (list != null && list.size() > 0) {
-//                stationMap.put(name, list);
-//            }
-//            
-//            // 数据展开
-//            Message msg=new Message();
-//            msg.what = 1;
-//            handler.sendMessage(msg);
         }
     }
-    
-//    private class SearchNearStationCarRunable  implements Runnable {
-//        private String stationName;
-//        
-//        public SearchNearStationCarRunable(String stationName) {
-//            this.stationName = stationName;
-//        }
-//        
-//        @Override
-//        public void run() {
-//            List<StopStation> list = SprznyService.searchStationLines(stationName);
-//            if (list != null && list.size() > 0) {
-//                stationMap.put(stationName, list);
-//            }
-//            Message msg=new Message();
-//            msg.what = 2;
-//            handler.sendMessage(msg);
-//        }
-//    }
-    
-//    private static class ResultHandler extends Handler {
-//        private WeakReference<MainActivity> mActivity;
-//        
-//        public ResultHandler(MainActivity activity) {
-//            this.mActivity = new WeakReference<MainActivity>(activity); 
-//        }
-//        
-//        @Override  
-//        public void handleMessage(Message msg) {  
-//            MainActivity  theActivity =  mActivity.get();
-//            
-//            int messageFlag = msg.what;
-//            if (messageFlag == 1) {
-//                theActivity.showNearStationList(theActivity.stationNameList, theActivity.stationMap);
-//            } else if (messageFlag == 2) {
-//                // 即时刷新  
-//                theActivity.adapter.notifyDataSetChanged(); 
-//            }
-//        }
-//    }
-    
-//    private void showNearStationList(List<String> stations, Map<String, List<StopStation>> stationMap) {
-//        isCurrentItems = new boolean[stations.size()];
-//        
-//        // 刚进入的时候第一条打开
-//        isCurrentItems[0] = true;
-//        for (int i = 1; i < isCurrentItems.length; i++) {  
-//            isCurrentItems[i] = false;
-//        }
-//        
-//        if (adapter == null) {
-//            adapter = new NearListParentsAdapter(this, isCurrentItems,
-//                    stations, stationMap);
-//        }
-//        listSchemeView.setAdapter(adapter);
-//        listSchemeView.setOnItemClickListener(this);
-//    }
-    
-//    @Override
-//    public void onItemClick(AdapterView<?> parent, View view, int position,
-//            long id) {
-//        // 检查网络
-//        if (!NetUtil.checkNet(MainActivity.this)) {
-//            Toast.makeText(MainActivity.this, R.string.network_tip, Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        
-//        /* 
-//         * 只打开一个 
-//         */  
-//        for (int i = 0; i < isCurrentItems.length; i++) {  
-//            if (i != position) {  
-//                isCurrentItems[i] = false;  
-//            }
-//        } 
-//        // 打开或者合上  
-//        isCurrentItems[position] = !isCurrentItems[position];
-//        if (isCurrentItems[position]) {
-//            // 启动线程
-//            ThreadPoolManagerFactory.getInstance()
-//                .execute(new SearchNearStationCarRunable(stationNameList.get(position)));
-//        } else {
-//            // 即时刷新  
-//            adapter.notifyDataSetChanged(); 
-//        }
-//    }
     
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -387,5 +295,16 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         MobclickAgent.onEventValue(MainActivity.this, "historyclick", m, Integer.MAX_VALUE);
         
         startActivity(intent);
+    }
+    
+    /**
+     * Activity销毁时，销毁adView
+     */
+    @Override
+    protected void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
     }
 }
