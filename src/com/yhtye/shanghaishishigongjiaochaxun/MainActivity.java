@@ -107,7 +107,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         AdSettings.setCity("上海");
         
         // 创建广告View
-        String adPlaceId = "2422749"; // 重要：不填写代码位id不能出广告
+        String adPlaceId = "2429859"; // 重要：不填写代码位id不能出广告
         adView = new AdView(this, adPlaceId);
         
         LinearLayout baiduguanggaolayout = (LinearLayout) findViewById(R.id.baiduguanggao);
@@ -155,8 +155,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         huanshengchaxunButton.setTextColor(getResources().getColor(R.color.blue));
         huanshengchaxunButton.setSelected(true);
         // 初始化界面元素
-        shishichaxunlayout.setVisibility(View.GONE);
         huanchenglayout.setVisibility(View.VISIBLE);
+        shishichaxunlayout.setVisibility(View.GONE);
         initHuansheng();
     }
     

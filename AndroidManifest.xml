@@ -34,7 +34,7 @@
         </activity>
         <activity
             android:name="com.yhtye.shanghaishishigongjiaochaxun.MainActivity"
-            android:windowSoftInputMode="stateUnchanged"
+            android:windowSoftInputMode="stateUnchanged|adjustPan"
             android:label="@string/title_activity_main" >
         </activity>
         <activity
@@ -65,7 +65,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         
-        <meta-data android:name="BaiduMobAd_APP_ID" android:value="cc687057" />
+        <meta-data android:name="BaiduMobAd_APP_ID" android:value="fff40fc8" />
         <activity 
             android:name="com.baidu.mobads.AppActivity" 
             android:configChanges="keyboard|keyboardHidden|orientation" />
