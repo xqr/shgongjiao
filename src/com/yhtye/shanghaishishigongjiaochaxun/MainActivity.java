@@ -108,10 +108,6 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
     }
     
     private void initAd() {
-        // 代码设置AppSid和Appsec，此函数必须在AdView实例化前调用
-//         AdView.setAppSid(MainActivity.this, "bb064061");
-//         AdView.setAppSec(MainActivity.this, "bb064061");
-        
          // 人群属性
          AdSettings.setKey(new String[] { "baidu", "中 国 " });
          AdSettings.setCity("上海");
@@ -165,8 +161,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         huanshengchaxunButton.setTextColor(getResources().getColor(R.color.blue));
         huanshengchaxunButton.setSelected(true);
         // 初始化界面元素
-        shishichaxunlayout.setVisibility(View.GONE);
         huanchenglayout.setVisibility(View.VISIBLE);
+        shishichaxunlayout.setVisibility(View.GONE);
         initHuansheng();
     }
     

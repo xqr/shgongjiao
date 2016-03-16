@@ -2,14 +2,8 @@ package com.yhtye.shanghaishishigongjiaochaxun;
 
 import com.instant.shbus.R;
 import com.umeng.analytics.AnalyticsConfig;
-import com.umeng.analytics.MobclickAgent;
-import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UmengUpdateListener;
-import com.umeng.update.UpdateConfig;
-import com.umeng.update.UpdateResponse;
 import com.yhtye.shgongjiao.tools.NetUtil;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
