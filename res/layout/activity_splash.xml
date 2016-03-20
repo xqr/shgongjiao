@@ -5,11 +5,19 @@
     android:orientation="vertical"
     android:background="@color/splashbackground"
     tools:context="com.yhtye.shanghaishishigongjiaochaxun.SplashActivity" >
-
+    
     <ImageView 
-        android:layout_height="fill_parent" 
-        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content" 
+        android:paddingLeft="40dip"
+        android:paddingRight="40dip"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/splash_background"/>
+        android:src="@drawable/splash_title"/>
+    
+    <ImageView 
+        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content" 
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/logo"/>
 
 </LinearLayout>
