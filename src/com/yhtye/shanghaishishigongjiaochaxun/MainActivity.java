@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import com.baidu.mobads.AdSettings;
 import com.baidu.mobads.AdView;
 import com.baidu.mobads.AdViewListener;
-import com.instant.shbus.R;
+import com.instant.bus.R;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.yhtye.shgongjiao.entity.HistoryInfo;

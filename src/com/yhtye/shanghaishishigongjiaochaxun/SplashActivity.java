@@ -1,6 +1,6 @@
 package com.yhtye.shanghaishishigongjiaochaxun;
 
-import com.instant.shbus.R;
+import com.instant.bus.R;
 import com.umeng.analytics.AnalyticsConfig;
 import com.yhtye.shgongjiao.tools.NetUtil;
 

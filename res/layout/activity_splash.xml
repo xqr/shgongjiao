@@ -11,12 +11,14 @@
         android:layout_width="wrap_content" 
         android:paddingLeft="40dip"
         android:paddingRight="40dip"
+        android:paddingTop="50dip"
         android:contentDescription="@string/app_name"
         android:src="@drawable/splash_title"/>
     
     <ImageView 
         android:layout_height="wrap_content" 
         android:layout_width="wrap_content" 
+        android:paddingTop="20dip"        
         android:contentDescription="@string/app_name"
         android:src="@drawable/logo"/>
 
