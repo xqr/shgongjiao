@@ -138,8 +138,8 @@ public class BaiduApiService {
                 if (jsonNodes.get(key) != null) {
                     // 解析起终点
                     List<String> list = new ArrayList<String>();
-                    jsonNodes = mapper.readValue(jsonNodes.get(key), JsonNode.class);
-                    for (JsonNode node : jsonNodes) {
+                    JsonNode jsonNodeArray = mapper.readValue(jsonNodes.get(key), JsonNode.class);
+                    for (JsonNode node : jsonNodeArray) {
                         list.add(node.get("name").getTextValue());
                     }
                     if (list.size() > 0) {
