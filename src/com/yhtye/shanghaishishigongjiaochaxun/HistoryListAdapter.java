@@ -2,7 +2,7 @@ package com.yhtye.shanghaishishigongjiaochaxun;
 
 import java.util.List;
 
-import com.instant.bus.R;
+import com.instantbus.sh.R;
 import com.yhtye.shgongjiao.entity.HistoryInfo;
 
 import android.content.Context;
