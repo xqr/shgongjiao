@@ -139,8 +139,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
         huanshengchaxunButton.setSelected(false);
         
         // 初始化界面元素
-        shishichaxunlayout.setVisibility(View.VISIBLE);
         huanchenglayout.setVisibility(View.GONE);
+        shishichaxunlayout.setVisibility(View.VISIBLE);
     }
     
     /**
