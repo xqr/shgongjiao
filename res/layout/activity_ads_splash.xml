@@ -25,15 +25,16 @@
     
     <TextView 
         android:id="@+id/splash_title"
-        android:layout_height="50dp" 
-        android:layout_width="50dp" 
+        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content" 
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" 
         android:layout_marginTop="10dp" 
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
+        android:textColor="@color/black"
         android:clickable="true"
-        android:text="跳过>>"
+        android:text="3s|跳过"
         android:onClick="skipAdsClick"/>
     
 </RelativeLayout>

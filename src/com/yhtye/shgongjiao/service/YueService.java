@@ -3,7 +3,9 @@ package com.yhtye.shgongjiao.service;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -14,6 +16,7 @@ import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.yhtye.shgongjiao.entity.CardInfo;
 import com.yhtye.shgongjiao.tools.HttpClientUtils;
 
 public class YueService {
@@ -100,6 +103,8 @@ public class YueService {
         editor.commit();
     }
     
+    private Map<String, CardInfo> yueMap = new HashMap<String, CardInfo>();
+    
     /**
      * 查询余额
      * 
@@ -107,6 +112,13 @@ public class YueService {
      * @return
      */
     public String searchYue(String carNumber) {
+        // 余额查询缓存1分钟
+        CardInfo cardInfo = yueMap.get(carNumber);
+        if (cardInfo != null 
+                && cardInfo.getSearchTime() + 60 * 1000 >= new Date().getTime()) {
+            return cardInfo.getYue();
+        }
+        
         String url = "http://220.248.75.36/handapp/PGcardAmtServlet?arg1=" 
                     + carNumber +"&callback=yue&_=" + new Date().getTime();
         try {
@@ -116,6 +128,9 @@ public class YueService {
             }
             String[] resultStr = content.split("'", 3);
             if (resultStr.length == 3) {
+                cardInfo = new CardInfo(carNumber, resultStr[1]);
+                yueMap.put(carNumber, cardInfo);
+                
                 return resultStr[1];
             }
             return null;

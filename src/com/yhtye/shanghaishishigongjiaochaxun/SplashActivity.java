@@ -9,10 +9,12 @@ import com.yhtye.shgongjiao.tools.NetUtil;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -20,7 +22,9 @@ import android.widget.Toast;
  *
  */
 public class SplashActivity extends Activity {
-
+    
+    private final static Handler mHandler = new Handler();
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,15 +32,17 @@ public class SplashActivity extends Activity {
         // 网络检查
         if (!NetUtil.checkNet(this)) {
             setContentView(R.layout.activity_default_splash);
-            
             Toast.makeText(this, R.string.network_tip, Toast.LENGTH_LONG).show();         
             
-            Handler x = new Handler();
-            x.postDelayed(new splashhandler(), 800);
+//            Handler x = new Handler();
+            mHandler.postDelayed(new splashhandler(), 800);
         } else {
             setContentView(R.layout.activity_ads_splash);
             // 加载广告
             loadAds();
+            TextView timeView = (TextView) findViewById(R.id.splash_title);
+            // 倒计时
+            new TimeCountDownTask(timeView, 3).execute();
         }
         
         // 日志传输过程采用加密模式
@@ -83,7 +89,8 @@ public class SplashActivity extends Activity {
     }
     
     /**
-     * 当设置开屏可点击时，需要等待跳转页面关闭后，再切换至您的主窗口。故此时需要增加canJumpImmediately判断。 另外，点击开屏还需要在onResume中调用jumpWhenCanClick接口。
+     * 当设置开屏可点击时，需要等待跳转页面关闭后，再切换至您的主窗口。故此时需要增加canJumpImmediately判断。 
+     * 另外，点击开屏还需要在onResume中调用jumpWhenCanClick接口。
      */
     public boolean canJumpImmediately = false;
 
@@ -112,7 +119,41 @@ public class SplashActivity extends Activity {
     public void skipAdsClick(View v) {
         jump();
     }
+    
+    /**
+     *  倒计时
+     */
+    private class TimeCountDownTask extends AsyncTask<Void, Void, Boolean> {
+        TextView timeView;
+        int limit_time = 0;
 
+        TimeCountDownTask(TextView timeView, int time) {
+            this.timeView = timeView;
+            this.limit_time = time;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            while (limit_time > 0) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        timeView.setText(limit_time + "秒 | 跳过");
+                    }
+                });
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                limit_time--;
+            }
+            jump();
+            return null;
+        }
+    }
+    
+    
     @Override
     public void onResume() {
         super.onResume();
