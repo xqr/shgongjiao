@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shishichaxunlayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:layout_below="@+id/bannerr"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+        >
+    <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/numberone"
+            android:textSize="13sp"
+            android:hint="@string/default_line"/>
+    
+    <Button 
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:text="@string/button_send"
+        android:textColor="#ffffff"
+        android:background="@drawable/button_chaxun"
+        android:textSize="24sp"
+        android:layout_marginTop="30dp"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
+        android:onClick="searchLineClick"/>
+    
+    <ListView android:id="@+id/list_history_line"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:listSelector="@android:color/transparent"
+        android:divider="@null">
+        
+    </ListView>
+    
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:lineSpacingMultiplier="1.5"
+        android:textSize="12sp"
+        android:textColor="#858f95"
+        android:text="@string/rule"/>
+    
+    </LinearLayout>

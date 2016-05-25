@@ -4,11 +4,13 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 import com.umeng.analytics.MobclickAgent;
+import com.yhtye.shanghaishishigongjiaochaxun.R;
 import com.yhtye.shgongjiao.entity.CarInfo;
 import com.yhtye.shgongjiao.entity.HistoryInfo;
 import com.yhtye.shgongjiao.entity.LineInfo;
 import com.yhtye.shgongjiao.entity.LineStationInfo;
 import com.yhtye.shgongjiao.entity.StationInfo;
+import com.yhtye.shgongjiao.myui.FlexListAdapter;
 import com.yhtye.shgongjiao.service.HistoryService;
 import com.yhtye.shgongjiao.service.LineService;
 import com.yhtye.shgongjiao.tools.NetUtil;

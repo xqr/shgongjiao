@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ededf0"
+    android:orientation="vertical" >
+    
+    <RelativeLayout 
+        android:layout_width="fill_parent"  
+        android:layout_height="60dp"
+        android:background="@color/blue">
+        
+        <TextView style="@style/result_text"
+            android:id="@+id/linename"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_centerVertical="true" 
+            android:text="查询结果"
+            android:gravity="center"/>
+        
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/fanhuishangyiye" 
+            android:onClick="backPrePageClick"/>  
+            
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        
+    <ImageView 
+        android:id="@+id/card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/card"/>
+    
+    <TextView 
+        android:id="@+id/cardnumber"
+        android:layout_toRightOf="@+id/card"
+        android:layout_toEndOf="@+id/card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/black"/>
+    
+    <TextView 
+        android:id="@+id/cardyue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/red"/>
+    
+    </RelativeLayout>
+
+</LinearLayout>

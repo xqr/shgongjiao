@@ -1,6 +1,8 @@
-package com.yhtye.shanghaishishigongjiaochaxun;
+package com.yhtye.shgongjiao.myui;
 
 import java.util.List;
+
+import com.yhtye.shanghaishishigongjiaochaxun.R;
 import com.yhtye.shgongjiao.entity.CarInfo;
 import com.yhtye.shgongjiao.entity.StationInfo;
 import com.yhtye.shgongjiao.tools.RegularUtil;

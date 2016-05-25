@@ -3,13 +3,17 @@ package com.yhtye.shanghaishishigongjiaochaxun;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import com.baidu.mobads.AdSettings;
 import com.baidu.mobads.AdView;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
+import com.yhtye.shanghaishishigongjiaochaxun.R;
 import com.yhtye.shgongjiao.entity.HistoryInfo;
 import com.yhtye.shgongjiao.entity.PositionInfo;
+import com.yhtye.shgongjiao.myui.HistoryListAdapter;
+import com.yhtye.shgongjiao.myui.IconListAdapter;
 import com.yhtye.shgongjiao.service.BaiduApiService;
 import com.yhtye.shgongjiao.service.HistoryService;
 import com.yhtye.shgongjiao.tools.NetUtil;
@@ -22,25 +26,30 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends Activity implements OnItemClickListener {
 
     private EditText numberoneEditText = null;
+    private EditText gongjiaokahaonumberoneEditText = null;
     
     private Intent intent=new Intent(); 
     
-    private Button shishichaxunButton = null;
-    private Button huanshengchaxunButton = null;
+    // 顶部banner
+    private TextView bannerrtitle = null;
     
+    // 三个面板
     private LinearLayout huanchenglayout = null;
     private LinearLayout shishichaxunlayout = null;
+    private LinearLayout yuechaxunlayout = null;
     
+    // 换乘查询元素
     private EditText qidianEditText = null;
     private EditText zongdianEditText = null;
     
@@ -54,6 +63,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
     
     // 广告
     private AdView adView;
+    
+    // 底部工具栏
+    private GridView gview;
+    private IconListAdapter simAdapter;
+    private boolean[] isCurrentItems;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,46 +87,59 @@ public class MainActivity extends Activity implements OnItemClickListener {
         // 查询历史记录
         showHistory();
         
-        // 加载广告
-        if (NetUtil.checkNet(this)) {
-            initAd();
-        }
+//        // 加载广告
+//        if (NetUtil.checkNet(this)) {
+//            initAd();
+//        }
+        // 初始化底部栏
+        initIcons();
+    }
+    
+    /**
+     * 初始化底部icon面板
+     */
+    private void initIcons() {
+        isCurrentItems = new boolean[3];
+        isCurrentItems[0] = true;
+        isCurrentItems[1] = false;
+        isCurrentItems[2] = false;
+        gview = (GridView) findViewById(R.id.gview);
+        simAdapter = new IconListAdapter(this, isCurrentItems);
+        // 配置适配器
+        gview.setAdapter(simAdapter);
+        gview.setOnItemClickListener(new ItemClickListener());
     }
     
     /**
      * 初始化按钮和界面元素
      */
     private void initBar() {
-        
-        shishichaxunButton = (Button) findViewById(R.id.shishichaxun);
-        huanshengchaxunButton = (Button) findViewById(R.id.huanshengchaxun);
         // 获取输入信息
         numberoneEditText = (EditText)findViewById(R.id.numberone);
         
-        // 初始化
-        shishichaxunButton.setSelected(true);
-        huanshengchaxunButton.setSelected(false);
+        bannerrtitle = (TextView) findViewById(R.id.bannerrtitle);
         
         // 初始化2个布局
         shishichaxunlayout = (LinearLayout) findViewById(R.id.shishichaxunlayout);
         huanchenglayout = (LinearLayout) findViewById(R.id.huanchenglayout);
+        yuechaxunlayout = (LinearLayout) findViewById(R.id.yuechaxunlayout);
         
         listHistoryView = (ListView) shishichaxunlayout.findViewById(R.id.list_history_line);
         historyService = new HistoryService(MainActivity.this);
     }
     
-    private void initAd() {        
-         // 人群属性
-         AdSettings.setKey(new String[] { "baidu", "中 国 " });
-         AdSettings.setCity("上海");
-         
-         // 创建广告View
-         String adPlaceId = "2422749"; // 重要：不填写代码位id不能出广告
-         adView = new AdView(this, adPlaceId);
-         
-         LinearLayout baiduguanggaolayout = (LinearLayout) findViewById(R.id.baiduguanggao);
-         baiduguanggaolayout.addView(adView);
-    }
+//    private void initAd() {        
+//         // 人群属性
+//         AdSettings.setKey(new String[] { "baidu", "中 国 " });
+//         AdSettings.setCity("上海");
+//         
+//         // 创建广告View
+//         String adPlaceId = "2422749"; // 重要：不填写代码位id不能出广告
+//         adView = new AdView(this, adPlaceId);
+//         
+//         LinearLayout baiduguanggaolayout = (LinearLayout) findViewById(R.id.baiduguanggao);
+//         baiduguanggaolayout.addView(adView);
+//    }
     
     /**
      * 初始化换乘界面元素
@@ -132,15 +159,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
      * @param v
      */
     public void shishichaxunClick(View v) {
-        // 按钮变化
-        shishichaxunButton.setTextColor(getResources().getColor(R.color.blue));
-        shishichaxunButton.setSelected(true);
-        huanshengchaxunButton.setTextColor(getResources().getColor(R.color.white));
-        huanshengchaxunButton.setSelected(false);
-        
         // 初始化界面元素
-        huanchenglayout.setVisibility(View.GONE);
         shishichaxunlayout.setVisibility(View.VISIBLE);
+        huanchenglayout.setVisibility(View.GONE);
+        yuechaxunlayout.setVisibility(View.GONE);
     }
     
     /**
@@ -149,15 +171,28 @@ public class MainActivity extends Activity implements OnItemClickListener {
      * @param v
      */
     public void huanshengchaxunClick(View v) {
-        // 按钮变化
-        shishichaxunButton.setTextColor(getResources().getColor(R.color.white));
-        shishichaxunButton.setSelected(false);
-        huanshengchaxunButton.setTextColor(getResources().getColor(R.color.blue));
-        huanshengchaxunButton.setSelected(true);
         // 初始化界面元素
-        shishichaxunlayout.setVisibility(View.GONE);
         huanchenglayout.setVisibility(View.VISIBLE);
+        shishichaxunlayout.setVisibility(View.GONE);
+        yuechaxunlayout.setVisibility(View.GONE);
         initHuansheng();
+    }
+    
+    /**
+     * 余额查询按钮
+     * 
+     * @param v
+     */
+    public void yuechaxunClick(View v) {
+        // 初始化界面元素
+        yuechaxunlayout.setVisibility(View.VISIBLE);
+        huanchenglayout.setVisibility(View.GONE);
+        shishichaxunlayout.setVisibility(View.GONE);
+        
+        // 初始化页面元素
+        if (gongjiaokahaonumberoneEditText == null) {
+            gongjiaokahaonumberoneEditText = (EditText) findViewById(R.id.gongjiaokahaonumberone);
+        }
     }
     
     /**
@@ -235,6 +270,59 @@ public class MainActivity extends Activity implements OnItemClickListener {
         startActivity(intent);
     }
     
+    /**
+     * 余额查询—余额查询
+     * 
+     * @param v
+     */
+    public void searchyueClick(View v) {
+        // 检查网络
+        if (!NetUtil.checkNet(MainActivity.this)) {
+            Toast.makeText(MainActivity.this, R.string.network_tip, Toast.LENGTH_LONG).show();
+            return;
+        }
+        
+        String gongjiaokahao = gongjiaokahaonumberoneEditText.getText().toString();
+        if (TextUtils.isEmpty(gongjiaokahao)) {
+            Toast.makeText(MainActivity.this, "请输入要查询的公交卡号", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        // 上海公交卡号全部为数字
+        String regEx="[^0-9]";   
+        Pattern p = Pattern.compile(regEx);   
+        Matcher m = p.matcher(gongjiaokahao);   
+        gongjiaokahao = m.replaceAll("").trim();
+        
+        // 切换Activity
+        intent.setClass(MainActivity.this, YueActivity.class);  
+        intent.putExtra("carNumber", gongjiaokahao);
+        startActivity(intent);
+    }
+    
+    class  ItemClickListener implements OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                long id) {
+            for (int i = 0; i < isCurrentItems.length; i++) {
+                isCurrentItems[i] = (i == position);
+            }
+            if (position == 0) {
+                bannerrtitle.setText("实时公交");
+                shishichaxunClick(view);
+            } else if (position == 1) {
+                bannerrtitle.setText("换乘查询");
+                huanshengchaxunClick(view);
+            } else {
+                bannerrtitle.setText("公交卡余额查询");
+                yuechaxunClick(view);
+            }
+            
+            simAdapter.notifyDataSetChanged();
+        }
+    }
+    
     private List<HistoryInfo> historyList = null;
     private void showHistory() {
         historyList = historyService.getHistory();
@@ -263,8 +351,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 if (myPosition == null) {
                     return;
                 }
-                
-//                myPosition = new PositionInfo(31.256361, 121.58719);
                 
                 stationNameList = BaiduApiService.getNearStations(myPosition);
                 if (stationNameList == null || stationNameList.size() == 0) {

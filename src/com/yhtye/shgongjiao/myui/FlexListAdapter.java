@@ -1,4 +1,4 @@
-package com.yhtye.shanghaishishigongjiaochaxun;
+package com.yhtye.shgongjiao.myui;
 
 import java.util.List;
 import com.yhtye.shgongjiao.entity.CarInfo;

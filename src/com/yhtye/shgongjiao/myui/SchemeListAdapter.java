@@ -1,7 +1,8 @@
-package com.yhtye.shanghaishishigongjiaochaxun;
+package com.yhtye.shgongjiao.myui;
 
 import java.util.List;
 
+import com.yhtye.shanghaishishigongjiaochaxun.R;
 import com.yhtye.shgongjiao.entity.RoutesScheme;
 import com.yhtye.shgongjiao.entity.SchemeSteps;
 

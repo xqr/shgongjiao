@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.umeng.analytics.MobclickAgent;
+import com.yhtye.shanghaishishigongjiaochaxun.R;
 import com.yhtye.shgongjiao.entity.RoutesScheme;
+import com.yhtye.shgongjiao.myui.SchemeListAdapter;
 import com.yhtye.shgongjiao.service.BaiduApiService;
 import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
 
