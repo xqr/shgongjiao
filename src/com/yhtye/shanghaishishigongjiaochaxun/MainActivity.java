@@ -24,7 +24,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -117,6 +119,17 @@ public class MainActivity extends Activity implements OnItemClickListener {
         // 获取输入信息
         numberoneEditText = (EditText)findViewById(R.id.numberone);
         
+        numberoneEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    searchLineClick(v);
+                }
+                return true;
+            }
+        });
+        
         bannerrtitle = (TextView) findViewById(R.id.bannerrtitle);
         
         // 初始化2个布局
@@ -192,6 +205,18 @@ public class MainActivity extends Activity implements OnItemClickListener {
         // 初始化页面元素
         if (gongjiaokahaonumberoneEditText == null) {
             gongjiaokahaonumberoneEditText = (EditText) findViewById(R.id.gongjiaokahaonumberone);
+            
+            gongjiaokahaonumberoneEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+                @Override
+                public boolean onEditorAction(TextView v, int actionId,
+                        KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {  
+                        searchyueClick(v);
+                    }
+                    return true;
+                }
+            });
         }
     }
     

@@ -17,12 +17,13 @@ import com.yhtye.shgongjiao.tools.HttpClientUtils;
 
 public class LineService {
     private String apiUrl = "http://xxbs.sh.gov.cn:8080/weixinpage";
+    private String refer = "http://xxbs.sh.gov.cn:8080/weixinpage/index.html";
     
     public LineInfo getLineInfo(String lineName, int retryTimes) {
         String url = apiUrl + "/HandlerOne.ashx?name=" + lineName;
         
         try {
-            String content = HttpClientUtils.getResponse(url);
+            String content = HttpClientUtils.getResponse(url, refer);
             if (TextUtils.isEmpty(content) || content.equals("no")) {
                 return null;
             }
@@ -42,7 +43,7 @@ public class LineService {
     public LineStationInfo getLineStation(String lineName, String lineId) {
         String url = String.format("%s/HandlerTwo.ashx?name=%s&lineid=%s", apiUrl, lineName, lineId);
         
-        String content = HttpClientUtils.getResponse(url);
+        String content = HttpClientUtils.getResponse(url, refer);
         if (TextUtils.isEmpty(content)) {
             return null;
         }
@@ -78,7 +79,7 @@ public class LineService {
         String url = String.format("%s/HandlerThree.ashx?name=%s&lineid=%s&stopid=%s&direction=%s", 
                 apiUrl, lineName, lineId, stopId, direction ? 0 : 1);
         
-        String content = HttpClientUtils.getResponse(url);
+        String content = HttpClientUtils.getResponse(url, refer);
         if (TextUtils.isEmpty(content)) {
             return null;
         }

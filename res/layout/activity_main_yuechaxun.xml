@@ -16,6 +16,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/gongjiaokahaonumberone"
             android:textSize="13sp"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
             android:hint="请输入您的公交卡号"/>
     
     <Button
