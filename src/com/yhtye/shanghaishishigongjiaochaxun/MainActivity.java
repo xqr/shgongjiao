@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.yhtye.changsha.R;
+import com.shishibus.changsha.R;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.yhtye.shgongjiao.entity.HistoryInfo;

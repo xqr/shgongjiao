@@ -2,7 +2,7 @@ package com.yhtye.shanghaishishigongjiaochaxun;
 
 import java.util.List;
 
-import com.yhtye.changsha.R;
+import com.shishibus.changsha.R;
 import com.yhtye.shgongjiao.entity.RoutesScheme;
 import com.yhtye.shgongjiao.entity.SchemeSteps;
 
