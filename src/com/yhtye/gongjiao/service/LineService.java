@@ -1,10 +1,24 @@
 package com.yhtye.gongjiao.service;
 
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.params.ClientPNames;
+import org.apache.http.client.params.CookiePolicy;
+import org.apache.http.entity.BufferedHttpEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
@@ -17,16 +31,25 @@ import android.util.Log;
 
 import com.yhtye.gongjiao.entity.LineInfo;
 import com.yhtye.gongjiao.entity.StationInfo;
-import com.yhtye.gongjiao.tools.HttpClientUtils;
 
 public class LineService {
-    private String apiUrl = "http://www.bjbus.com/home/ajax_search_bus_stop.php";
+    private String apiUrl = "http://www.bjbus.com/home/ajax_search_bus_stop_token.php";
+    
+    private String SERVERID = null;
+    private String PHPSESSID = null;
     
     public List<LineInfo> getLineInfo(String lineName, int retryTimes) {
         String url = apiUrl + "?act=getLineDirOption&selBLine=" + lineName;
         
         try {
-            String content = HttpClientUtils.getResponse(url);
+            if (PHPSESSID == null || SERVERID == null) {
+                freshCookieValue();
+            }
+            
+            Map<String, String> headerMap = getBaseHeaderMap();
+            headerMap.put("Cookie", String.format("%s;%s", PHPSESSID, SERVERID));
+            
+            String content = getResponse(url, headerMap);
             if (TextUtils.isEmpty(content)) {
                 return null;
             }
@@ -65,7 +88,14 @@ public class LineService {
         String url = String.format("%s?act=busTime&selBLine=%s&selBDir=%s&selBStop=%s", 
                 apiUrl, lineInfo.getLine_name(), lineInfo.getLine_id(), selBStop);
         
-        String content = HttpClientUtils.getResponse(url);
+        if (PHPSESSID == null || SERVERID == null) {
+            freshCookieValue();
+        }
+        
+        Map<String, String> headerMap = getBaseHeaderMap();
+        headerMap.put("Cookie", String.format("%s;%s", PHPSESSID, SERVERID));
+        
+        String content = getResponse(url, headerMap);
         if (TextUtils.isEmpty(content)) {
             return null;
         }
@@ -105,6 +135,41 @@ public class LineService {
     }
     
     /**
+     * 基本Header
+     * 
+     * @return
+     */
+    private Map<String, String> getBaseHeaderMap() {
+        Map<String, String> headerMap = new HashMap<String, String>();
+        
+        headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
+        headerMap.put("Host", "www.bjbus.com");
+        headerMap.put("Connection", "keep-alive");
+        headerMap.put("Referer", "http://www.bjbus.com/home/fun_rtbus.php?uSec=00000160&uSub=00000162");
+        headerMap.put("X-Requested-With", "XMLHttpRequest");
+        
+        return headerMap;
+    }
+    
+    /**
+     * 刷新Cookie
+     */
+    private void freshCookieValue() {
+        String url = "http://www.bjbus.com/home/index.php";
+        
+        Map<String, String> headerMap = new HashMap<String, String>();
+        
+        headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
+        headerMap.put("Host", "www.bjbus.com");
+        headerMap.put("Connection", "keep-alive");
+        headerMap.put("Upgrade-Insecure-Requests", "1");
+        
+        // 请求获取新的Token
+        getResponse(url, headerMap);
+    }
+    
+    
+    /**
      * 解析车辆信息
      * 
      * @param element
@@ -122,7 +187,11 @@ public class LineService {
         if (carsInfo.size() == 2) {
             // 解析车辆出发时间
             parseLineTime(carsInfo.get(0).text(), lineInfo);
-            return carsInfo.get(1).text();
+            String message = carsInfo.get(1).text();
+//            if (message != null && message.contains(" 0 站")) {
+//                return "车辆即将到站，请留意";
+//            }
+            return message;
         }
         return null;
     }
@@ -192,6 +261,64 @@ public class LineService {
             steps++;
         }
         return list;
+    }
+    
+    /**
+     * get请求
+     * 
+     * @param url 请求url
+     * @return
+     */
+    public String getResponse(String url, Map<String, String> headerMap) {
+        try {
+            HttpClient httpclient = new DefaultHttpClient();
+            URI uri = new URI(url);
+            HttpGet httpGet = new HttpGet(uri);
+            httpclient.getParams().setParameter(ClientPNames.COOKIE_POLICY,
+                    CookiePolicy.BROWSER_COMPATIBILITY);
+            httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000); 
+            
+            if (headerMap != null) {
+                for (String key : headerMap.keySet()) {
+                    httpGet.setHeader(key, headerMap.get(key));
+                }
+            }
+            
+            HttpResponse response = httpclient.execute(httpGet);
+            if (response == null) {
+                return null;
+            }
+            
+            Header[] cookies = response.getHeaders("Set-Cookie");
+            if (cookies != null) {
+                for (Header header : cookies) {
+                    String value = header.getValue();
+                    if (value != null) {
+                        if (value.startsWith("PHPSESSID")) {
+                            PHPSESSID = value.split(";")[0];
+                        } else if (value.startsWith("SERVERID")) {
+                            SERVERID = value.split(";")[0];
+                        }
+                    }
+                }
+            }
+            HttpEntity entity = response.getEntity();
+            String htmlStr = null;
+            if (entity != null) {
+                entity = new BufferedHttpEntity(entity);
+                htmlStr = EntityUtils.toString(entity, "UTF-8");
+                entity.consumeContent();
+            }
+            if (htmlStr != null && htmlStr.contains("timeout")) {
+                PHPSESSID = null;
+                SERVERID = null;
+            }
+            return htmlStr;
+
+        } catch (Exception e) {
+            Log.i(url, e.getMessage());
+        }
+        return null;
     }
     
     public static void main(String[] args) {
