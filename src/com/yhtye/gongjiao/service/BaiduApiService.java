@@ -31,7 +31,7 @@ public class BaiduApiService {
                     .append("&destination_region=").append(URLEncoder.encode(region, "UTF-8"))
                     .append("&output=json&ak=").append(ak);
             
-            String content = HttpClientUtils.getResponse(url.toString());
+            String content = HttpClientUtils.getResponse(url.toString(), null);
             return content;
         } catch (Exception e) {
             Log.e("com.yhtye.shgongjiao.service.BaiduApiService", "getDirectionRoutes()", e);
@@ -185,7 +185,7 @@ public class BaiduApiService {
                     .append("&page_size=10&radius=500&page_num=0&scope=1&location=")
                     .append(URLEncoder.encode(String.format("%s,%s", myPosition.getX(), myPosition.getY()), "UTF-8"));
             
-            String content = HttpClientUtils.getResponse(url.toString());
+            String content = HttpClientUtils.getResponse(url.toString(), null);
             return parseNearStations(content);
         } catch (Exception e) {
             Log.e("com.yhtye.shgongjiao.service.BaiduApiService", "getNearStations()", e);

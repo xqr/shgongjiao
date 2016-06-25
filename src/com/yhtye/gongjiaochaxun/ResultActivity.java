@@ -58,10 +58,6 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
     private FlexListAdapter adapter;
     private Handler handler = null;
     
-//    // 正反方向初始化滚动位置
-//    private int truePosition = -1;
-//    private int falsePosition = -1;
-    
     private HistoryService historyService = null;
     private ProgressDialog progressDialog = null;
     

@@ -26,7 +26,7 @@ public class SprznyService {
         String url = String.format("http://api.sprzny.com/gongjiao/location/%s/%s", x, y);
         
         try {
-            String content = HttpClientUtils.getResponse(url);
+            String content = HttpClientUtils.getResponse(url, null);
             if (TextUtils.isEmpty(content)) {
                 return null;
             }
@@ -52,7 +52,7 @@ public class SprznyService {
             String url = String.format("http://api.sprzny.com/gongjiao/stop/%s", 
                     URLEncoder.encode(stationName, "UTF-8"));
             
-            String content = HttpClientUtils.getResponse(url);
+            String content = HttpClientUtils.getResponse(url, null);
             if (TextUtils.isEmpty(content)) {
                 return null;
             }
