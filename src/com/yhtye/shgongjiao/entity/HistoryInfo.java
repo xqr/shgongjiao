@@ -21,6 +21,8 @@ public class HistoryInfo implements Serializable {
      */
     private String endStop = "";
     
+//    private LineStationInfo lineStationInfo;
+    
     public HistoryInfo() {
         
     }

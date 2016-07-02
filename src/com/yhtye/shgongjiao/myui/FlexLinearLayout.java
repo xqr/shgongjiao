@@ -73,7 +73,12 @@ public class FlexLinearLayout extends LinearLayout {
         init();
         
         int lineindex = position + 1;
-        tvStationName.setText(lineindex +" . "+ station.getZdmc());
+        if (station.getZdmc().length() > 8) {
+            tvStationName.setText(lineindex +" . "+ station.getZdmc().substring(0, 8));
+        } else {
+            tvStationName.setText(lineindex +" . "+ station.getZdmc());
+        }
+        
         if (isCurrentItem) {
             tvStationName.setTextColor(getResources().getColor(R.color.red));
             weixuanzhongicon.setImageResource(R.drawable.xuanzhongzhuangtai);
@@ -114,6 +119,9 @@ public class FlexLinearLayout extends LinearLayout {
                         time = needTime + "分钟";
                     } catch (Exception e) {
                     }
+                } else {
+                    // 处理25分钟
+                    time = (car.getStopdis() * 2) + "分钟";
                 }
                 
                 text = text + String.format("%s还有%s站，约%s", car.getTerminal(), 
