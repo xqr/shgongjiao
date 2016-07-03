@@ -60,13 +60,17 @@ public class HttpClientUtils {
         return null;
     }
     
+    public static String getResponse(String url) {
+        return getResponse(url, null);
+    }
+    
     /**
      * get请求
      * 
      * @param url 请求url
      * @return
      */
-    public static String getResponse(String url) {
+    public static String getResponse(String url, String referer) {
         try {
             HttpClient httpclient = new DefaultHttpClient();
             URI uri = new URI(url);
@@ -74,6 +78,12 @@ public class HttpClientUtils {
             httpclient.getParams().setParameter(ClientPNames.COOKIE_POLICY,
                     CookiePolicy.BROWSER_COMPATIBILITY);
             httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000); 
+            
+            // 增加Referer
+            if (referer != null) {
+                httpGet.setHeader("Referer", referer);
+            }
+            
             HttpResponse response = httpclient.execute(httpGet);
             if (response == null) {
                 return null;
