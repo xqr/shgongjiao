@@ -106,8 +106,8 @@ public class FlexListAdapter extends BaseAdapter {
             final StationInfo station, final int position,
             boolean isCurrentItem, List<CarInfo> cars) {
         int lineindex = position + 1;
-        if (station.getZdmc().length() > 8) {
-            viewHolder.tvStationName.setText(lineindex + " . " + station.getZdmc().substring(0, 8));
+        if (station.getZdmc().length() > 10) {
+            viewHolder.tvStationName.setText(lineindex + " . " + station.getZdmc().substring(0, 10));
         } else {
             viewHolder.tvStationName.setText(lineindex + " . " + station.getZdmc());
         }

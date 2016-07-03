@@ -1,8 +1,10 @@
 package com.yhtye.shgongjiao.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class LineStationInfo {
+public class LineStationInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
     private List<StationInfo> trueDirection;
     private List<StationInfo> falseDirection;
     public List<StationInfo> getTrueDirection() {

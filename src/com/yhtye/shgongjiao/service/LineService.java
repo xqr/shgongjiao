@@ -12,12 +12,14 @@ import com.yhtye.shgongjiao.entity.LineStationInfo;
 import com.yhtye.shgongjiao.entity.StationInfo;
 import com.yhtye.shgongjiao.tools.HttpClientUtils;
 
-public class LineService {
-    private String apiUrl = "http://xxbs.sh.gov.cn:8080/weixinpage";
+public class LineService implements ILineService {
+    
     private String refer = "http://xxbs.sh.gov.cn:8080/weixinpage/index.html";
     
+    @Override
     public LineInfo getLineInfo(String lineName, int retryTimes) {
-        String url = apiUrl + "/HandlerOne.ashx?name=" + lineName;
+        String url = "http://xxbs.sh.gov.cn:8080/weixinpage/HandlerOne.ashx?name=" 
+                    + lineName;
         
         try {
             String content = HttpClientUtils.getResponse(url, refer);
@@ -36,9 +38,10 @@ public class LineService {
         }
         return null;
     }
-    
+    @Override
     public LineStationInfo getLineStation(String lineName, String lineId) {
-        String url = String.format("%s/HandlerTwo.ashx?name=%s&lineid=%s", apiUrl, lineName, lineId);
+        String url = String.format("http://xxbs.sh.gov.cn:8080/weixinpage/HandlerTwo.ashx?name=%s&lineid=%s", 
+                lineName, lineId);
         
         String content = HttpClientUtils.getResponse(url, refer);
         if (TextUtils.isEmpty(content)) {
@@ -72,9 +75,10 @@ public class LineService {
         return null;
     }
     
+    @Override
     public List<CarInfo> getStationCars(String lineName, String lineId, String stopId, boolean direction) {
-        String url = String.format("%s/HandlerThree.ashx?name=%s&lineid=%s&stopid=%s&direction=%s", 
-                apiUrl, lineName, lineId, stopId, direction ? 0 : 1);
+        String url = String.format("http://xxbs.sh.gov.cn:8080/weixinpage/HandlerThree.ashx?name=%s&lineid=%s&stopid=%s&direction=%s", 
+                lineName, lineId, stopId, direction ? 0 : 1);
         
         String content = HttpClientUtils.getResponse(url, refer);
         if (TextUtils.isEmpty(content)) {

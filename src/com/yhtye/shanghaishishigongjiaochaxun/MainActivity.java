@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.baidu.mobads.AdSettings;
 import com.baidu.mobads.AdView;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
@@ -86,15 +87,16 @@ public class MainActivity extends Activity implements OnItemClickListener {
         // 通过经纬度查询附件站点
         ThreadPoolManagerFactory.getInstance().execute(new SearchNearStationsRunable());
         
+        // 初始化底部栏
+        initIcons();
+        
         // 查询历史记录
         showHistory();
         
-//        // 加载广告
-//        if (NetUtil.checkNet(this)) {
-//            initAd();
-//        }
-        // 初始化底部栏
-        initIcons();
+        // 加载广告
+        if (NetUtil.checkNet(this)) {
+            initAd();
+        }
     }
     
     /**
@@ -141,18 +143,18 @@ public class MainActivity extends Activity implements OnItemClickListener {
         historyService = new HistoryService(MainActivity.this);
     }
     
-//    private void initAd() {        
-//         // 人群属性
-//         AdSettings.setKey(new String[] { "baidu", "中 国 " });
-//         AdSettings.setCity("上海");
-//         
-//         // 创建广告View
-//         String adPlaceId = "2422749"; // 重要：不填写代码位id不能出广告
-//         adView = new AdView(this, adPlaceId);
-//         
-//         LinearLayout baiduguanggaolayout = (LinearLayout) findViewById(R.id.baiduguanggao);
-//         baiduguanggaolayout.addView(adView);
-//    }
+    private void initAd() {        
+         // 人群属性
+         AdSettings.setKey(new String[] { "baidu", "中 国 " });
+         AdSettings.setCity("上海");
+         
+         // 创建广告View
+         String adPlaceId = "2422749"; // 重要：不填写代码位id不能出广告
+         adView = new AdView(this, adPlaceId);
+         
+         LinearLayout baiduguanggaolayout = (LinearLayout) findViewById(R.id.baiduguanggao);
+         baiduguanggaolayout.addView(adView);
+    }
     
     /**
      * 初始化换乘界面元素
@@ -396,9 +398,15 @@ public class MainActivity extends Activity implements OnItemClickListener {
             return;
         }
         
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("historyInfo", historyInfo);
+        bundle.putString("flag", "history");
+        bundle.putString("lineName", historyInfo.getLineName());
+        bundle.putBoolean("direction", historyInfo.isDirection());
+        intent.putExtras(bundle);
+        
         intent.setClass(MainActivity.this, ResultActivity.class);  
-        intent.putExtra("lineName", historyInfo.getLineName());
-        intent.putExtra("direction", historyInfo.isDirection());
         
         Map<String,String> m = new HashMap<String,String>();
         m.put("lineName", historyInfo.getLineName());

@@ -1,6 +1,10 @@
 package com.yhtye.shgongjiao.entity;
 
-public class LineInfo {
+import java.io.Serializable;
+
+public class LineInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
     private String end_earlytime;
     private String end_latetime;
     private String end_stop;

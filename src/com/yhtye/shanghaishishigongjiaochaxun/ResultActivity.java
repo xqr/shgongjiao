@@ -12,8 +12,8 @@ import com.yhtye.shgongjiao.entity.LineStationInfo;
 import com.yhtye.shgongjiao.entity.StationInfo;
 import com.yhtye.shgongjiao.myui.FlexListAdapter;
 import com.yhtye.shgongjiao.service.HistoryService;
+import com.yhtye.shgongjiao.service.ILineService;
 import com.yhtye.shgongjiao.service.LineAppService;
-import com.yhtye.shgongjiao.service.LineService;
 import com.yhtye.shgongjiao.tools.NetUtil;
 import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
 
@@ -49,9 +49,10 @@ public class ResultActivity extends Activity implements OnItemClickListener {
     private boolean[] isCurrentItems;
     // 方向
     private boolean direction = true;
-//    TODO private LineService lineService = new LineService();
-    private LineAppService lineService = new LineAppService();
     
+    private ILineService lineService = new LineAppService();
+    
+    private TextView linenameTextView;
     private RelativeLayout lineinfoLayout = null;
     private TextView qidianTextView = null;
     private TextView zhongdianTextView = null;
@@ -66,6 +67,8 @@ public class ResultActivity extends Activity implements OnItemClickListener {
     private int truePosition = -1;
     private int falsePosition = -1;
     
+    
+    private boolean isFromHistory = false;
     private HistoryService historyService = null;
     
     @Override
@@ -73,12 +76,37 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
         
-        Intent intent = getIntent();
-        lineName = intent.getStringExtra("lineName");
-        direction = intent.getBooleanExtra("direction", true);
-        
         init();
         
+        Intent intent = getIntent();
+        
+        lineName = intent.getStringExtra("lineName");
+        direction = intent.getBooleanExtra("direction", true);
+        linenameTextView.setText(lineName);
+        
+        String flag = intent.getStringExtra("flag");
+        if (flag != null && flag.equals("history")) {
+            HistoryInfo  history = (HistoryInfo) intent.getSerializableExtra("historyInfo");
+            if (history != null 
+                    && history.getLineInfo() != null 
+                    && history.getLineStationInfo() != null) {
+                isFromHistory = true;
+                lineInfo = history.getLineInfo();
+                lineStation = history.getLineStationInfo();
+                showLineInfo();
+                lineinfoLayout.setVisibility(View.VISIBLE);
+                
+                showStations(this);
+                lv_cards.setAdapter(adapter);
+                lv_cards.setOnItemClickListener(this);
+                
+                // 自动展开当前站点
+                gundong();
+                return;
+            }
+        } 
+        
+        isFromHistory = false;
         // 启动新线程获取线路信息
         ThreadPoolManagerFactory.getInstance().execute(new SearchLineRunable(lineName));
     }
@@ -98,7 +126,7 @@ public class ResultActivity extends Activity implements OnItemClickListener {
             if (TextUtils.isEmpty(nowLineName)) {
                 return;
             }
-            LineInfo newlineInfo = lineService.getLineInfo(nowLineName, 2);
+            LineInfo newlineInfo = lineService.getLineInfo(nowLineName, 1);
             if (lineName == null || !nowLineName.equals(lineName)) {
                 // 如果用户已切换了路线，抛弃之前的结果不再继续处理
                 return;
@@ -178,27 +206,27 @@ public class ResultActivity extends Activity implements OnItemClickListener {
                     theActivity.lineinfoLayout.setVisibility(View.VISIBLE);
                 }
             } else if (messageFlag == StationsMessage) {
-                // 初始化
-                theActivity.checkListPosition();
                 // 站点信息
                 theActivity.showStations(theActivity);
                 theActivity.lv_cards.setAdapter(theActivity.adapter);
-                
-                // 尝试滚动
-                theActivity.lv_cards.setSelected(true);
-                if (theActivity.truePosition >= 4 && theActivity.falsePosition >= 4) { 
-                    theActivity.lv_cards.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            theActivity.setListViewPos(theActivity.direction ? theActivity.truePosition : theActivity.falsePosition);
-                        }
-                    });
-                }
-                if (theActivity.truePosition >=0 && theActivity.falsePosition >= 0) {
-                    theActivity.onItemClick(null, null, theActivity.direction ? theActivity.truePosition : theActivity.falsePosition, 0);
-                }
-                
                 theActivity.lv_cards.setOnItemClickListener(theActivity);
+                
+                theActivity.gundong();
+//              // 初始化
+//              theActivity.checkListPosition();
+//                // 尝试滚动
+//                theActivity.lv_cards.setSelected(true);
+//                if (theActivity.truePosition >= 4 && theActivity.falsePosition >= 4) { 
+//                    theActivity.lv_cards.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            theActivity.setListViewPos(theActivity.direction ? theActivity.truePosition : theActivity.falsePosition);
+//                        }
+//                    });
+//                }
+//                if (theActivity.truePosition >=0 && theActivity.falsePosition >= 0) {
+//                    theActivity.onItemClick(null, null, theActivity.direction ? theActivity.truePosition : theActivity.falsePosition, 0);
+//                }
             } else if (messageFlag == CarsMessage) {
                 // 车辆信息
                 theActivity.adapter.setCars(theActivity.cars);
@@ -207,6 +235,25 @@ public class ResultActivity extends Activity implements OnItemClickListener {
             }
         }
     }
+    
+    private void gundong() {
+        // 初始化
+        checkListPosition();
+          // 尝试滚动
+          lv_cards.setSelected(true);
+          if (truePosition >= 4 && falsePosition >= 4) { 
+              lv_cards.post(new Runnable() {
+                  @Override
+                  public void run() {
+                      setListViewPos(direction ? truePosition : falsePosition);
+                  }
+              });
+          }
+          if (truePosition >=0 && falsePosition >= 0) {
+              onItemClick(null, null, direction ? truePosition : falsePosition, 0);
+          }
+    }
+    
     
     /**
      * 定位初始化滚动
@@ -334,9 +381,7 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         handler = new ResultHandler(this);
         lv_cards = (ListView) findViewById(R.id.list_cards);
         
-        TextView linenameTextView = (TextView)findViewById(R.id.linename);
-        linenameTextView.setText(lineName);
-        
+        linenameTextView = (TextView)findViewById(R.id.linename);
         lineinfoLayout = (RelativeLayout)findViewById(R.id.lineinfo);
         qidianTextView = (TextView)findViewById(R.id.qidian);
         zhongdianTextView = (TextView)findViewById(R.id.zhongdian);
@@ -355,19 +400,32 @@ public class ResultActivity extends Activity implements OnItemClickListener {
             return ;
         }
         if (direction) {
-            qidianTextView.setText(lineInfo.getStart_stop());
-            zhongdianTextView.setText(lineInfo.getEnd_stop());
+            if (lineInfo.getStart_stop().length() > 8) {
+                qidianTextView.setText(lineInfo.getStart_stop().subSequence(0, 6));
+            } else {
+                qidianTextView.setText(lineInfo.getStart_stop());
+            }
+            if (lineInfo.getEnd_stop().length() > 8) {
+                zhongdianTextView.setText(lineInfo.getEnd_stop().subSequence(0, 8));
+            } else {
+                zhongdianTextView.setText(lineInfo.getEnd_stop());
+            }
             startimeTextView.setText(lineInfo.getStart_earlytime());
             stoptimeTextView.setText(lineInfo.getStart_latetime());
         } else {
-            qidianTextView.setText(lineInfo.getEnd_stop());
-            zhongdianTextView.setText(lineInfo.getStart_stop());
+            if (lineInfo.getEnd_stop().length() > 8) {
+                qidianTextView.setText(lineInfo.getEnd_stop().subSequence(0, 8));
+            } else {
+                qidianTextView.setText(lineInfo.getEnd_stop());
+            }
+            if (lineInfo.getStart_stop().length() > 8) {
+                zhongdianTextView.setText(lineInfo.getStart_stop().subSequence(0, 8));
+            } else {
+                zhongdianTextView.setText(lineInfo.getStart_stop());
+            }
             startimeTextView.setText(lineInfo.getEnd_earlytime());
             stoptimeTextView.setText(lineInfo.getEnd_latetime());
         }
-        // 记录搜索历史
-        historyService.appendHistory(new HistoryInfo(lineName, direction, 
-                lineInfo.getStart_stop(), lineInfo.getEnd_stop()));
     }
     
     private void showStations(ResultActivity activity) {
@@ -393,6 +451,16 @@ public class ResultActivity extends Activity implements OnItemClickListener {
         }
         
         adapter.setIsCurrentItems(isCurrentItems);
+        
+        // 记录搜索历史
+        if (isFromHistory) {
+            return;
+        }
+        HistoryInfo history = new HistoryInfo(lineName, direction, 
+                lineInfo.getStart_stop(), lineInfo.getEnd_stop());
+        history.setLineInfo(lineInfo);
+        history.setLineStationInfo(lineStation);
+        historyService.appendHistory(history);
     }
     
     @Override
