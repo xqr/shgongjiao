@@ -10,6 +10,8 @@ import com.yhtye.shgongjiao.entity.LineInfo;
 import com.yhtye.shgongjiao.entity.LineStationInfo;
 import com.yhtye.shgongjiao.entity.StationInfo;
 import com.yhtye.shgongjiao.service.HistoryService;
+import com.yhtye.shgongjiao.service.ILineService;
+import com.yhtye.shgongjiao.service.LineAppService;
 import com.yhtye.shgongjiao.service.LineService;
 import com.yhtye.shgongjiao.tools.NetUtil;
 import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
@@ -45,7 +47,7 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
     private boolean[] isCurrentItems;
     // 方向
     private boolean direction = true;
-    private LineService lineService = new LineService();
+    private ILineService lineService = new LineAppService();
     
     private RelativeLayout lineinfoLayout = null;
     private TextView qidianTextView = null;
@@ -347,19 +349,32 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             return ;
         }
         if (direction) {
-            qidianTextView.setText(lineInfo.getStart_stop());
-            zhongdianTextView.setText(lineInfo.getEnd_stop());
+            if (lineInfo.getStart_stop().length() > 8) {
+                qidianTextView.setText(lineInfo.getStart_stop().subSequence(0, 6));
+            } else {
+                qidianTextView.setText(lineInfo.getStart_stop());
+            }
+            if (lineInfo.getEnd_stop().length() > 8) {
+                zhongdianTextView.setText(lineInfo.getEnd_stop().subSequence(0, 8));
+            } else {
+                zhongdianTextView.setText(lineInfo.getEnd_stop());
+            }
             startimeTextView.setText(lineInfo.getStart_earlytime());
             stoptimeTextView.setText(lineInfo.getStart_latetime());
         } else {
-            qidianTextView.setText(lineInfo.getEnd_stop());
-            zhongdianTextView.setText(lineInfo.getStart_stop());
+            if (lineInfo.getEnd_stop().length() > 8) {
+                qidianTextView.setText(lineInfo.getEnd_stop().subSequence(0, 8));
+            } else {
+                qidianTextView.setText(lineInfo.getEnd_stop());
+            }
+            if (lineInfo.getStart_stop().length() > 8) {
+                zhongdianTextView.setText(lineInfo.getStart_stop().subSequence(0, 8));
+            } else {
+                zhongdianTextView.setText(lineInfo.getStart_stop());
+            }
             startimeTextView.setText(lineInfo.getEnd_earlytime());
             stoptimeTextView.setText(lineInfo.getEnd_latetime());
         }
-        // 记录搜索历史
-        historyService.appendHistory(new HistoryInfo(lineName, direction, 
-                lineInfo.getStart_stop(), lineInfo.getEnd_stop()));
     }
     
     private void showStations(ResultActivity activity) {
@@ -385,5 +400,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         }
         
         adapter.setIsCurrentItems(isCurrentItems);
+        
+        // 记录搜索历史
+        historyService.appendHistory(new HistoryInfo(lineName, direction, 
+                lineInfo.getStart_stop(), lineInfo.getEnd_stop()));
     }
 }

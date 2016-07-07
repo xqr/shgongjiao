@@ -15,7 +15,7 @@ import com.yhtye.shgongjiao.entity.LineStationInfo;
 import com.yhtye.shgongjiao.entity.StationInfo;
 import com.yhtye.shgongjiao.tools.HttpClientUtils;
 
-public class LineService {
+public class LineService implements ILineService {
     private String apiUrl = "http://xxbs.sh.gov.cn:8080/weixinpage";
     
     public LineInfo getLineInfo(String lineName, int retryTimes) {
