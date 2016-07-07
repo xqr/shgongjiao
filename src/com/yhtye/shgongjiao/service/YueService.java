@@ -33,7 +33,7 @@ public class YueService {
         this.maxCount = maxCount;
     }
     
-    public void saveHistory(List<String> historyList) {
+    public void saveHistory(List<CardInfo> historyList) {
         StringWriter str=new StringWriter();
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -42,28 +42,28 @@ public class YueService {
             Log.e("error", e.getMessage());
         }
         
-        SharedPreferences sp =context.getSharedPreferences("card_strs", 0);
+        SharedPreferences sp =context.getSharedPreferences("card_history_strs", 0);
         Editor editor=sp.edit();
         editor.putString("card", str.toString());
         editor.commit();
     }
     
-    public void appendHistory(String history) {
-        List<String> list = getHistory();
+    public void appendHistory(CardInfo history) {
+        List<CardInfo> list = getHistory();
         if (list == null || list.size() == 0) {
-            list = new ArrayList<String>();
+            list = new ArrayList<CardInfo>();
             list.add(history);
             saveHistory(list);
             return;
         }
         
-        List<String> historyList = new ArrayList<String>(maxCount);
+        List<CardInfo> historyList = new ArrayList<CardInfo>(maxCount);
         historyList.add(history);
         
         int count = 1;
         for (int i = 0; i < list.size(); i++) {
-            String item = list.get(i);
-            if (!item.equals(history) 
+            CardInfo item = list.get(i);
+            if (!item.getCardNumber().equals(history.getCardNumber()) 
                     && count < maxCount) {
                 historyList.add(item);
             }
@@ -73,8 +73,8 @@ public class YueService {
         saveHistory(historyList);
     }
     
-    public List<String> getHistory() {
-        SharedPreferences sp =context.getSharedPreferences("card_strs", 0);
+    public List<CardInfo> getHistory() {
+        SharedPreferences sp =context.getSharedPreferences("card_history_strs", 0);
         String content = sp.getString("card", "");
         if (TextUtils.isEmpty(content)) {
             return null;
@@ -83,9 +83,9 @@ public class YueService {
         try {
             JsonNode jsonNode = mapper.readValue(content, JsonNode.class);
             if (jsonNode != null) {
-                List<String> list = new ArrayList<String>();
+                List<CardInfo> list = new ArrayList<CardInfo>();
                 for (JsonNode node : jsonNode) {
-                    list.add(mapper.readValue(node, String.class));
+                    list.add(mapper.readValue(node, CardInfo.class));
                 }
                 return list;
             }
@@ -97,9 +97,9 @@ public class YueService {
     }
     
     public void deleteHistory() {
-        SharedPreferences sp =context.getSharedPreferences("history_strs", 0);
+        SharedPreferences sp =context.getSharedPreferences("card_history_strs", 0);
         Editor editor=sp.edit();
-        editor.putString("history", "");
+        editor.putString("card", "");
         editor.commit();
     }
     
@@ -111,12 +111,12 @@ public class YueService {
      * @param carNumber
      * @return
      */
-    public String searchYue(String carNumber) {
+    public CardInfo searchYue(String carNumber) {
         // 余额查询缓存1分钟
         CardInfo cardInfo = yueMap.get(carNumber);
         if (cardInfo != null 
                 && cardInfo.getSearchTime() + 60 * 1000 >= new Date().getTime()) {
-            return cardInfo.getYue();
+            return cardInfo;
         }
         
         String url = "http://220.248.75.36/handapp/PGcardAmtServlet?arg1=" 
@@ -131,7 +131,7 @@ public class YueService {
                 cardInfo = new CardInfo(carNumber, resultStr[1]);
                 yueMap.put(carNumber, cardInfo);
                 
-                return resultStr[1];
+                return cardInfo;
             }
             return null;
         } catch (Exception e) {

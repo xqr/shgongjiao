@@ -1,11 +1,15 @@
 package com.yhtye.shgongjiao.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 公交卡对象
  */
-public class CardInfo {
+public class CardInfo implements Serializable {
+    
+    private static final long serialVersionUID = 1L;
+    
     private String cardNumber;
     private String yue;
     private long searchTime = new Date().getTime();

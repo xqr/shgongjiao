@@ -1,11 +1,10 @@
 package com.yhtye.shanghaishishigongjiaochaxun;
 
 import java.lang.ref.WeakReference;
-
 import com.umeng.analytics.MobclickAgent;
+import com.yhtye.shgongjiao.entity.CardInfo;
 import com.yhtye.shgongjiao.service.YueService;
 import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -63,9 +62,14 @@ public class YueActivity extends Activity {
             if (number == null) {
                 return;
             }
-            cardYue = yueService.searchYue(number);
+            CardInfo cardInfo = yueService.searchYue(number);
             if (!number.equals(cardNumber)) {
                 return;
+            }
+            if (cardInfo != null) {
+                cardYue = cardInfo.getYue();
+                // 保存卡号
+                yueService.appendHistory(cardInfo);
             }
             // 发送消息
             Message msg=new Message();  
@@ -86,21 +90,22 @@ public class YueActivity extends Activity {
             if (theActivity == null) {
                 return;
             }
-            if (theActivity.cardYue == null) {
-                // 卡号错误
-                Toast.makeText(theActivity, R.string.card_error, Toast.LENGTH_LONG).show();
-                theActivity.finish();
-            } else {
-                theActivity.showYue();
-                // 保存卡号
-                theActivity.yueService.appendHistory(theActivity.cardNumber);
-            }
+            theActivity.showYue();
         }
     }
     
+    /**
+     * 展示余额
+     */
     private void showYue() {
-        cardNumberTv.setText("卡号:" + cardNumber);
-        cardYueTv.setText("余额:" + cardYue + "元");
+        if (cardYue == null) {
+            // 卡号错误
+            Toast.makeText(this, R.string.card_error, Toast.LENGTH_LONG).show();
+            finish();
+        } else {
+            cardNumberTv.setText("卡号:" + cardNumber);
+            cardYueTv.setText("余额:" + cardYue + "元");
+        }
     }
     
     /**

@@ -351,6 +351,15 @@ public class MainActivity extends Activity implements OnItemClickListener {
     }
     
     private List<HistoryInfo> historyList = null;
+    private class SearchBusHistory implements Runnable {
+
+        @Override
+        public void run() {
+            // TODO Auto-generated method stub
+            
+        }
+    }
+    
     private void showHistory() {
         historyList = historyService.getHistory();
         if (historyList == null || historyList.size() == 0) {
