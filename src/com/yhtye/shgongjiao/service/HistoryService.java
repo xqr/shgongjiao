@@ -58,6 +58,8 @@ public class HistoryService {
         int count = 1;
         for (int i = 0; i < list.size(); i++) {
             HistoryInfo item = list.get(i);
+            // TODO 缓存用户的方向
+            
             if (!item.getLineName().equals(history.getLineName()) 
                     && count < maxCount) {
                 historyList.add(item);

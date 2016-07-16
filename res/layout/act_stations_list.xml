@@ -123,7 +123,6 @@
                 android:background="@color/white"
                 android:layout_below="@+id/fenggexianicon"
                 android:layout_margin="15dp"
-                android:text="@string/no_cars"
                 android:textColor="@color/red"
                 android:textSize="18sp" />
         </RelativeLayout>

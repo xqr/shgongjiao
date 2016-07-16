@@ -113,7 +113,7 @@ public class FlexListAdapter extends BaseAdapter {
         }
 
         if (isCurrentItem) {
-            viewHolder.tvStationName.setTextColor(context.getResources().getColor(R.color.red));
+            viewHolder.tvStationName.setTextColor(Color.RED);
             viewHolder.weixuanzhongicon.setImageResource(R.drawable.xuanzhongzhuangtai);
             viewHolder.viewTimeline2.setVisibility(View.GONE);
             viewHolder.viewTimeline3.setVisibility(View.VISIBLE);
