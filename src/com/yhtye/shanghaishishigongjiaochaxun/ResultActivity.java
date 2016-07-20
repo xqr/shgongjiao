@@ -12,9 +12,11 @@ import com.yhtye.shgongjiao.entity.StationInfo;
 import com.yhtye.shgongjiao.service.HistoryService;
 import com.yhtye.shgongjiao.service.ILineService;
 import com.yhtye.shgongjiao.service.LineAppService;
+import com.yhtye.shgongjiao.service.LineService;
 import com.yhtye.shgongjiao.tools.NetUtil;
 import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,8 +48,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
     private boolean[] isCurrentItems;
     // 方向
     private boolean direction = true;
-    private ILineService lineService = new LineAppService();
+    private ILineService lineService = new LineService();
     
+    private TextView linenameTextView;
     private RelativeLayout lineinfoLayout = null;
     private TextView qidianTextView = null;
     private TextView zhongdianTextView = null;
@@ -64,18 +67,45 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
     
     private HistoryService historyService = null;
     
+//     加载状态
+//    private ProgressDialog progressDialog = null;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
         
+        init();
+        
         Intent intent = getIntent();
         lineName = intent.getStringExtra("lineName");
         direction = intent.getBooleanExtra("direction", true);
         
-        init();
+        linenameTextView.setText(lineName);
+        
+        String flag = intent.getStringExtra("flag");
+        if (flag != null && flag.equals("history")) {
+            HistoryInfo  history = (HistoryInfo) intent.getSerializableExtra("historyInfo");
+            if (history != null 
+                    && history.getLineInfo() != null 
+                    && history.getLineStationInfo() != null) {
+                lineInfo = history.getLineInfo();
+                lineStation = history.getLineStationInfo();
+                showLineInfo();
+                lineinfoLayout.setVisibility(View.VISIBLE);
+                
+                showStations(this);
+                lv_cards.setAdapter(adapter);
+                lv_cards.setOnItemClickListener(this);
+                
+                // 自动展开当前站点
+                gundong();
+                return;
+            }
+        }
         
         // 启动新线程获取线路信息
+//        progressDialog.show();
         ThreadPoolManagerFactory.getInstance().execute(new SearchLineRunable(lineName));
     }
     
@@ -162,6 +192,12 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             if (theActivity == null) {
                 return;
             }
+//            
+//            if (theActivity.progressDialog != null 
+//                    &&  theActivity.progressDialog.isShowing()) {
+//                theActivity.progressDialog.dismiss();
+//            }
+            
             int messageFlag = msg.what;
             if (messageFlag == LineMessage) {
                 // 线路信息
@@ -174,27 +210,13 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
                     theActivity.lineinfoLayout.setVisibility(View.VISIBLE);
                 }
             } else if (messageFlag == StationsMessage) {
-                // 初始化
-                theActivity.checkListPosition();
                 // 站点信息
                 theActivity.showStations(theActivity);
                 theActivity.lv_cards.setAdapter(theActivity.adapter);
-                
-                // 尝试滚动
-                theActivity.lv_cards.setSelected(true);
-                if (theActivity.truePosition >= 4 && theActivity.falsePosition >= 4) { 
-                    theActivity.lv_cards.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            theActivity.setListViewPos(theActivity.direction ? theActivity.truePosition : theActivity.falsePosition);
-                        }
-                    });
-                }
-                if (theActivity.truePosition >=0 && theActivity.falsePosition >= 0) {
-                    theActivity.onItemClick(null, null, theActivity.direction ? theActivity.truePosition : theActivity.falsePosition, 0);
-                }
-                
                 theActivity.lv_cards.setOnItemClickListener(theActivity);
+                
+                theActivity.gundong();
+                
             } else if (messageFlag == CarsMessage) {
                 // 车辆信息
                 theActivity.adapter.setCars(theActivity.cars);
@@ -202,6 +224,25 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
                 theActivity.adapter.notifyDataSetChanged(); 
             }
         }
+    }
+    
+    
+    private void gundong() {
+        // 初始化
+        checkListPosition();
+          // 尝试滚动
+          lv_cards.setSelected(true);
+          if (truePosition >= 4 && falsePosition >= 4) { 
+              lv_cards.post(new Runnable() {
+                  @Override
+                  public void run() {
+                      setListViewPos(direction ? truePosition : falsePosition);
+                  }
+              });
+          }
+          if (truePosition >=0 && falsePosition >= 0) {
+              onItemClick(null, null, direction ? truePosition : falsePosition, 0);
+          }
     }
     
     /**
@@ -288,6 +329,10 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
      * @param v
      */
     public void backPrePageClick(View v) {
+//        if (progressDialog != null && progressDialog.isShowing()) {
+//            progressDialog.dismiss();
+//        }
+//        
         ResultActivity.this.finish();
     }
     
@@ -316,6 +361,7 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         isCurrentItems[position] = !isCurrentItems[position];
         if (isCurrentItems[position]) {
             // 启动线程
+//            progressDialog.show();
             ThreadPoolManagerFactory.getInstance().execute(new SearchCarsSearchLineRunable(position));
         } else {
             // 即时刷新  
@@ -330,8 +376,7 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         handler = new ResultHandler(this);
         lv_cards = (ListView) findViewById(R.id.list_cards);
         
-        TextView linenameTextView = (TextView)findViewById(R.id.linename);
-        linenameTextView.setText(lineName);
+        linenameTextView = (TextView)findViewById(R.id.linename);
         
         lineinfoLayout = (RelativeLayout)findViewById(R.id.lineinfo);
         qidianTextView = (TextView)findViewById(R.id.qidian);
@@ -341,6 +386,10 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         
         // 初始化
         historyService = new HistoryService(ResultActivity.this);
+        
+//        progressDialog = new ProgressDialog(ResultActivity.this);
+//        progressDialog.setCancelable(false);
+//        progressDialog.setMessage("数据加载中，请耐心等待……");
     }
     
     /**
@@ -403,8 +452,20 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         
         adapter.setIsCurrentItems(isCurrentItems);
         
+        
         // 记录搜索历史
-        historyService.appendHistory(new HistoryInfo(lineName, direction, 
-                lineInfo.getStart_stop(), lineInfo.getEnd_stop()));
+        HistoryInfo history = new HistoryInfo(lineName, direction, 
+                lineInfo.getStart_stop(), lineInfo.getEnd_stop());
+        history.setLineInfo(lineInfo);
+        history.setLineStationInfo(lineStation);
+        historyService.appendHistory(history);
     }
+    
+//    @Override
+//    protected void onDestroy() {
+//        if (progressDialog != null && progressDialog.isShowing()) {
+//            progressDialog.dismiss();
+//        }
+//        super.onDestroy();
+//    }
 }

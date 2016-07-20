@@ -9,7 +9,7 @@
     <RelativeLayout 
         android:layout_width="fill_parent"  
         android:layout_height="60dp"
-        android:background="@color/blue">
+        android:background="@color/orange">
         
         <TextView style="@style/result_text"
             android:id="@+id/linename"

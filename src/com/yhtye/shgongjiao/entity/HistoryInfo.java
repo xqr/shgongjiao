@@ -21,6 +21,11 @@ public class HistoryInfo implements Serializable {
      */
     private String endStop = "";
     
+    // 站点信息
+    private LineStationInfo lineStationInfo;
+    // 线路信息
+    private LineInfo lineInfo;
+    
     public HistoryInfo() {
         
     }
@@ -59,5 +64,21 @@ public class HistoryInfo implements Serializable {
 
     public void setEndStop(String endStop) {
         this.endStop = endStop;
+    }
+    
+    public LineStationInfo getLineStationInfo() {
+        return lineStationInfo;
+    }
+
+    public void setLineStationInfo(LineStationInfo lineStationInfo) {
+        this.lineStationInfo = lineStationInfo;
+    }
+
+    public LineInfo getLineInfo() {
+        return lineInfo;
+    }
+
+    public void setLineInfo(LineInfo lineInfo) {
+        this.lineInfo = lineInfo;
     }
 }

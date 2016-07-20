@@ -9,7 +9,7 @@
     <RelativeLayout 
         android:layout_width="fill_parent"  
         android:layout_height="60dp"
-        android:background="@color/blue">
+        android:background="@color/orange">
         
         <TextView style="@style/result_text"
             android:id="@+id/linename"
@@ -43,7 +43,7 @@
         android:id="@+id/lineinfo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#00aaff"
+        android:background="@color/orange"
         android:paddingLeft="10dp" 
         android:paddingTop="10dp"
         android:visibility="invisible">

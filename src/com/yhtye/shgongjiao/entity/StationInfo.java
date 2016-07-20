@@ -1,6 +1,10 @@
 package com.yhtye.shgongjiao.entity;
 
-public class StationInfo {
+import java.io.Serializable;
+
+public class StationInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
     private String zdmc;
     private String id;
     public String getZdmc() {

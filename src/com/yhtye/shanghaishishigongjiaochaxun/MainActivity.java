@@ -21,11 +21,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -88,6 +91,18 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         huanshengchaxunButton = (Button) findViewById(R.id.huanshengchaxun);
         // 获取输入信息
         numberoneEditText = (EditText)findViewById(R.id.numberone);
+        numberoneEditText
+                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId,
+                            KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                            searchLineClick(v);
+                        }
+                        return true;
+                    }
+                });
         
         // 初始化
         shishichaxunButton.setSelected(true);
@@ -285,9 +300,15 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
             return;
         }
         
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("historyInfo", historyInfo);
+        bundle.putString("flag", "history");
+        bundle.putString("lineName", historyInfo.getLineName());
+        bundle.putBoolean("direction", historyInfo.isDirection());
+        intent.putExtras(bundle);
+        
         intent.setClass(MainActivity.this, ResultActivity.class);  
-        intent.putExtra("lineName", historyInfo.getLineName());
-        intent.putExtra("direction", historyInfo.isDirection());
         
         Map<String,String> m = new HashMap<String,String>();
         m.put("lineName", historyInfo.getLineName());
