@@ -14,6 +14,7 @@ import com.yhtye.shgongjiao.myui.FlexListAdapter;
 import com.yhtye.shgongjiao.service.HistoryService;
 import com.yhtye.shgongjiao.service.ILineService;
 import com.yhtye.shgongjiao.service.LineAppService;
+import com.yhtye.shgongjiao.service.LineService;
 import com.yhtye.shgongjiao.tools.NetUtil;
 import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
 
@@ -50,7 +51,7 @@ public class ResultActivity extends Activity implements OnItemClickListener {
     // 方向
     private boolean direction = true;
     
-    private ILineService lineService = new LineAppService();
+    private ILineService lineService = new LineService();
     
     private TextView linenameTextView;
     private RelativeLayout lineinfoLayout = null;
