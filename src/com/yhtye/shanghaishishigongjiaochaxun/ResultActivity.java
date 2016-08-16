@@ -3,7 +3,7 @@ package com.yhtye.shanghaishishigongjiaochaxun;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import com.shishibus.changsha.R;
+import com.sprzny.changsha.R;
 import com.yhtye.shgongjiao.entity.CarInfo;
 import com.yhtye.shgongjiao.entity.HistoryInfo;
 import com.yhtye.shgongjiao.entity.LineInfo;

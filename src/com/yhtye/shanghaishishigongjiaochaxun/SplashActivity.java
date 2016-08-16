@@ -1,6 +1,6 @@
 package com.yhtye.shanghaishishigongjiaochaxun;
 
-import com.shishibus.changsha.R;
+import com.sprzny.changsha.R;
 import com.umeng.analytics.AnalyticsConfig;
 import com.yhtye.shgongjiao.tools.NetUtil;
 
