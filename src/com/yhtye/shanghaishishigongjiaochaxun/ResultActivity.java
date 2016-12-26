@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 import com.everpod.shanghai.R;
+import com.yhtye.shgongjiao.adapter.FlexListAdapter;
 import com.yhtye.shgongjiao.entity.CarInfo;
 import com.yhtye.shgongjiao.entity.HistoryInfo;
 import com.yhtye.shgongjiao.entity.LineInfo;
@@ -11,12 +12,10 @@ import com.yhtye.shgongjiao.entity.LineStationInfo;
 import com.yhtye.shgongjiao.entity.StationInfo;
 import com.yhtye.shgongjiao.service.HistoryService;
 import com.yhtye.shgongjiao.service.ILineService;
-import com.yhtye.shgongjiao.service.LineAppService;
 import com.yhtye.shgongjiao.service.LineService;
 import com.yhtye.shgongjiao.tools.NetUtil;
 import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.everpod.shanghai.R;
+import com.yhtye.shgongjiao.adapter.SchemeListAdapter;
 import com.yhtye.shgongjiao.entity.RoutesScheme;
 import com.yhtye.shgongjiao.service.BaiduApiService;
 import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;

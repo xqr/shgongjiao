@@ -8,7 +8,7 @@ import com.baidu.mobads.AdSettings;
 import com.baidu.mobads.AdView;
 import com.everpod.shanghai.R;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.update.UmengUpdateAgent;
+import com.yhtye.shgongjiao.adapter.HistoryListAdapter;
 import com.yhtye.shgongjiao.entity.HistoryInfo;
 import com.yhtye.shgongjiao.entity.PositionInfo;
 import com.yhtye.shgongjiao.service.BaiduApiService;
@@ -63,11 +63,6 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        // 自动更新检查(wifi环境下触发)
-        UmengUpdateAgent.update(this);
-        // 全量更新
-        UmengUpdateAgent.setDeltaUpdate(false);
-        
         initBar();
         
         // 通过经纬度查询附件站点
@@ -86,7 +81,6 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
      * 初始化按钮和界面元素
      */
     private void initBar() {
-        
         shishichaxunButton = (Button) findViewById(R.id.shishichaxun);
         huanshengchaxunButton = (Button) findViewById(R.id.huanshengchaxun);
         // 获取输入信息
@@ -147,15 +141,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
      * @param v
      */
     public void shishichaxunClick(View v) {
-        // 按钮变化
-        shishichaxunButton.setTextColor(getResources().getColor(R.color.blue));
-        shishichaxunButton.setSelected(true);
-        huanshengchaxunButton.setTextColor(getResources().getColor(R.color.white));
-        huanshengchaxunButton.setSelected(false);
-        
-        // 初始化界面元素
-        shishichaxunlayout.setVisibility(View.VISIBLE);
-        huanchenglayout.setVisibility(View.GONE);
+        exchangeTab(v, true);
     }
     
     /**
@@ -164,16 +150,31 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
      * @param v
      */
     public void huanshengchaxunClick(View v) {
-        // 按钮变化
-        shishichaxunButton.setTextColor(getResources().getColor(R.color.white));
-        shishichaxunButton.setSelected(false);
-        huanshengchaxunButton.setTextColor(getResources().getColor(R.color.blue));
-        huanshengchaxunButton.setSelected(true);
-        // 初始化界面元素
-        huanchenglayout.setVisibility(View.VISIBLE);
-        shishichaxunlayout.setVisibility(View.GONE);
-        initHuansheng();
+        exchangeTab(v, false);
     }
+    
+    /**
+     * tab切换处理 
+     * 
+     * @param v
+     * @param isShishiLine
+     */
+    private void exchangeTab(View v, boolean isShishiLine) {
+        shishichaxunButton.setTextColor(getResources().getColor(isShishiLine ? R.color.blue : R.color.white));
+        shishichaxunButton.setSelected(isShishiLine);
+        huanshengchaxunButton.setTextColor(getResources().getColor(!isShishiLine ? R.color.blue : R.color.white));
+        huanshengchaxunButton.setSelected(!isShishiLine);
+        
+        // 初始化界面元素
+        shishichaxunlayout.setVisibility(isShishiLine ? View.VISIBLE : View.GONE);
+        huanchenglayout.setVisibility(!isShishiLine ? View.VISIBLE : View.GONE );
+        if (!isShishiLine) {
+            // 切换tab时需要初始化页面
+            initHuansheng();
+        }
+    }
+    
+    
     
     /**
      * 换乘查询—交换起点和终点
@@ -263,8 +264,6 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         listHistoryView.setOnItemClickListener(this);
     }
     
-    
-//    private  Map<String, List<StopStation>> stationMap = new HashMap<String, List<StopStation>>();
     public static  List<String> stationNameList;
      
     /**
