@@ -14,6 +14,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 余额查询结果页
+ */
 public class YueActivity extends Activity {
     
     private String cardNumber = null;

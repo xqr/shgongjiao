@@ -24,6 +24,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * 路径规划结果页
+ */
 public class SchemeActivity extends Activity implements OnItemClickListener {
     
     private RelativeLayout wuschemeLayout = null;

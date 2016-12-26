@@ -13,7 +13,6 @@ import com.yhtye.shgongjiao.entity.StationInfo;
 import com.yhtye.shgongjiao.myui.FlexListAdapter;
 import com.yhtye.shgongjiao.service.HistoryService;
 import com.yhtye.shgongjiao.service.ILineService;
-import com.yhtye.shgongjiao.service.LineAppService;
 import com.yhtye.shgongjiao.service.LineService;
 import com.yhtye.shgongjiao.tools.NetUtil;
 import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
@@ -32,6 +31,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * 公交线路信息详情页
+ */
 public class ResultActivity extends Activity implements OnItemClickListener {
     // 定义消息标记
     private static final int LineMessage = 1;
@@ -213,21 +215,6 @@ public class ResultActivity extends Activity implements OnItemClickListener {
                 theActivity.lv_cards.setOnItemClickListener(theActivity);
                 
                 theActivity.gundong();
-//              // 初始化
-//              theActivity.checkListPosition();
-//                // 尝试滚动
-//                theActivity.lv_cards.setSelected(true);
-//                if (theActivity.truePosition >= 4 && theActivity.falsePosition >= 4) { 
-//                    theActivity.lv_cards.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            theActivity.setListViewPos(theActivity.direction ? theActivity.truePosition : theActivity.falsePosition);
-//                        }
-//                    });
-//                }
-//                if (theActivity.truePosition >=0 && theActivity.falsePosition >= 0) {
-//                    theActivity.onItemClick(null, null, theActivity.direction ? theActivity.truePosition : theActivity.falsePosition, 0);
-//                }
             } else if (messageFlag == CarsMessage) {
                 // 车辆信息
                 theActivity.adapter.setCars(theActivity.cars);

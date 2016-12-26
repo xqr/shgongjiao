@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 import com.baidu.mobads.AdSettings;
 import com.baidu.mobads.AdView;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.update.UmengUpdateAgent;
 import com.yhtye.shanghaishishigongjiaochaxun.R;
 import com.yhtye.shgongjiao.entity.HistoryInfo;
 import com.yhtye.shgongjiao.entity.PositionInfo;
@@ -24,6 +23,7 @@ import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,6 +37,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * 主界面
+ */
 public class MainActivity extends Activity implements OnItemClickListener {
 
     private EditText numberoneEditText = null;
@@ -76,11 +79,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        // 自动更新检查(wifi环境下触发)
-        UmengUpdateAgent.update(this);
-        // 全量更新
-        UmengUpdateAgent.setDeltaUpdate(false);
         
         initBar();
         
@@ -207,7 +205,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         // 初始化页面元素
         if (gongjiaokahaonumberoneEditText == null) {
             gongjiaokahaonumberoneEditText = (EditText) findViewById(R.id.gongjiaokahaonumberone);
-            
+            // 调用数字键盘
+            gongjiaokahaonumberoneEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            // 软键盘设置
             gongjiaokahaonumberoneEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
                 @Override
@@ -351,14 +351,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
     }
     
     private List<HistoryInfo> historyList = null;
-    private class SearchBusHistory implements Runnable {
-
-        @Override
-        public void run() {
-            // TODO Auto-generated method stub
-            
-        }
-    }
     
     private void showHistory() {
         historyList = historyService.getHistory();
