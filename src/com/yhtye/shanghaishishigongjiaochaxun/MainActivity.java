@@ -143,7 +143,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
     
     private void initAd() {        
          // 人群属性
-         AdSettings.setKey(new String[] { "baidu", "中 国 " });
+         AdSettings.setKey(new String[] { "baidu", "中国" });
          AdSettings.setCity("上海");
          
          // 创建广告View

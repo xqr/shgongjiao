@@ -25,8 +25,6 @@ public class FlexLinearLayout extends LinearLayout {
     private LinearLayout relative;
     
     private TextView tvStationName;
-    private ImageView ivXialaIco;
-    private ImageView ivXiatopIco;
     private TextView tvCardName;
     
     private ImageView weixuanzhongicon;
@@ -80,17 +78,16 @@ public class FlexLinearLayout extends LinearLayout {
         }
         
         if (isCurrentItem) {
-            tvStationName.setTextColor(getResources().getColor(R.color.red));
-            weixuanzhongicon.setImageResource(R.drawable.xuanzhongzhuangtai);
+            tvStationName.setTextColor(getResources().getColor(R.color.red)); // 站点名称
+            weixuanzhongicon.setImageResource(R.drawable.xuanzhongzhuangtai);  //左侧圆点
             viewTimeline2.setVisibility(View.GONE);
             viewTimeline3.setVisibility(View.VISIBLE);
-            relative.setBackgroundResource(R.drawable.yixuanzhongzhandian);
+            relative.setBackgroundColor(getResources().getColor(R.color.silver));
         } else {
             tvStationName.setTextColor(Color.GRAY);
             weixuanzhongicon.setImageResource(R.drawable.weixuanzhong);
             viewTimeline2.setVisibility(View.VISIBLE);
             viewTimeline3.setVisibility(View.GONE);
-            relative.setBackgroundResource(R.drawable.zhandianweizhankai);
         }
         
         if (isCurrentItem && cars != null && !cars.isEmpty()) {
@@ -132,24 +129,12 @@ public class FlexLinearLayout extends LinearLayout {
             tvCardName.setText(R.string.no_cars);
         }
         
-        ivXiatopIco.setVisibility(isCurrentItem ? VISIBLE : GONE);
-        ivXialaIco.setVisibility(isCurrentItem ? GONE : VISIBLE);
-        
-        llCards.setVisibility(isCurrentItem ? VISIBLE : GONE);  
+        tvCardName.setVisibility(isCurrentItem ? VISIBLE : GONE);  
     }
     
     private void init() {
-        if (llCards == null) {
-            llCards = (RelativeLayout) layout.findViewById(R.id.ll_cards);  
-        }
         if (tvStationName == null) {
             tvStationName = (TextView) layout.findViewById(R.id.tv_station_name);
-        }
-        if (ivXialaIco == null) {
-            ivXialaIco = (ImageView) layout.findViewById(R.id.iv_xiala_ico);
-        }
-        if (ivXiatopIco == null) {
-            ivXiatopIco = (ImageView) layout.findViewById(R.id.iv_xiatop_ico);
         }
         if (tvCardName == null) {
             tvCardName = (TextView) layout.findViewById(R.id.tv_card_name);

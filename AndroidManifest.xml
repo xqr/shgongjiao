@@ -43,7 +43,16 @@
             android:name="com.yhtye.shanghaishishigongjiaochaxun.ResultActivity"
             android:label="@string/title_activity_result" >
         </activity>
-
+        <activity
+            android:name="com.yhtye.shanghaishishigongjiaochaxun.SchemeActivity"
+            android:label="@string/title_activity_scheme" >
+        </activity>
+        <activity
+            android:name="com.yhtye.shanghaishishigongjiaochaxun.YueActivity"
+            android:label="@string/title_activity_yue" >
+        </activity>
+        
+        <!-- umeng统计 -->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="564a98e4e0f55a22f8002a4b" >
@@ -51,33 +60,16 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="baidu" />
-
-        <activity
-            android:name="com.yhtye.shanghaishishigongjiaochaxun.SchemeActivity"
-            android:label="@string/title_activity_scheme" >
-        </activity>
-
-        <service
-            android:name="com.umeng.update.net.DownloadingService"
-            android:process=":DownloadingService" >
-        </service>
-
-        <activity
-            android:name="com.umeng.update.UpdateDialogActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
-
+        
+        <!-- 百度广告联盟 -->
         <meta-data
             android:name="BaiduMobAd_APP_ID"
             android:value="cc687057" />
-
-        <activity
-            android:name="com.baidu.mobads.AppActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation" />
-        <activity
-            android:name="com.yhtye.shanghaishishigongjiaochaxun.YueActivity"
-            android:label="@string/title_activity_yue" >
-        </activity>
+        
+        <activity   android:name="com.baidu.mobads.AppActivity" 
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        
     </application>
 
 </manifest>

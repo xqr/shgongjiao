@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.yhtye.shanghaishishigongjiaochaxun.R;
 import com.yhtye.shgongjiao.entity.CarInfo;
-import com.yhtye.shgongjiao.entity.HistoryInfo;
 import com.yhtye.shgongjiao.entity.StationInfo;
 import com.yhtye.shgongjiao.tools.RegularUtil;
 
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -73,15 +71,12 @@ public class FlexListAdapter extends BaseAdapter {
            convertView = mInflater.inflate(R.layout.act_stations_list, parent, false);
            
            viewHolder = new ViewHolder();
-           viewHolder.ivXialaIco = (ImageView) convertView.findViewById(R.id.iv_xiala_ico);
-           viewHolder.ivXiatopIco = (ImageView) convertView.findViewById(R.id.iv_xiatop_ico);
            viewHolder.tvStationName = (TextView) convertView.findViewById(R.id.tv_station_name);
            viewHolder.tvCardName = (TextView) convertView.findViewById(R.id.tv_card_name);
            viewHolder.viewTimeline2 = convertView.findViewById(R.id.view_timeline_2);
            viewHolder.viewTimeline3 = convertView.findViewById(R.id.view_timeline_3);
            viewHolder.weixuanzhongicon = (ImageView) convertView.findViewById(R.id.weixuanzhongicon);
            viewHolder.relative = (LinearLayout) convertView.findViewById(R.id.relative);
-           viewHolder.llCards = (RelativeLayout) convertView.findViewById(R.id.ll_cards);  
            
            convertView.setTag(viewHolder);
         }
@@ -113,17 +108,17 @@ public class FlexListAdapter extends BaseAdapter {
         }
 
         if (isCurrentItem) {
-            viewHolder.tvStationName.setTextColor(context.getResources().getColor(R.color.red));
-            viewHolder.weixuanzhongicon.setImageResource(R.drawable.xuanzhongzhuangtai);
+            viewHolder.tvStationName.setTextColor(context.getResources().getColor(R.color.red)); // 车站名称
+            viewHolder.weixuanzhongicon.setImageResource(R.drawable.xuanzhongzhuangtai); // 左侧圆圈
             viewHolder.viewTimeline2.setVisibility(View.GONE);
             viewHolder.viewTimeline3.setVisibility(View.VISIBLE);
-            viewHolder.relative.setBackgroundResource(R.drawable.yixuanzhongzhandian);
+            viewHolder.relative.setBackgroundColor(context.getResources().getColor(R.color.station_bg)); // 修改右侧背景色
         } else {
             viewHolder.tvStationName.setTextColor(Color.GRAY);
             viewHolder.weixuanzhongicon.setImageResource(R.drawable.weixuanzhong);
             viewHolder.viewTimeline2.setVisibility(View.VISIBLE);
             viewHolder.viewTimeline3.setVisibility(View.GONE);
-            viewHolder.relative.setBackgroundResource(R.drawable.zhandianweizhankai);
+            viewHolder.relative.setBackgroundColor(context.getResources().getColor(R.color.white)); // 修改右侧背景色
         }
 
         if (isCurrentItem && cars != null && !cars.isEmpty()) {
@@ -168,10 +163,7 @@ public class FlexListAdapter extends BaseAdapter {
             viewHolder.tvCardName.setText(R.string.no_cars);
         }
 
-        viewHolder.ivXiatopIco.setVisibility(isCurrentItem ? View.VISIBLE : View.GONE);
-        viewHolder.ivXialaIco.setVisibility(isCurrentItem ? View.GONE : View.VISIBLE);
-
-        viewHolder.llCards.setVisibility(isCurrentItem ? View.VISIBLE : View.GONE);
+        viewHolder.tvCardName.setVisibility(isCurrentItem ? View.VISIBLE : View.GONE);
     }
 
     public List<StationInfo> getStations() {
@@ -209,12 +201,9 @@ public class FlexListAdapter extends BaseAdapter {
     
     private static class ViewHolder
     {
-        RelativeLayout llCards; 
         LinearLayout relative;
         
         TextView tvStationName;
-        ImageView ivXialaIco;
-        ImageView ivXiatopIco;
         TextView tvCardName;
         
         ImageView weixuanzhongicon;

@@ -1,6 +1,5 @@
 package com.yhtye.shanghaishishigongjiaochaxun;
 
-import com.umeng.analytics.AnalyticsConfig;
 import com.umeng.analytics.MobclickAgent;
 import com.yhtye.shanghaishishigongjiaochaxun.R;
 import com.yhtye.shgongjiao.tools.NetUtil;
@@ -32,7 +31,7 @@ public class SplashActivity extends Activity {
         mHandler.postDelayed(new splashhandler(), 800);
         
         // 日志传输过程采用加密模式
-        AnalyticsConfig.enableEncrypt(true);
+        MobclickAgent.enableEncrypt(true);
     }
     
     private class splashhandler implements Runnable {

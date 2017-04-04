@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
+    <!-- 左侧时间轴效果 -->
     <View
         android:id="@+id/view_timeline_1"
         android:layout_width="3dp"
@@ -12,7 +13,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginRight="20dp"
         android:layout_marginEnd="20dp"
-        android:background="@color/blue" />
+        android:background="@color/station_bg" />
     
     <View
         android:id="@+id/view_timeline_4"
@@ -23,7 +24,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginRight="20dp"
         android:layout_marginEnd="20dp"
-        android:background="@color/blue" />
+        android:background="@color/station_bg" />
 
     <ImageView
         android:id="@+id/weixuanzhongicon"
@@ -38,22 +39,23 @@
     <View
         android:id="@+id/view_timeline_2"
         android:layout_width="3dp"
-        android:layout_height="43dp"
+        android:layout_height="38dp"
         android:layout_below="@+id/weixuanzhongicon"
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"
-        android:background="@color/blue" />
+        android:background="@color/station_bg" />
     
     <View
         android:id="@+id/view_timeline_3"
         android:layout_width="3dp"
-        android:layout_height="85dp"
+        android:layout_height="80dp"
         android:layout_below="@+id/weixuanzhongicon"
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"
-        android:background="@color/blue" 
+        android:background="@color/station_bg" 
         android:visibility="gone"/>
     
+    <!-- 右侧显示效果 -->
     <LinearLayout
         android:id="@+id/relative"
         android:layout_width="fill_parent"
@@ -62,16 +64,11 @@
         android:layout_marginTop="-20dp"
         android:layout_toEndOf="@+id/view_timeline_1"
         android:layout_toRightOf="@+id/view_timeline_1"
-        android:background="@drawable/zhandianqipao"
+        android:background="@color/white"
         android:orientation="vertical"
         android:padding="5dp" >
 
-        <RelativeLayout
-            android:id="@+id/lr_station"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
+        <TextView
                 android:id="@+id/tv_station_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,52 +77,13 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/iv_xiala_ico"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/weizhankai" />
-
-            <ImageView
-                android:id="@+id/iv_xiatop_ico"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/zhankai" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/ll_cards"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-            
-            <View android:id="@+id/fenggexianicon"
-                android:layout_width="match_parent"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_height="1dp"
-                android:background="@color/silver"/>
-            
-            <TextView
+        <TextView
                 android:id="@+id/tv_card_name"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:layout_below="@+id/fenggexianicon"
                 android:layout_margin="15dp"
                 android:textColor="@color/red"
                 android:textSize="18sp" />
-        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>
