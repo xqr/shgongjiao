@@ -115,7 +115,7 @@ public class FlexListAdapter extends BaseAdapter {
             viewHolder.relative.setBackgroundColor(context.getResources().getColor(R.color.station_bg)); // 修改右侧背景色
         } else {
             viewHolder.tvStationName.setTextColor(Color.GRAY);
-            viewHolder.weixuanzhongicon.setImageResource(R.drawable.weixuanzhong);
+            viewHolder.weixuanzhongicon.setImageResource(R.drawable.weixuanzhong2);
             viewHolder.viewTimeline2.setVisibility(View.VISIBLE);
             viewHolder.viewTimeline3.setVisibility(View.GONE);
             viewHolder.relative.setBackgroundColor(context.getResources().getColor(R.color.white)); // 修改右侧背景色

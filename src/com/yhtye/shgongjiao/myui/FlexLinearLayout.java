@@ -85,7 +85,7 @@ public class FlexLinearLayout extends LinearLayout {
             relative.setBackgroundColor(getResources().getColor(R.color.silver));
         } else {
             tvStationName.setTextColor(Color.GRAY);
-            weixuanzhongicon.setImageResource(R.drawable.weixuanzhong);
+            weixuanzhongicon.setImageResource(R.drawable.weixuanzhong2);
             viewTimeline2.setVisibility(View.VISIBLE);
             viewTimeline3.setVisibility(View.GONE);
         }
