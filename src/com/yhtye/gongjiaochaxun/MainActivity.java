@@ -8,7 +8,6 @@ import java.util.Map;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.update.UmengUpdateAgent;
 import com.everpod.wuhan.R;
 import com.yhtye.gongjiao.entity.BusLineInfo;
 import com.yhtye.gongjiao.entity.HistoryInfo;
@@ -53,11 +52,6 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        // 自动更新检查(wifi环境下触发)
-        UmengUpdateAgent.update(this);
-        // 全量更新
-        UmengUpdateAgent.setDeltaUpdate(false);
         
         initBar();
      
