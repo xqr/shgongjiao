@@ -20,8 +20,6 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import android.util.Log;
-
 public class HttpClientUtils {
     /**
      * post请求

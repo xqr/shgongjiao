@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 /**
  * 自定义listview
- *
  */
 public class FlexListAdapter extends BaseAdapter {
     private List<StationInfo> stations;
