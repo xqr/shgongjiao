@@ -20,7 +20,6 @@ import com.yhtye.shgongjiao.tools.NetUtil;
 import com.yhtye.shgongjiao.tools.RegularUtil;
 import com.yhtye.shgongjiao.tools.ThreadPoolManagerFactory;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -40,7 +39,7 @@ import android.widget.AdapterView.OnItemClickListener;
 /**
  * 主界面
  */
-public class MainActivity extends Activity implements OnItemClickListener {
+public class MainActivity extends BaseActivity implements OnItemClickListener {
 
     private EditText numberoneEditText = null;
     private EditText gongjiaokahaonumberoneEditText = null;
@@ -415,18 +414,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
         MobclickAgent.onEventValue(MainActivity.this, "historyclick", m, Integer.MAX_VALUE);
         
         startActivity(intent);
-    }
-    
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
     }
     
     /**

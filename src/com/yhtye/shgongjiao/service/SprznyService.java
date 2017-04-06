@@ -16,7 +16,7 @@ import com.yhtye.shgongjiao.tools.HttpClientUtils;
 public class SprznyService {
     
     /**
-     * 附近的公交站
+     * 通过坐标查询附近的公交站名称
      * 
      * @param x
      * @param y
@@ -47,6 +47,12 @@ public class SprznyService {
         return null;
     }
     
+    /**
+     * 通过公交站名称查询站点详情
+     * 
+     * @param stationName
+     * @return
+     */
     public static List<StopStation> searchStationLines(String stationName) {
         try {
             String url = String.format("http://api.sprzny.com/gongjiao/stop/%s", 
