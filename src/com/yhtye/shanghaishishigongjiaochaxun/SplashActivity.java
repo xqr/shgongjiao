@@ -37,7 +37,8 @@ public class SplashActivity extends BaseActivity {
         public void run() {
             // 销毁当前Activity，切换到主页面
             Intent intent=new Intent();  
-            intent.setClass(SplashActivity.this, MainActivity.class);  
+//            intent.setClass(SplashActivity.this, MainActivity.class);  
+            intent.setClass(SplashActivity.this, NainActivity.class);  
             startActivity(intent);
             SplashActivity.this.finish();
         }

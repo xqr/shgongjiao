@@ -19,5 +19,6 @@
     <string name="title_activity_result">ResultActivity</string>
     <string name="title_activity_scheme">SchemeActivity</string>
     <string name="title_activity_yue">YueActivity</string>
+    <string name="title_activity_nain">NainActivity</string>
 
 </resources>

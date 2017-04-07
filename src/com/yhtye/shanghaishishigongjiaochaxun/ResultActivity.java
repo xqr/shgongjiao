@@ -101,7 +101,7 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
                 lv_cards.setOnItemClickListener(this);
                 
                 // 自动展开当前站点
-                gundong();
+//                gundong();
                 return;
             }
         } 

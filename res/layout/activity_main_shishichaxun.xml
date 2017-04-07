@@ -19,7 +19,7 @@
             android:textSize="13sp"
             android:hint="@string/default_line"/>
     
-    <Button 
+    <Button android:id="@+id/searchLine"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:text="@string/button_send"
@@ -28,8 +28,7 @@
         android:textSize="24sp"
         android:layout_marginTop="30dp"
         android:paddingLeft="15dip"
-        android:paddingRight="15dip"
-        android:onClick="searchLineClick"/>
+        android:paddingRight="15dip"/>
     
     <ListView android:id="@+id/list_history_line"
         android:layout_width="fill_parent"

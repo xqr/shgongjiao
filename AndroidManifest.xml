@@ -17,7 +17,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="18" />
 
     <application
@@ -51,6 +51,13 @@
         <activity
             android:name="com.yhtye.shanghaishishigongjiaochaxun.YueActivity"
             android:label="@string/title_activity_yue" >
+        </activity>
+        
+        <activity
+            android:name="com.yhtye.shanghaishishigongjiaochaxun.NainActivity"
+            android:label="@string/title_activity_nain" 
+            android:windowSoftInputMode="stateUnchanged|adjustPan" 
+            android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>
         
         <!-- umeng统计 -->

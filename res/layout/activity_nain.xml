@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <!-- banner -->
+    <RelativeLayout android:id="@+id/bannerr"
+        android:layout_width="fill_parent"  
+        android:layout_height="60dp"
+        android:background="@color/blue">
+        
+        <TextView android:id="@+id/bannerrtitle" 
+            android:layout_width="wrap_content" 
+            android:layout_height="40dp" 
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="24sp"
+            android:textColor="@color/white"
+            android:text="@string/shishichaxun" /> 
+            
+     </RelativeLayout>
+    
+    <!-- 主界面 -->
+    <FrameLayout  
+        android:id="@+id/main_content"  
+        android:layout_width="match_parent"  
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bannerr"
+        android:background="@color/white">  
+    </FrameLayout> 
+    
+    <!-- 底部按钮 -->
+    <LinearLayout 
+        android:id="@+id/bottomgview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="vertical"
+        android:background="#F8F8FF"
+        android:layout_alignParentBottom="true">
+        
+        <View
+            android:id="@+id/div_tab_bar"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/silver"/>
+        
+        <GridView 
+            android:id="@+id/gview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="3"    
+            android:stretchMode="columnWidth"
+            android:listSelector="@android:color/transparent"
+            android:layout_marginBottom="4dp">
+        
+    </GridView>
+        
+    </LinearLayout>
+    
+    <!-- 广告位 -->
+    <LinearLayout 
+        android:id="@+id/baiduguanggao"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottomgview"
+        android:background="@color/white"
+        android:orientation="vertical">
+    </LinearLayout>
+    
+</RelativeLayout>
