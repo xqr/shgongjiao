@@ -101,10 +101,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
      * 初始化底部icon面板
      */
     private void initIcons() {
-        isCurrentItems = new boolean[3];
+        isCurrentItems = new boolean[2];
         isCurrentItems[0] = true;
         isCurrentItems[1] = false;
-        isCurrentItems[2] = false;
+//        isCurrentItems[2] = false;
         gview = (GridView) findViewById(R.id.gview);
         simAdapter = new IconListAdapter(this, isCurrentItems);
         // 配置适配器

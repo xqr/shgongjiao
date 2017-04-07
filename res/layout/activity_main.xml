@@ -50,7 +50,7 @@
             android:id="@+id/gview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:numColumns="3"    
+            android:numColumns="2"    
             android:stretchMode="columnWidth"
             android:listSelector="@android:color/transparent"
             android:layout_marginBottom="4dp">

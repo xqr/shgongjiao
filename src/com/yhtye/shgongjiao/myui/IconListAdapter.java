@@ -15,15 +15,18 @@ public class IconListAdapter extends BaseAdapter {
      * 图标
      */
     private Integer[] iconImages = new Integer[] {
-            R.drawable.button_1, R.drawable.button_2, R.drawable.button_3, 
-            R.drawable.button_41, R.drawable.button_51, R.drawable.button_61
+            R.drawable.button_1, R.drawable.button_2, 
+//            R.drawable.button_3, 
+            R.drawable.button_41, R.drawable.button_51, 
+//            R.drawable.button_61
     };
     
     /**
      * 图标名称
      */
     private String[] iconNames = new String[] {
-            "实时公交", "换乘查询", "余额查询"
+            "实时公交", "换乘查询"
+//            , "余额查询"
     };
     
     private Context context; 
@@ -36,7 +39,7 @@ public class IconListAdapter extends BaseAdapter {
     
     @Override
     public int getCount() {
-        return 3;
+        return iconNames.length;
     }
 
     @Override
@@ -70,7 +73,7 @@ public class IconListAdapter extends BaseAdapter {
         // 设置数据
         if (isCurrentItems[position]) {
             // 点击
-            viewHolder.iconIv.setImageResource(iconImages[position + 3]);
+            viewHolder.iconIv.setImageResource(iconImages[position + iconNames.length]);
             viewHolder.iconNameTv.setTextColor(context.getResources().getColor(R.color.blue));
         } else {
             viewHolder.iconIv.setImageResource(iconImages[position]);
