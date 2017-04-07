@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 /**
@@ -55,7 +56,7 @@ public class HuanchengFragment extends Fragment {
         }
         
         // 切换起点和终点
-        Button switchqizongButton = (Button) getActivity().findViewById(R.id.switchqizongButton);
+        ImageView switchqizongButton = (ImageView) getActivity().findViewById(R.id.switchqizongButton);
         switchqizongButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
