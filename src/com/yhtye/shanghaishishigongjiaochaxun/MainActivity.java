@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.baidu.mobads.AdSettings;
-import com.baidu.mobads.AdView;
-import com.everpod.shanghai.R;
+import com.instant.xmshbus.R;
+import com.qq.e.ads.banner.ADSize;
+import com.qq.e.ads.banner.BannerView;
 import com.umeng.analytics.MobclickAgent;
 import com.yhtye.shgongjiao.adapter.HistoryListAdapter;
 import com.yhtye.shgongjiao.entity.HistoryInfo;
@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
     private ListView listHistoryView = null;
     
     // 广告
-    private AdView adView;
+    private BannerView adView;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,17 +110,17 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         historyService = new HistoryService(MainActivity.this);
     }
     
-    private void initAd() {        
-        // 人群属性
-        AdSettings.setKey(new String[] { "baidu", "中 国 " });
-        AdSettings.setCity("上海");
-        
+    private void initAd() { 
         // 创建广告View
-        String adPlaceId = "2429859"; // 重要：不填写代码位id不能出广告
-        adView = new AdView(this, adPlaceId);
+        String appId = "1104969843";
+        String adPlaceId = "6040928273839757"; // 重要：不填写代码位id不能出广告
+        adView = new BannerView(this, ADSize.BANNER,  appId, adPlaceId);
+        adView.setRefresh(30);
         
         LinearLayout baiduguanggaolayout = (LinearLayout) findViewById(R.id.baiduguanggao);
         baiduguanggaolayout.addView(adView);
+        
+        adView.loadAD();
    }
     
     /**

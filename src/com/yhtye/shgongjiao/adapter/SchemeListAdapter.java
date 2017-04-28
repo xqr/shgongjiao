@@ -2,7 +2,7 @@ package com.yhtye.shgongjiao.adapter;
 
 import java.util.List;
 
-import com.everpod.shanghai.R;
+import com.instant.xmshbus.R;
 import com.yhtye.shgongjiao.entity.RoutesScheme;
 import com.yhtye.shgongjiao.entity.SchemeSteps;
 

@@ -1,6 +1,6 @@
 package com.yhtye.shanghaishishigongjiaochaxun;
 
-import com.everpod.shanghai.R;
+import com.instant.xmshbus.R;
 import com.umeng.analytics.AnalyticsConfig;
 import com.yhtye.shgongjiao.tools.NetUtil;
 

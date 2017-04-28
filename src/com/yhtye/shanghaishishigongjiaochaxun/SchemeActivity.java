@@ -4,7 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
 
-import com.everpod.shanghai.R;
+import com.instant.xmshbus.R;
 import com.yhtye.shgongjiao.adapter.SchemeListAdapter;
 import com.yhtye.shgongjiao.entity.RoutesScheme;
 import com.yhtye.shgongjiao.service.BaiduApiService;
