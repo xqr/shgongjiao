@@ -18,7 +18,7 @@ public class LineService implements ILineService {
     
     @Override
     public LineInfo getLineInfo(String lineName, int retryTimes) {
-        String url = "http://xxbs.sh.gov.cn:8080/weixinpage/HandlerOne.ashx?name=" 
+        String url = "http://xxbs.sh.gov.cn:8080/weixinpage/HandlerBus.ashx?action=One&name=" 
                     + lineName;
         
         try {
@@ -40,7 +40,7 @@ public class LineService implements ILineService {
     }
     @Override
     public LineStationInfo getLineStation(String lineName, String lineId) {
-        String url = String.format("http://xxbs.sh.gov.cn:8080/weixinpage/HandlerTwo.ashx?name=%s&lineid=%s", 
+        String url = String.format("http://xxbs.sh.gov.cn:8080/weixinpage/HandlerBus.ashx?action=Two&name=%s&lineid=%s", 
                 lineName, lineId);
         
         String content = HttpClientUtils.getResponse(url, refer);
@@ -77,7 +77,7 @@ public class LineService implements ILineService {
     
     @Override
     public List<CarInfo> getStationCars(String lineName, String lineId, String stopId, boolean direction) {
-        String url = String.format("http://xxbs.sh.gov.cn:8080/weixinpage/HandlerThree.ashx?name=%s&lineid=%s&stopid=%s&direction=%s", 
+        String url = String.format("http://xxbs.sh.gov.cn:8080/weixinpage/HandlerBus.ashx?action=Three&name=%s&lineid=%s&stopid=%s&direction=%s", 
                 lineName, lineId, stopId, direction ? 0 : 1);
         
         String content = HttpClientUtils.getResponse(url, refer);
