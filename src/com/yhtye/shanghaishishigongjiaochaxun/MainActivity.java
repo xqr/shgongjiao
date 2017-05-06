@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.instant.xmshbus.R;
+import com.instantbus.sh.R;
 import com.qq.e.ads.banner.ADSize;
 import com.qq.e.ads.banner.BannerView;
 import com.umeng.analytics.MobclickAgent;

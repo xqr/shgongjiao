@@ -3,7 +3,7 @@ package com.yhtye.shanghaishishigongjiaochaxun;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import com.instant.xmshbus.R;
+import com.instantbus.sh.R;
 import com.yhtye.shgongjiao.adapter.FlexListAdapter;
 import com.yhtye.shgongjiao.entity.CarInfo;
 import com.yhtye.shgongjiao.entity.HistoryInfo;
