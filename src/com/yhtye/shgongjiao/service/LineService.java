@@ -13,12 +13,11 @@ import com.yhtye.shgongjiao.entity.StationInfo;
 import com.yhtye.shgongjiao.tools.HttpClientUtils;
 
 public class LineService implements ILineService {
-    
-    private String refer = "http://xxbs.sh.gov.cn:8080/weixinpage/index.html";
+    private String refer = "http://218.242.144.40/weixinpage/index.html";
     
     @Override
     public LineInfo getLineInfo(String lineName, int retryTimes) {
-        String url = "http://xxbs.sh.gov.cn:8080/weixinpage/HandlerBus.ashx?action=One&name=" 
+        String url = "http://218.242.144.40/weixinpage/HandlerBus.ashx?action=One&name=" 
                     + lineName;
         
         try {
@@ -40,7 +39,7 @@ public class LineService implements ILineService {
     }
     @Override
     public LineStationInfo getLineStation(String lineName, String lineId) {
-        String url = String.format("http://xxbs.sh.gov.cn:8080/weixinpage/HandlerBus.ashx?action=Two&name=%s&lineid=%s", 
+        String url = String.format("http://218.242.144.40/weixinpage/HandlerBus.ashx?action=Two&name=%s&lineid=%s", 
                 lineName, lineId);
         
         String content = HttpClientUtils.getResponse(url, refer);
@@ -77,7 +76,7 @@ public class LineService implements ILineService {
     
     @Override
     public List<CarInfo> getStationCars(String lineName, String lineId, String stopId, boolean direction) {
-        String url = String.format("http://xxbs.sh.gov.cn:8080/weixinpage/HandlerBus.ashx?action=Three&name=%s&lineid=%s&stopid=%s&direction=%s", 
+        String url = String.format("http://218.242.144.40/weixinpage/HandlerBus.ashx?action=Three&name=%s&lineid=%s&stopid=%s&direction=%s", 
                 lineName, lineId, stopId, direction ? 0 : 1);
         
         String content = HttpClientUtils.getResponse(url, refer);
@@ -99,5 +98,5 @@ public class LineService implements ILineService {
             Log.e("com.yhtye.shgongjiao.service.LineService", "getStationCars(): " + e.getMessage());
         }
         return cars;
-    }
+    } 
 }
