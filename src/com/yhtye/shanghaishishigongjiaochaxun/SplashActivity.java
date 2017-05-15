@@ -1,7 +1,7 @@
 package com.yhtye.shanghaishishigongjiaochaxun;
 
 import com.everpod.shanghai.R;
-import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
 import com.yhtye.shgongjiao.tools.NetUtil;
 
 import android.content.Intent;
@@ -23,7 +23,7 @@ public class SplashActivity extends BaseActivity {
         // 开启日志debug模式
 //      MobclickAgent.setDebugMode( true );
         // 日志传输过程采用加密模式
-        AnalyticsConfig.enableEncrypt(true);
+        MobclickAgent.enableEncrypt(true);
         
         // 网络检查
         if (!NetUtil.checkNet(this)) {
