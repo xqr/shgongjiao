@@ -99,9 +99,7 @@ public class HttpClientUtils {
             return htmlStr;
 
         } catch (Exception e) {
-            // TODO 
-            e.printStackTrace();
-//        	ErrorLogger.info("url:%s", e, url);
+            
         }
         return null;
     }
