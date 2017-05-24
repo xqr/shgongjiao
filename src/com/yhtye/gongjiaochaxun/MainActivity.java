@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.qq.e.ads.banner.ADSize;
+import com.qq.e.ads.banner.BannerView;
 import com.umeng.analytics.MobclickAgent;
 import com.everpod.beijing.R;
 import com.yhtye.gongjiao.entity.HistoryInfo;
@@ -48,6 +50,9 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
     private HistoryListAdapter adapter;
     private ListView listHistoryView = null;
     
+    // 广告
+    private BannerView adView;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +62,11 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         
         // 查询历史记录
         showHistory();
+        
+        // 加载广告
+        if (NetUtil.checkNet(this)) {
+            initAd();
+        }
     }
     
     /**
@@ -79,6 +89,19 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         listHistoryView = (ListView) shishichaxunlayout.findViewById(R.id.list_history_line);
         historyService = new HistoryService(MainActivity.this);
     }
+    
+    private void initAd() { 
+        // 创建广告View
+        String appId = "1104971925";
+        String adPlaceId = "1020422257558567"; // 重要：不填写代码位id不能出广告
+        adView = new BannerView(this, ADSize.BANNER,  appId, adPlaceId);
+        adView.setRefresh(30);
+        
+        LinearLayout baiduguanggaolayout = (LinearLayout) findViewById(R.id.baiduguanggao);
+        baiduguanggaolayout.addView(adView);
+        
+        adView.loadAD();
+   }
     
     /**
      * 初始化换乘界面元素
@@ -255,5 +278,16 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         MobclickAgent.onEventValue(MainActivity.this, "historyclick", m, Integer.MAX_VALUE);
         
         startActivity(intent);
+    }
+    
+    /**
+     * Activity销毁时，销毁adView
+     */
+    @Override
+    protected void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
     }
 }

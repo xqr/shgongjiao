@@ -17,6 +17,7 @@ import com.yhtye.gongjiao.tools.ThreadPoolManagerFactory;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -111,6 +112,27 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
             Log.e("error", e.getMessage());
         }
     }
+//    
+//    private class SearchLineTask extends AsyncTask<String, Integer, List<LineInfo>> {
+//
+//        @Override
+//        protected List<LineInfo> doInBackground(String... params) {
+//            String nowLineName = params[0];
+//            List<LineInfo> newlineList = lineService.getLineInfo(nowLineName, 1);
+//            if (lineList != null && lineList.size() > 0) {
+//                LineInfo lineInfo = getNowLineInfo();
+//                if (lineInfo == null) {
+//                    return null;
+//                }
+//                lineInfo = lineService.getLineStation(lineInfo, 1, true); 
+//                if (lineInfo.getStations() != null) {
+//                    return newlineList;
+//                }
+//            }
+//            return null;
+//        }
+//        
+//    }
     
     /**
      * 查询公交线路和站点
@@ -222,6 +244,9 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         
         @Override  
         public void handleMessage(Message msg) {  
+            if (mActivity == null) {
+                return;
+            }
             final ResultActivity  theActivity =  mActivity.get();
             if (theActivity != null 
                     && theActivity.progressDialog != null 
@@ -413,6 +438,22 @@ public class ResultActivity extends BaseActivity implements OnItemClickListener 
         }
         
         adapter.setIsCurrentItems(isCurrentItems);
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (handler == null) {
+            handler = new ResultHandler(this);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (handler != null) {
+            handler = null;
+        }
     }
     
     @Override

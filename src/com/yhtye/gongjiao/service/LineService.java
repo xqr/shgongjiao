@@ -316,26 +316,8 @@ public class LineService {
             return htmlStr;
 
         } catch (Exception e) {
-            Log.i(url, e.getMessage());
+            
         }
         return null;
-    }
-    
-    public static void main(String[] args) {
-        LineService service = new LineService();
-        String lineName = "1";
-        List<LineInfo> list = service.getLineInfo(lineName, 0);
-        if (list == null) {
-            return;
-        }
-        for (LineInfo lineInfo : list) {
-            service.getLineStation(lineInfo, 3, true);
-        }
-        for (LineInfo item : list) {
-            System.out.println(item.getStart_stop());
-            System.out.println(item.getStart_earlytime());
-            System.out.println(item.getStations().size());
-            System.out.println(item.getStations().get(2).getCarmessage());
-        }
     }
 }

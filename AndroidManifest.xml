@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.everpod.beijing"
-    android:versionCode="4"
-    android:versionName="1.1.0"
+    android:versionCode="5"
+    android:versionName="1.1.1"
     android:windowSoftInputMode="adjustPan" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -55,6 +55,9 @@
             android:label="@string/title_activity_scheme" >
         </activity>
         
+        <service android:name="com.qq.e.comm.DownloadService" android:exported="false" />
+        <activity android:name="com.qq.e.ads.ADActivity" 
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
     </application>
 
 </manifest>
