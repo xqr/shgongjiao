@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.instantbus.sh.R;
+import com.instant.shbus.R;
 import com.qq.e.ads.banner.ADSize;
 import com.qq.e.ads.banner.BannerView;
 import com.umeng.analytics.MobclickAgent;
@@ -74,6 +74,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         // 加载广告
         if (NetUtil.checkNet(this)) {
             initAd();
+            // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+//            MobileAds.initialize(this, "YOUR_ADMOB_APP_ID");
         }
     }
     

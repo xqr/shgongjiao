@@ -1,7 +1,7 @@
 package com.yhtye.shgongjiao.adapter;
 
 import java.util.List;
-import com.instantbus.sh.R;
+import com.instant.shbus.R;
 import com.yhtye.shgongjiao.entity.CarInfo;
 import com.yhtye.shgongjiao.entity.StationInfo;
 import com.yhtye.shgongjiao.tools.RegularUtil;
