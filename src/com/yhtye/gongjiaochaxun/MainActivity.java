@@ -20,12 +20,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -35,9 +38,10 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
     
     private Intent intent=new Intent(); 
     
-    private Button shishichaxunButton = null;
-    private Button huanshengchaxunButton = null;
+    // 顶部banner
+    private TextView bannerrtitle = null;
     
+    // 面板
     private LinearLayout huanchenglayout = null;
     private LinearLayout shishichaxunlayout = null;
     
@@ -53,12 +57,20 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
     // 广告
     private BannerView adView;
     
+    // 底部工具栏
+    private GridView gview;
+    private IconListAdapter simAdapter;
+    private boolean[] isCurrentItems;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
         initBar();
+        
+        // 初始化底部栏
+        initIcons();
         
         // 查询历史记录
         showHistory();
@@ -70,17 +82,37 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
     }
     
     /**
+     * 初始化底部icon面板
+     */
+    private void initIcons() {
+        isCurrentItems = new boolean[2];
+        isCurrentItems[0] = true;
+        isCurrentItems[1] = false;
+//        isCurrentItems[2] = false;
+        gview = (GridView) findViewById(R.id.gview);
+        simAdapter = new IconListAdapter(this, isCurrentItems);
+        // 配置适配器
+        gview.setAdapter(simAdapter);
+        gview.setOnItemClickListener(new ItemClickListener());
+    }
+    
+    /**
      * 初始化按钮和界面元素
      */
     private void initBar() {
-        shishichaxunButton = (Button) findViewById(R.id.shishichaxun);
-        huanshengchaxunButton = (Button) findViewById(R.id.huanshengchaxun);
         // 获取输入信息
         numberoneEditText = (EditText)findViewById(R.id.numberone);
+        numberoneEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {  
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    searchLineClick(v);
+                }
+                return true;
+            }
+        });
         
-        // 初始化
-        shishichaxunButton.setSelected(true);
-        huanshengchaxunButton.setSelected(false);
+        bannerrtitle = (TextView) findViewById(R.id.bannerrtitle);
         
         // 初始化2个布局
         shishichaxunlayout = (LinearLayout) findViewById(R.id.shishichaxunlayout);
@@ -120,13 +152,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
      * 
      * @param v
      */
-    public void shishichaxunClick(View v) {
-        // 按钮变化
-        shishichaxunButton.setTextColor(getResources().getColor(R.color.blue));
-        shishichaxunButton.setSelected(true);
-        huanshengchaxunButton.setTextColor(getResources().getColor(R.color.white));
-        huanshengchaxunButton.setSelected(false);
-        
+    public void shishichaxunClick(View v) {        
         // 初始化界面元素
         shishichaxunlayout.setVisibility(View.VISIBLE);
         huanchenglayout.setVisibility(View.GONE);
@@ -138,11 +164,6 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
      * @param v
      */
     public void huanshengchaxunClick(View v) {
-        // 按钮变化
-        shishichaxunButton.setTextColor(getResources().getColor(R.color.white));
-        shishichaxunButton.setSelected(false);
-        huanshengchaxunButton.setTextColor(getResources().getColor(R.color.blue));
-        huanshengchaxunButton.setSelected(true);
         // 初始化界面元素
         shishichaxunlayout.setVisibility(View.GONE);
         huanchenglayout.setVisibility(View.VISIBLE);
@@ -229,6 +250,29 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         intent.putExtra("direction", true);
         intent.putExtra("linelist", "");
         startActivity(intent);
+    }
+    
+    class  ItemClickListener implements OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                long id) {
+            for (int i = 0; i < isCurrentItems.length; i++) {
+                isCurrentItems[i] = (i == position);
+            }
+            if (position == 0) {
+                bannerrtitle.setText("实时公交");
+                shishichaxunClick(view);
+            } else if (position == 1) {
+                bannerrtitle.setText("换乘查询");
+                huanshengchaxunClick(view);
+            } else {
+                bannerrtitle.setText("公交卡余额查询");
+//                yuechaxunClick(view);
+            }
+            
+            simAdapter.notifyDataSetChanged();
+        }
     }
     
     private List<HistoryInfo> historyList = null;
