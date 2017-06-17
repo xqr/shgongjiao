@@ -12,7 +12,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginRight="20dp"
         android:layout_marginEnd="20dp"
-        android:background="@color/blue" />
+        android:background="@color/splashbackground" />
     
     <View
         android:id="@+id/view_timeline_4"
@@ -23,7 +23,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginRight="20dp"
         android:layout_marginEnd="20dp"
-        android:background="@color/blue" />
+        android:background="@color/splashbackground" />
 
     <ImageView
         android:id="@+id/weixuanzhongicon"
@@ -42,7 +42,7 @@
         android:layout_below="@+id/weixuanzhongicon"
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"
-        android:background="@color/blue" />
+        android:background="@color/splashbackground" />
     
     <View
         android:id="@+id/view_timeline_3"
@@ -51,7 +51,7 @@
         android:layout_below="@+id/weixuanzhongicon"
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"
-        android:background="@color/blue" 
+        android:background="@color/splashbackground" 
         android:visibility="gone"/>
     
     <LinearLayout

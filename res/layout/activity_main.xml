@@ -10,7 +10,7 @@
         android:id="@+id/bannerr"
         android:layout_width="fill_parent"  
         android:layout_height="60dp"
-        android:background="@color/blue">
+        android:background="@color/splashbackground">
         
         <TextView android:id="@+id/bannerrtitle" 
             android:layout_width="wrap_content" 

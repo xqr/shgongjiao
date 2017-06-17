@@ -94,7 +94,7 @@
         android:layout_height="50dp"
         android:text="@string/button_send"
         android:id="@+id/hellobutton"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:background="@drawable/button_chaxun"
         android:textSize="24sp"
         android:layout_marginTop="30dp"

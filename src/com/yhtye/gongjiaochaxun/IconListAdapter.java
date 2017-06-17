@@ -77,7 +77,7 @@ public class IconListAdapter extends BaseAdapter {
             viewHolder.iconNameTv.setCompoundDrawables(null, topDrawable, null, null);  
             
 //            viewHolder.iconIv.setImageResource(iconImages[position + iconNames.length]);
-            viewHolder.iconNameTv.setTextColor(context.getResources().getColor(R.color.blue));
+            viewHolder.iconNameTv.setTextColor(context.getResources().getColor(R.color.splashbackground));
         } else {
             Drawable topDrawable = context.getResources().getDrawable(iconImages[position]);  
             topDrawable.setBounds(0, 0, topDrawable.getMinimumWidth(), topDrawable.getMinimumHeight());  
