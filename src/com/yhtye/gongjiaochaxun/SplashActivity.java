@@ -1,6 +1,6 @@
 package com.yhtye.gongjiaochaxun;
 
-import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
 import com.everpod.beijing.R;
 import com.yhtye.gongjiao.tools.NetUtil;
 
@@ -30,7 +30,7 @@ public class SplashActivity extends BaseActivity {
         // 开启日志debug模式
 //        MobclickAgent.setDebugMode( true );
         // 日志传输过程采用加密模式
-        AnalyticsConfig.enableEncrypt(true);
+        MobclickAgent.enableEncrypt(true);
     }
     
     private class splashhandler implements Runnable {

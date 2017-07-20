@@ -7,4 +7,22 @@
     <color name="red">#FF0033</color>
     
     <color name="splashbackground">#fb552b</color>
+    
+    <color name="bannerline">#e2e2e2</color>
+    <color name="listbackground">#ececec</color>
+    
+    
+    <color name="bg_row_border_night">#ff444444</color>
+    <color name="bg_login_page">#fff9f9f9</color>
+    <color name="bg_full_image">#ff000000</color>
+    
+    <color name="activity_bg_color">#fff5f5f5</color>
+    <color name="activity_bg_color_night">#ff1a1a1a</color>
+    <color name="detail_activity_bg_color">#fff6f7f7</color>
+    <color name="detail_activity_bg_color_night">#ff1a1a1a</color>
+    <color name="item_ad_download_bg_normal">#e5eeeeee</color>
+    <color name="item_ad_download_bg_pressed">#e5f9f9f9</color>
+    <color name="item_ad_download_text">#ff696969</color>
+    <color name="item_ad_download_bg_normal_night">#e52a2a2a</color>
+    <color name="item_ad_download_bg_pressed_night">#e51e1e1e</color>
 </resources>

@@ -16,9 +16,9 @@ public class IconListAdapter extends BaseAdapter {
      */
     private Integer[] iconImages = new Integer[] {
             R.drawable.icon1, R.drawable.icon2, 
-//            R.drawable.button_3, 
+            R.drawable.icon3, 
             R.drawable.shishi, R.drawable.huancheng, 
-//            R.drawable.button_61
+            R.drawable.shiping
     };
     
     /**
@@ -26,7 +26,7 @@ public class IconListAdapter extends BaseAdapter {
      */
     private String[] iconNames = new String[] {
             "实时公交", "换乘查询"
-//            , "余额查询"
+            , "小视频精选"
     };
     
     private Context context; 

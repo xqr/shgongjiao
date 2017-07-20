@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.everpod.beijing"
-    android:versionCode="5"
-    android:versionName="1.1.1"
+    android:versionCode="6"
+    android:versionName="1.1.2"
     android:windowSoftInputMode="adjustPan" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,14 +15,15 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
+        android:minSdkVersion="14"
+        android:targetSdkVersion="21" />
 
     <application
+        android:name="com.sprzny.meitu.app.AppApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.NoTitleBar" >
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         <activity
             android:name="com.yhtye.gongjiaochaxun.SplashActivity"
             android:label="@string/app_name" >
@@ -39,6 +40,11 @@
         <activity
             android:name="com.yhtye.gongjiaochaxun.ResultActivity"
             android:label="@string/title_activity_result" >
+        </activity>
+        <activity
+            android:name="com.yhtye.gongjiaochaxun.ContentActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait">
         </activity>
 
         <meta-data

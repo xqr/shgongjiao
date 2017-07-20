@@ -85,10 +85,10 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
      * 初始化底部icon面板
      */
     private void initIcons() {
-        isCurrentItems = new boolean[2];
+        isCurrentItems = new boolean[3];
         isCurrentItems[0] = true;
         isCurrentItems[1] = false;
-//        isCurrentItems[2] = false;
+        isCurrentItems[2] = false;
         gview = (GridView) findViewById(R.id.gview);
         simAdapter = new IconListAdapter(this, isCurrentItems);
         // 配置适配器
@@ -168,6 +168,18 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         shishichaxunlayout.setVisibility(View.GONE);
         huanchenglayout.setVisibility(View.VISIBLE);
         initHuansheng();
+    }
+    
+    /**
+     * 小视频按钮
+     * 
+     * @param v
+     */
+    public void shipinClick(View v) {
+        // TODO
+        // 切换Activity
+        intent.setClass(MainActivity.this, ContentActivity.class);  
+        startActivity(intent);
     }
     
     /**
@@ -267,8 +279,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
                 bannerrtitle.setText("换乘查询");
                 huanshengchaxunClick(view);
             } else {
-                bannerrtitle.setText("公交卡余额查询");
-//                yuechaxunClick(view);
+                bannerrtitle.setText("小视频精选");
+                shipinClick(view);
             }
             
             simAdapter.notifyDataSetChanged();

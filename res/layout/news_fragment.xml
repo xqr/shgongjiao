@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@color/white"
+    android:orientation="vertical">
+    
+    <!-- 图片信息流 -->
+    <com.sprzny.meitu.view.HeadListView
+        android:id="@+id/mListView"
+        android:scrollbars="vertical"
+         android:fastScrollEnabled="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
+        android:listSelector="@android:color/transparent"
+        android:background="@color/listbackground"/>
+    
+    
+</LinearLayout>
